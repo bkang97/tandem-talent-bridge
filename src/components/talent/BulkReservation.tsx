@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { UsersRound } from 'lucide-react';
+import { UsersRound, AlertCircle, ArrowRight } from 'lucide-react';
 import ReservationModal from './ReservationModal';
+import { Separator } from '@/components/ui/separator';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const BulkReservation = () => {
   const [location, setLocation] = useState('');
@@ -26,20 +28,24 @@ const BulkReservation = () => {
     setShowReservationModal(true);
   };
   
+  const availableAmount = calculateAvailableTalent();
+  const gapAmount = quantity[0] - availableAmount;
+  const percentAvailable = Math.round((availableAmount / quantity[0]) * 100);
+  
   return (
     <>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <UsersRound size={20} />
+      <Card className="border-none shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-xl flex items-center gap-2">
+            <UsersRound size={20} className="text-primary" />
             Reserve by Hiring Need
           </CardTitle>
-          <CardDescription>
-            Tell us your requirements and reserve candidates that match your needs
-          </CardDescription>
+          <p className="text-sm text-gray-600">
+            Tell us your requirements and we'll match you with available candidates
+          </p>
         </CardHeader>
         
-        <CardContent>
+        <CardContent className="pb-4">
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium mb-1 block">Location</label>
@@ -69,7 +75,7 @@ const BulkReservation = () => {
             
             <div>
               <div className="flex justify-between mb-1">
-                <label className="text-sm font-medium">Number of Candidates Needed</label>
+                <label className="text-sm font-medium">Candidates Needed</label>
                 <span className="text-sm font-semibold">{quantity[0]}</span>
               </div>
               <Slider 
@@ -78,6 +84,7 @@ const BulkReservation = () => {
                 max={20} 
                 min={1} 
                 step={1} 
+                className="my-4"
               />
             </div>
             
@@ -96,43 +103,65 @@ const BulkReservation = () => {
               </Select>
             </div>
             
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-md mt-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h4 className="font-medium">Availability Alert</h4>
-                  <p className="text-sm text-amber-800">
-                    Based on your requirements, we can currently provide approximately:
-                  </p>
-                </div>
-                <div className="text-2xl font-bold text-amber-600">{calculateAvailableTalent()}/{quantity[0]}</div>
+            <Separator className="my-6" />
+            
+            <div className="bg-amber-50 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertCircle className="text-amber-500" size={20} />
+                <h3 className="font-medium text-amber-800">Talent Availability Alert</h3>
               </div>
               
-              <div className="mt-3">
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-amber-500 h-2 rounded-full" 
-                    style={{ width: `${(calculateAvailableTalent()/quantity[0])*100}%` }} 
-                  />
-                </div>
-                <p className="text-xs mt-1 text-gray-600">
-                  {quantity[0] - calculateAvailableTalent()} more candidates needed to fulfill your request
-                </p>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm text-gray-700">
+                  Available candidates matching your criteria:
+                </span>
+                <span className="text-lg font-bold">
+                  <span className={percentAvailable < 70 ? "text-amber-600" : "text-emerald-600"}>
+                    {availableAmount}
+                  </span>
+                  <span className="text-gray-400">/</span>
+                  <span>{quantity[0]}</span>
+                </span>
               </div>
+              
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className={`h-2 rounded-full ${
+                    percentAvailable < 50 ? "bg-amber-500" : "bg-emerald-500"
+                  }`} 
+                  style={{ width: `${percentAvailable}%` }} 
+                />
+              </div>
+              
+              {gapAmount > 0 && (
+                <p className="mt-3 text-sm text-gray-700">
+                  <strong className="text-amber-700">{gapAmount} more candidates needed</strong> to 
+                  fulfill your request. Consider Tandem Sponsorship to close this gap.
+                </p>
+              )}
             </div>
           </div>
         </CardContent>
         
-        <CardFooter className="flex flex-col space-y-3">
+        <CardFooter className="flex flex-col space-y-3 pt-2">
           <Button 
             className="w-full" 
             onClick={handleReserve}
             disabled={!location || !skillSet || !timeframe}
           >
-            Reserve Available Candidates
+            Reserve {availableAmount} Available Candidates
           </Button>
-          <Button variant="outline" className="w-full">
-            Ask About Sponsorship for More Talent
-          </Button>
+          
+          {gapAmount > 0 && (
+            <Alert variant="default" className="bg-primary/5 border-primary/20">
+              <AlertDescription className="flex justify-between items-center">
+                <span className="text-sm">Close your talent gap with Tandem Sponsorship</span>
+                <Button variant="outline" size="sm" className="flex items-center gap-1 border-primary/30">
+                  Learn More <ArrowRight size={14} />
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
         </CardFooter>
       </Card>
       
@@ -142,7 +171,7 @@ const BulkReservation = () => {
           onClose={() => setShowReservationModal(false)}
           reservedStudents={[]} // In bulk mode, we don't have specific students
           bulkReservation={true}
-          bulkAmount={calculateAvailableTalent()}
+          bulkAmount={availableAmount}
         />
       )}
     </>

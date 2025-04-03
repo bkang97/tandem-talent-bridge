@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Check, ChevronDown, Search, Sliders } from 'lucide-react';
+import { ChevronDown, Search, Sliders } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 
 const TalentFilters = ({ onFilterChange }: { onFilterChange: (filters: any) => void }) => {
   const [activeFilters, setActiveFilters] = useState({
@@ -56,12 +57,12 @@ const TalentFilters = ({ onFilterChange }: { onFilterChange: (filters: any) => v
   };
   
   return (
-    <div className="mb-6">
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+    <div className="mb-4">
+      <div className="flex flex-wrap gap-3 mb-3">
         <div className="relative flex-grow">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
           <Input 
-            placeholder="Search for skills, name, or keywords" 
+            placeholder="Search skills, programs, or keywords" 
             className="pl-10"
           />
         </div>
@@ -69,8 +70,8 @@ const TalentFilters = ({ onFilterChange }: { onFilterChange: (filters: any) => v
         <div className="flex flex-wrap gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                Skills <ChevronDown size={16} />
+              <Button variant="outline" size="sm" className="h-10">
+                Skills <ChevronDown size={14} className="ml-1 opacity-70" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
@@ -90,8 +91,8 @@ const TalentFilters = ({ onFilterChange }: { onFilterChange: (filters: any) => v
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                Location <ChevronDown size={16} />
+              <Button variant="outline" size="sm" className="h-10">
+                Location <ChevronDown size={14} className="ml-1 opacity-70" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
@@ -111,8 +112,8 @@ const TalentFilters = ({ onFilterChange }: { onFilterChange: (filters: any) => v
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                Availability <ChevronDown size={16} />
+              <Button variant="outline" size="sm" className="h-10">
+                Availability <ChevronDown size={14} className="ml-1 opacity-70" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
@@ -130,29 +131,13 @@ const TalentFilters = ({ onFilterChange }: { onFilterChange: (filters: any) => v
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                Academic Partner <ChevronDown size={16} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Select Partners</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {['SkillTrade', 'AIM', 'ForgeNow', 'TechAcademy', 'CodeCampus'].map(partner => (
-                <DropdownMenuCheckboxItem
-                  key={partner}
-                  checked={activeFilters.academicPartner.includes(partner)}
-                  onCheckedChange={() => handleFilterChange('academicPartner', partner)}
-                >
-                  {partner}
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Button variant="outline" className="flex items-center gap-2" onClick={clearFilters}>
-            <Sliders size={16} /> Clear
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-10" 
+            onClick={clearFilters}
+          >
+            <Sliders size={16} className="mr-1" /> Clear
           </Button>
         </div>
       </div>
@@ -180,7 +165,7 @@ const TalentFilters = ({ onFilterChange }: { onFilterChange: (filters: any) => v
               </Badge>
             ))
           )}
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs">
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs h-7">
             Clear all
           </Button>
         </div>
