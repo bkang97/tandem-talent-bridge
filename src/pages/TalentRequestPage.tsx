@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Info, ArrowDownUp, RefreshCw } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -420,7 +419,7 @@ const TalentRequestPage = () => {
           <AlertDescription className="text-black">
             Reserve current candidates to take them off-market, or sponsor
             prospective candidates to build your future talent pipeline through
-            our Tandem Sponsorship program.
+            our SkillTrade Sponsorship program.
           </AlertDescription>
         </Alert>
 
@@ -677,7 +676,7 @@ const TalentRequestPage = () => {
                   Need more talent?
                 </h3>
                 <p className="text-sm text-primary/80 mb-3">
-                  Through our Tandem Sponsorship program, you can create a
+                  Through our SkillTrade Sponsorship program, you can create a
                   pipeline of candidates tailored to your specific needs.
                 </p>
                 <Button
@@ -715,7 +714,7 @@ const TalentRequestPage = () => {
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-500">
             © 2025 SkillTrade. This talent portal is provided exclusively for
-            SkillTrade employer partners.
+            SkillTrade employer partners. Powered by Tandem.
           </p>
         </div>
       </main>
@@ -736,9 +735,9 @@ const TalentRequestPage = () => {
       )}
 
       {showSponsorshipModal && (
-        <SponsorshipModal 
-          isOpen={showSponsorshipModal} 
-          onClose={() => setShowSponsorshipModal(false)} 
+        <SponsorshipModal
+          isOpen={showSponsorshipModal}
+          onClose={() => setShowSponsorshipModal(false)}
         />
       )}
     </div>

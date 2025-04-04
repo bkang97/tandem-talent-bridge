@@ -106,7 +106,7 @@ const SponsorshipModal = ({ isOpen, onClose }: SponsorshipModalProps) => {
           <div className="p-8">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
-                Tandem Sponsorship Program
+                SkillTrade Sponsorship Program
               </DialogTitle>
               <DialogDescription className="text-base">
                 Build your custom talent pipeline through our employer-sponsored
@@ -116,8 +116,8 @@ const SponsorshipModal = ({ isOpen, onClose }: SponsorshipModalProps) => {
 
             <div className="mt-6 space-y-4">
               <p className="text-sm text-gray-700">
-                The Tandem Sponsorship program connects employers with qualified
-                candidates and top-tier training providers to build a
+                The SkillTrade Sponsorship program connects employers with
+                qualified candidates and top-tier training providers to build a
                 sustainable talent pipeline tailored to your specific needs.
               </p>
 
