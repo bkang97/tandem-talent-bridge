@@ -55,17 +55,40 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
       description: `${student.name}'s resume has been downloaded.`,
     });
   };
+
+  // Status badge display logic
+  const getStatusBadge = () => {
+    if (student.isProspective) {
+      return (
+        <Badge variant="outline" className="bg-secondary/10 text-primary border-primary/20">
+          {student.availableDate}
+        </Badge>
+      );
+    } else if (student.isReserved || student.isOffMarket) {
+      return (
+        <Badge variant="outline" className="off-market-badge">
+          Off-market
+        </Badge>
+      );
+    } else {
+      return (
+        <Badge variant="outline" className="available-badge">
+          Available {student.availableDate}
+        </Badge>
+      );
+    }
+  };
   
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className={`bg-white rounded-lg border ${student.isReserved && !student.isProspective ? 'border-gray-300' : 'border-gray-200'} ${student.isProspective ? 'border-l-4 border-l-accent' : ''} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
+        <div className={`bg-white rounded-lg border ${student.isReserved && !student.isProspective ? 'border-gray-300' : 'border-gray-200'} ${student.isProspective ? 'border-l-4 border-l-primary' : ''} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
                   <AvatarImage src={student.avatar || "/placeholder.svg"} />
-                  <AvatarFallback className={`${student.isProspective ? 'bg-accent/20 text-accent' : 'bg-secondary/50 text-secondary-foreground'}`}>
+                  <AvatarFallback className={`${student.isProspective ? 'bg-primary/20 text-primary' : 'bg-secondary/50 text-secondary-foreground'}`}>
                     {student.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
@@ -73,7 +96,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                   <div className="flex items-center gap-1">
                     <h3 className="font-medium">{student.name}</h3>
                     {student.isProspective && (
-                      <Badge variant="outline" className="ml-1 bg-accent/5 text-accent border-accent/20 text-xs">
+                      <Badge variant="outline" className="ml-1 bg-primary/5 text-primary border-primary/20 text-xs">
                         Prospective
                       </Badge>
                     )}
@@ -84,28 +107,14 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                   </div>
                 </div>
               </div>
-              {!student.isProspective ? (
-                student.isReserved ? (
-                  <Badge variant="outline" className="border-gray-300 text-gray-700 bg-gray-100">
-                    Off-market
-                  </Badge>
-                ) : (
-                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 border-emerald-200">
-                    Available {student.availableDate}
-                  </Badge>
-                )
-              ) : (
-                <Badge variant="outline" className="bg-accent/5 text-accent border-accent/20">
-                  {student.availableDate}
-                </Badge>
-              )}
+              {getStatusBadge()}
             </div>
             
             <div className="mb-3">
               <p className="text-sm font-medium mb-2">{student.program}</p>
               <div className="flex flex-wrap gap-1 mb-2">
                 {student.skills.slice(0, 3).map((skill, index) => (
-                  <Badge key={index} variant={student.isProspective ? "outline" : "secondary"} className={`font-normal text-xs py-0 ${student.isProspective ? 'text-accent/80 border-accent/30' : ''}`}>
+                  <Badge key={index} variant={student.isProspective ? "outline" : "secondary"} className={`font-normal text-xs py-0 ${student.isProspective ? 'text-primary/80 border-primary/30' : ''}`}>
                     {skill}
                   </Badge>
                 ))}
@@ -147,17 +156,27 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               )}
             </div>
             
-            <div className={`flex ${student.isReserved && !student.isProspective ? 'justify-end' : 'justify-between'} gap-2`}>
-              {(student.isProspective || !student.isReserved) && (
+            <div className="flex justify-between gap-2">
+              {student.isProspective ? (
                 <Button 
-                  variant={student.isProspective ? "outline" : "default"}
+                  variant="outline"
                   size="sm" 
-                  className={`flex-grow ${student.isProspective ? 'border-accent text-accent hover:bg-accent/10' : ''}`}
+                  className="flex-grow border-primary text-primary hover:bg-primary/10"
                   onClick={handleReserve}
-                  disabled={!student.isProspective && student.isReserved}
                 >
-                  {student.isProspective ? 'Sponsor' : 'Reserve'}
+                  Sponsor
                 </Button>
+              ) : !student.isReserved && !student.isOffMarket ? (
+                <Button 
+                  variant="default"
+                  size="sm" 
+                  className="flex-grow"
+                  onClick={handleReserve}
+                >
+                  Reserve
+                </Button>
+              ) : (
+                <div className="flex-grow"></div>
               )}
               <Button 
                 variant="outline" 
@@ -188,7 +207,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
             <div className="flex flex-col items-center">
               <Avatar className="h-28 w-28 mb-4">
                 <AvatarImage src={student.avatar || "/placeholder.svg"} />
-                <AvatarFallback className={`text-xl ${student.isProspective ? 'bg-accent/20 text-accent' : 'bg-secondary/50 text-secondary-foreground'}`}>
+                <AvatarFallback className={`text-xl ${student.isProspective ? 'bg-primary/20 text-primary' : 'bg-secondary/50 text-secondary-foreground'}`}>
                   {student.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
@@ -206,7 +225,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               ) : (
                 <div className="w-full space-y-3">
                   <Button 
-                    className={`w-full ${student.isProspective ? 'border-accent bg-white text-accent hover:bg-accent/10' : ''}`}
+                    className={`w-full ${student.isProspective ? 'border-primary bg-white text-primary hover:bg-primary/10' : ''}`}
                     variant={student.isProspective ? "outline" : "default"}
                     onClick={handleReserve}
                     disabled={!student.isProspective && student.isReserved}
@@ -270,7 +289,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                 <Badge 
                   key={index} 
                   variant={student.isProspective ? "outline" : "secondary"}
-                  className={student.isProspective ? 'text-accent/80 border-accent/30' : ''}
+                  className={student.isProspective ? 'text-primary/80 border-primary/30' : ''}
                 >
                   {skill}
                 </Badge>

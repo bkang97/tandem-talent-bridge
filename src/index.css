@@ -14,14 +14,14 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 264.3 23.2% 54%;
+    --primary: 224 88.7% 54.7%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 199 58% 54%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 214 100% 84.9%;
+    --secondary-foreground: 224 88.7% 30%;
 
-    --accent: 27 100% 50%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 224 88.7% 65%;
+    --accent-foreground: 210 40% 98%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -31,18 +31,18 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 264.3 23.2% 54%;
+    --ring: 224 88.7% 54.7%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 264.3 23.2% 54%;
+    --sidebar-background: 224 88.7% 54.7%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 199 58% 54%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 264.3 23.2% 20%;
+    --sidebar-primary: 214 100% 84.9%;
+    --sidebar-primary-foreground: 224 88.7% 30%;
+    --sidebar-accent: 224 88.7% 30%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 264.3 23.2% 20%;
-    --sidebar-ring: 199 58% 54%;
+    --sidebar-border: 224 88.7% 30%;
+    --sidebar-ring: 214 100% 84.9%;
   }
 
   .dark {
@@ -86,7 +86,7 @@
   }
 }
 
-/* Custom styles for Tandem Placement */
+/* Custom styles for Talent Placement */
 @layer components {
   .talent-card {
     @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
@@ -98,5 +98,13 @@
   
   .reserved-badge {
     @apply px-2 py-1 rounded-full text-xs bg-accent/90 text-white font-medium;
+  }
+  
+  .available-badge {
+    @apply px-2 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700 font-medium;
+  }
+  
+  .off-market-badge {
+    @apply px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-700 font-medium;
   }
 }

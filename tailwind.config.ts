@@ -63,7 +63,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				skilltrade: 'oklch(0.54 0.232 264.3)'
+				skilltrade: 'hsl(224, 88.7%, 54.7%)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
