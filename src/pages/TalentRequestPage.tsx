@@ -391,7 +391,6 @@ const TalentRequestPage = () => {
                 <Badge variant="outline" className="border-black text-black">
                   Spring 2025 Cohort
                 </Badge>
-                <Badge className="">Powered by Tandem</Badge>
               </div>
             </div>
           </div>
