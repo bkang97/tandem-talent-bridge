@@ -426,6 +426,8 @@ const TalentRequestPage = () => {
               availableCurrentStudents={currentAvailableCount}
               availableProspectiveStudents={prospectiveAvailableCount}
               onStartReservation={handleStartReservation}
+              hiringNeeds={hiringNeeds}
+              setHiringNeeds={setHiringNeeds}
             />
           </div>
           <div className="lg:col-span-1">
@@ -720,8 +722,8 @@ const TalentRequestPage = () => {
         <ReservationModal
           isOpen={showReservationModal}
           onClose={() => setShowReservationModal(false)}
-          reservedStudents={selectedStudents}
-          bulkReservation={bulkReservation}
+          reservedStudents={[]}
+          bulkReservation={true}
           bulkAmount={hiringNeeds.neededCandidates}
           availableActiveCount={Math.min(
             currentAvailableCount,
@@ -735,6 +737,7 @@ const TalentRequestPage = () => {
         <SponsorshipModal
           isOpen={showSponsorshipModal}
           onClose={() => setShowSponsorshipModal(false)}
+          onScheduleConsultation={() => setShowReservationModal(true)}
         />
       )}
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,12 +24,15 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { time } from "console";
 
 interface TalentNeedsProps {
   className?: string;
   availableCurrentStudents: number;
   availableProspectiveStudents: number;
   onStartReservation: (data: any) => void;
+  hiringNeeds: any;
+  setHiringNeeds: (data: any) => void;
 }
 
 const programInfo = {
@@ -114,11 +117,21 @@ const TalentNeeds = ({
   availableCurrentStudents,
   availableProspectiveStudents,
   onStartReservation,
+  hiringNeeds,
+  setHiringNeeds,
 }: TalentNeedsProps) => {
   const [location, setLocation] = useState("Dallas, TX");
   const [jobRole, setJobRole] = useState("medical-assistant");
   const [quantity, setQuantity] = useState(10);
   const [timeframe, setTimeframe] = useState("30days");
+
+  useEffect(() => {
+    setHiringNeeds({
+      neededCandidates: quantity,
+      location: location,
+      skillSet: jobRole,
+    });
+  }, [location, jobRole, quantity, setHiringNeeds]);
 
   // Get the program based on the selected job role
   const selectedProgram = jobRole ? programInfo[jobRoleMap[jobRole]] : null;
