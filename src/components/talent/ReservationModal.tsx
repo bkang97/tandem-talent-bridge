@@ -353,7 +353,7 @@ const ReservationModal = ({
 
                     <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 mt-4">
                       <h4 className="font-medium text-sm text-primary mb-2">
-                        Tandem Sponsorship Benefits
+                        Sponsorship Benefits
                       </h4>
                       <ul className="text-xs space-y-1.5 text-gray-700">
                         <li className="flex gap-1.5">
