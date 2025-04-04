@@ -17,6 +17,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
 
 const generateMockStudents = () => {
   const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Chicago, IL', 'Seattle, WA', 'Remote'];
@@ -71,6 +72,7 @@ const generateMockStudents = () => {
       availableDate: availabilityOptions[Math.floor(Math.random() * availabilityOptions.length)],
       yearsExperience: yearsExp,
       isReserved: i <= 24,
+      isProspective: false,
       about: `${aboutTexts[program]} ${yearsExp} years of relevant experience in the field.`
     });
   }
@@ -78,14 +80,89 @@ const generateMockStudents = () => {
   return students;
 };
 
+const generateProspectiveStudents = () => {
+  const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Chicago, IL', 'Seattle, WA', 'Remote'];
+  const backgroundTypes = ['Career Changer', 'Recent Graduate', 'Former Military', 'Self-Taught', 'Bootcamp Graduate'];
+  const programs = [
+    'Cybersecurity Analyst', 
+    'Cloud Solutions Architect', 
+    'Data Analytics', 
+    'Full Stack Developer',
+    'UX/UI Designer',
+    'IT Project Management'
+  ];
+  
+  const availabilityOptions = [
+    'Available upon sponsorship',
+    'Ready in 3-4 months',
+    'Ready in 6 months'
+  ];
+
+  const skillSets = {
+    'Cybersecurity Analyst': ['Security Fundamentals', 'Network Basics', 'Programming Knowledge', 'Problem Solving', 'Technical Aptitude'],
+    'Cloud Solutions Architect': ['IT Background', 'Problem Solving', 'Technical Curiosity', 'Systems Thinking', 'Project Management'],
+    'Data Analytics': ['Mathematical Aptitude', 'Excel', 'Critical Thinking', 'Communication', 'Problem Solving'],
+    'Full Stack Developer': ['HTML/CSS Basics', 'JavaScript Fundamentals', 'Logical Thinking', 'Problem Solving', 'Self-Learning'],
+    'UX/UI Designer': ['Visual Design Skills', 'Creativity', 'User Empathy', 'Communication', 'Problem Solving'],
+    'IT Project Management': ['Organization Skills', 'Communication', 'Leadership', 'Technical Background', 'Strategic Thinking']
+  };
+  
+  const aboutTexts = {
+    'Cybersecurity Analyst': 'Prospective cybersecurity professional with strong fundamentals and enthusiasm for network security. Ready to develop skills in security monitoring and vulnerability assessment.',
+    'Cloud Solutions Architect': 'Aspiring cloud professional with technical background and interest in cloud infrastructure. Eager to learn cloud platforms and best practices.',
+    'Data Analytics': 'Future data analyst with strong analytical thinking and basic data manipulation skills. Ready to develop expertise in business intelligence tools and statistical analysis.',
+    'Full Stack Developer': 'Prospective developer with coding fundamentals and eagerness to build web applications. Excited to enhance programming skills and learn modern frameworks.',
+    'UX/UI Designer': 'Creative individual with design foundation looking to specialize in user experience. Motivated to learn user research methods and design systems.',
+    'IT Project Management': 'Organized professional with leadership skills seeking to transition into IT project management. Ready to learn agile methodologies and technical project coordination.'
+  };
+  
+  const students = [];
+  for (let i = 1; i <= 20; i++) {
+    const program = programs[Math.floor(Math.random() * programs.length)];
+    const backgroundType = backgroundTypes[Math.floor(Math.random() * backgroundTypes.length)];
+    
+    students.push({
+      id: `p-${i}`,
+      name: `Prospective ${i}`,
+      avatar: '/placeholder.svg',
+      location: locations[Math.floor(Math.random() * locations.length)],
+      skills: [...skillSets[program]].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 2),
+      backgroundType,
+      program,
+      availableDate: availabilityOptions[Math.floor(Math.random() * availabilityOptions.length)],
+      yearsExperience: 0,
+      isReserved: i <= 6,
+      isProspective: true,
+      about: `${aboutTexts[program]} Background: ${backgroundType}.`
+    });
+  }
+  
+  return students;
+};
+
 const TalentRequestPage = () => {
-  const [students, setStudents] = useState(generateMockStudents());
+  const [currentStudents, setCurrentStudents] = useState(generateMockStudents());
+  const [prospectiveStudents, setProspectiveStudents] = useState(generateProspectiveStudents());
+  const [displayMode, setDisplayMode] = useState('all'); // 'all', 'current', 'prospective'
   const [filters, setFilters] = useState({});
   const [sortOption, setSortOption] = useState('relevance');
   const [activeTab, setActiveTab] = useState('browse');
   const [showSupplyDemandChart, setShowSupplyDemandChart] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  
+  const getFilteredStudents = () => {
+    let students = [];
+    if (displayMode === 'all' || displayMode === 'current') {
+      students = [...students, ...currentStudents];
+    }
+    if (displayMode === 'all' || displayMode === 'prospective') {
+      students = [...students, ...prospectiveStudents];
+    }
+    return students;
+  };
+  
+  const students = getFilteredStudents();
   
   const handleFilterChange = (newFilters: any) => {
     console.log("Applied filters:", newFilters);
@@ -94,6 +171,10 @@ const TalentRequestPage = () => {
   
   const handleSortChange = (option: string) => {
     setSortOption(option);
+  };
+  
+  const handleDisplayModeChange = (mode: string) => {
+    setDisplayMode(mode);
   };
   
   const handleReserveStudent = (studentId: string) => {
@@ -105,19 +186,41 @@ const TalentRequestPage = () => {
   };
   
   const completeReservation = () => {
-    setStudents(prevStudents => 
-      prevStudents.map(student => 
-        selectedStudents.some(selected => selected.id === student.id)
-          ? { ...student, isReserved: true } 
-          : student
-      )
-    );
+    const updatedSelectedIds = selectedStudents.map(s => s.id);
+    
+    if (selectedStudents.some(s => !s.isProspective)) {
+      setCurrentStudents(prevStudents => 
+        prevStudents.map(student => 
+          updatedSelectedIds.includes(student.id)
+            ? { ...student, isReserved: true } 
+            : student
+        )
+      );
+    }
+    
+    if (selectedStudents.some(s => s.isProspective)) {
+      setProspectiveStudents(prevStudents => 
+        prevStudents.map(student => 
+          updatedSelectedIds.includes(student.id)
+            ? { ...student, isReserved: true } 
+            : student
+        )
+      );
+    }
+    
     setShowReservationModal(false);
     setSelectedStudents([]);
   };
   
-  const reservedCount = students.filter(s => s.isReserved).length;
-  const availableCount = students.length - reservedCount;
+  const currentReservedCount = currentStudents.filter(s => s.isReserved).length;
+  const currentAvailableCount = currentStudents.length - currentReservedCount;
+  
+  const prospectiveReservedCount = prospectiveStudents.filter(s => s.isReserved).length;
+  const prospectiveAvailableCount = prospectiveStudents.length - prospectiveReservedCount;
+  
+  const totalReservedCount = currentReservedCount + prospectiveReservedCount;
+  const totalAvailableCount = currentAvailableCount + prospectiveAvailableCount;
+  const totalCount = currentStudents.length + prospectiveStudents.length;
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -127,15 +230,15 @@ const TalentRequestPage = () => {
         <div className="mb-6">
           <h1 className="text-3xl font-bold">Talent Placement</h1>
           <p className="text-gray-600 mt-1">
-            Connect with qualified candidates from our academic partners who are ready to be hired immediately.
+            Connect with qualified candidates from our academic partners who are ready to be hired immediately or sponsored for training.
           </p>
         </div>
         
         <Alert className="mb-6 bg-blue-50 border-blue-200">
           <Info className="h-4 w-4" />
-          <AlertTitle>Try Before You Sponsor</AlertTitle>
+          <AlertTitle>Talent Pipeline Solutions</AlertTitle>
           <AlertDescription>
-            Reserve candidates to take them off-market for other employers. This is a risk-free way to assess our talent pipeline before committing to a full sponsorship program.
+            Reserve current candidates to take them off-market, or sponsor prospective candidates to build your future talent pipeline through our Tandem Sponsorship program.
           </AlertDescription>
         </Alert>
         
@@ -149,17 +252,39 @@ const TalentRequestPage = () => {
               
               <TabsContent value="browse" className="space-y-6">
                 <TalentStats 
-                  availableCount={availableCount}
-                  reservedCount={reservedCount}
-                  totalCount={students.length}
+                  availableCount={displayMode === 'current' ? currentAvailableCount : (displayMode === 'prospective' ? prospectiveAvailableCount : totalAvailableCount)}
+                  reservedCount={displayMode === 'current' ? currentReservedCount : (displayMode === 'prospective' ? prospectiveReservedCount : totalReservedCount)}
+                  totalCount={displayMode === 'current' ? currentStudents.length : (displayMode === 'prospective' ? prospectiveStudents.length : totalCount)}
                   onShowChart={() => setShowSupplyDemandChart(!showSupplyDemandChart)}
                   showChart={showSupplyDemandChart}
                 />
                 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
                     <h2 className="text-xl font-semibold">Available Candidates</h2>
+                    
                     <div className="flex items-center space-x-3">
+                      <div className="flex rounded-md overflow-hidden border">
+                        <button 
+                          className={`px-3 py-1.5 text-sm ${displayMode === 'all' ? 'bg-primary text-white' : 'bg-white'}`}
+                          onClick={() => handleDisplayModeChange('all')}
+                        >
+                          All
+                        </button>
+                        <button 
+                          className={`px-3 py-1.5 text-sm ${displayMode === 'current' ? 'bg-primary text-white' : 'bg-white'}`}
+                          onClick={() => handleDisplayModeChange('current')}
+                        >
+                          Current
+                        </button>
+                        <button 
+                          className={`px-3 py-1.5 text-sm ${displayMode === 'prospective' ? 'bg-primary text-white' : 'bg-white'}`}
+                          onClick={() => handleDisplayModeChange('prospective')}
+                        >
+                          Prospective
+                        </button>
+                      </div>
+                      
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="outline" size="sm" className="flex items-center gap-2">
@@ -198,10 +323,10 @@ const TalentRequestPage = () => {
                     ))}
                   </div>
                   
-                  {availableCount > 8 && (
+                  {students.filter(s => !s.isReserved).length > 8 && (
                     <div className="mt-8 text-center">
                       <Button variant="outline">
-                        Load More ({availableCount - 8} Remaining)
+                        Load More ({students.filter(s => !s.isReserved).length - 8} Remaining)
                       </Button>
                     </div>
                   )}
@@ -221,11 +346,15 @@ const TalentRequestPage = () => {
                       key technical roles. The current candidate pool meets only approximately 23% of market demand, 
                       highlighting the strategic value of building a sustainable talent pipeline.
                     </p>
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-wrap justify-between items-center gap-4">
                       <div className="text-sm text-gray-600">
                         <div className="flex items-center mb-1">
                           <div className="w-3 h-3 bg-primary/70 rounded-full mr-2"></div>
-                          <span>Available candidates: {availableCount}</span>
+                          <span>Current candidates: {currentStudents.length}</span>
+                        </div>
+                        <div className="flex items-center mb-1">
+                          <div className="w-3 h-3 bg-accent/70 rounded-full mr-2"></div>
+                          <span>Prospective candidates: {prospectiveStudents.length}</span>
                         </div>
                         <div className="flex items-center">
                           <div className="w-3 h-3 bg-gray-300 rounded-full mr-2"></div>
@@ -264,8 +393,15 @@ const TalentRequestPage = () => {
                                 <div className="text-xs text-gray-500">{student.program}</div>
                               </div>
                             </div>
-                            <div className="bg-accent/10 text-accent text-xs px-2 py-1 rounded-full">
-                              Reserved
+                            <div className="flex items-center">
+                              {student.isProspective && (
+                                <Badge variant="outline" className="mr-2 bg-accent/5 text-accent border-accent/20 text-xs">
+                                  Prospective
+                                </Badge>
+                              )}
+                              <div className="bg-accent/10 text-accent text-xs px-2 py-1 rounded-full">
+                                Reserved
+                              </div>
                             </div>
                           </div>
                         ))}

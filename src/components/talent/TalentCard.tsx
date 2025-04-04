@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Briefcase, GraduationCap, Calendar, Download } from 'lucide-react';
+import { MapPin, Briefcase, GraduationCap, Calendar, Download, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -22,11 +22,13 @@ interface TalentCardProps {
     avatar?: string;
     location: string;
     skills: string[];
-    school: string;
+    school?: string;
+    backgroundType?: string;
     program: string;
     availableDate: string;
     yearsExperience: number;
     isReserved: boolean;
+    isProspective: boolean;
     about: string;
     resumeUrl?: string;
   };
@@ -40,8 +42,8 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
     e.stopPropagation();
     onReserve(student.id);
     toast({
-      title: "Candidate Reserved!",
-      description: `You've successfully reserved ${student.name}. They are now off-market for other employers.`,
+      title: student.isProspective ? "Prospective Candidate Reserved!" : "Candidate Reserved!",
+      description: `You've successfully reserved ${student.name}. ${student.isProspective ? 'They will be sponsored for training.' : 'They are now off-market for other employers.'}`,
     });
   };
   
@@ -56,18 +58,25 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className={`bg-white rounded-lg border ${student.isReserved ? 'border-accent/30' : 'border-gray-200'} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
+        <div className={`bg-white rounded-lg border ${student.isReserved ? 'border-accent/30' : 'border-gray-200'} ${student.isProspective ? 'border-l-4 border-l-accent' : ''} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
                   <AvatarImage src={student.avatar || "/placeholder.svg"} />
-                  <AvatarFallback className="bg-secondary/50 text-secondary-foreground">
+                  <AvatarFallback className={`${student.isProspective ? 'bg-accent/20 text-accent' : 'bg-secondary/50 text-secondary-foreground'}`}>
                     {student.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-medium">{student.name}</h3>
+                  <div className="flex items-center gap-1">
+                    <h3 className="font-medium">{student.name}</h3>
+                    {student.isProspective && (
+                      <Badge variant="outline" className="ml-1 bg-accent/5 text-accent border-accent/20 text-xs">
+                        Prospective
+                      </Badge>
+                    )}
+                  </div>
                   <div className="flex items-center text-gray-500 text-sm">
                     <MapPin size={12} className="mr-1" />
                     <span>{student.location}</span>
@@ -85,7 +94,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               <p className="text-sm font-medium mb-2">{student.program}</p>
               <div className="flex flex-wrap gap-1 mb-2">
                 {student.skills.slice(0, 3).map((skill, index) => (
-                  <Badge key={index} variant="secondary" className="font-normal text-xs py-0">
+                  <Badge key={index} variant={student.isProspective ? "outline" : "secondary"} className={`font-normal text-xs py-0 ${student.isProspective ? 'text-accent/80 border-accent/30' : ''}`}>
                     {skill}
                   </Badge>
                 ))}
@@ -96,29 +105,44 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
             </div>
             
             <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mb-4">
-              <div className="flex items-center">
-                <GraduationCap size={12} className="mr-1 flex-shrink-0" />
-                <span>{student.school}</span>
-              </div>
-              <div className="flex items-center">
-                <Briefcase size={12} className="mr-1 flex-shrink-0" />
-                <span>{student.yearsExperience} yrs exp</span>
-              </div>
-              <div className="flex items-center col-span-2">
-                <Calendar size={12} className="mr-1 flex-shrink-0" />
-                <span>Available {student.availableDate}</span>
-              </div>
+              {student.isProspective ? (
+                <>
+                  <div className="flex items-center">
+                    <User size={12} className="mr-1 flex-shrink-0" />
+                    <span>{student.backgroundType}</span>
+                  </div>
+                  <div className="flex items-center col-span-2">
+                    <Calendar size={12} className="mr-1 flex-shrink-0" />
+                    <span>{student.availableDate}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center">
+                    <GraduationCap size={12} className="mr-1 flex-shrink-0" />
+                    <span>{student.school}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Briefcase size={12} className="mr-1 flex-shrink-0" />
+                    <span>{student.yearsExperience} yrs exp</span>
+                  </div>
+                  <div className="flex items-center col-span-2">
+                    <Calendar size={12} className="mr-1 flex-shrink-0" />
+                    <span>Available {student.availableDate}</span>
+                  </div>
+                </>
+              )}
             </div>
             
             <div className={`flex ${student.isReserved ? 'justify-end' : 'justify-between'} gap-2`}>
               {!student.isReserved && (
                 <Button 
-                  variant="default" 
+                  variant={student.isProspective ? "outline" : "default"}
                   size="sm" 
-                  className="flex-grow" 
+                  className={`flex-grow ${student.isProspective ? 'border-accent text-accent hover:bg-accent/10' : ''}`}
                   onClick={handleReserve}
                 >
-                  Reserve
+                  {student.isProspective ? 'Sponsor' : 'Reserve'}
                 </Button>
               )}
               <Button 
@@ -136,7 +160,9 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
       
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Candidate Profile</DialogTitle>
+          <DialogTitle>
+            {student.isProspective ? 'Prospective Candidate Profile' : 'Candidate Profile'}
+          </DialogTitle>
           <DialogDescription>
             Full profile details for {student.name}
           </DialogDescription>
@@ -147,7 +173,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
             <div className="flex flex-col items-center">
               <Avatar className="h-28 w-28 mb-4">
                 <AvatarImage src={student.avatar || "/placeholder.svg"} />
-                <AvatarFallback className="text-xl bg-secondary/50 text-secondary-foreground">
+                <AvatarFallback className={`text-xl ${student.isProspective ? 'bg-accent/20 text-accent' : 'bg-secondary/50 text-secondary-foreground'}`}>
                   {student.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
@@ -155,22 +181,30 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               {student.isReserved ? (
                 <div className="w-full">
                   <div className="mb-4 py-2 px-4 bg-accent/10 text-accent rounded-md text-center font-medium">
-                    Reserved Candidate
+                    {student.isProspective ? 'Sponsored Candidate' : 'Reserved Candidate'}
                   </div>
-                  <Button variant="secondary" className="w-full" onClick={handleDownloadResume}>
-                    <Download size={16} className="mr-2" />
-                    Download Resume
-                  </Button>
+                  {!student.isProspective && (
+                    <Button variant="secondary" className="w-full" onClick={handleDownloadResume}>
+                      <Download size={16} className="mr-2" />
+                      Download Resume
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div className="w-full space-y-3">
-                  <Button className="w-full" onClick={handleReserve}>
-                    Reserve This Candidate
+                  <Button 
+                    className={`w-full ${student.isProspective ? 'border-accent bg-white text-accent hover:bg-accent/10' : ''}`}
+                    variant={student.isProspective ? "outline" : "default"}
+                    onClick={handleReserve}
+                  >
+                    {student.isProspective ? 'Sponsor This Candidate' : 'Reserve This Candidate'}
                   </Button>
-                  <Button variant="secondary" className="w-full" onClick={handleDownloadResume}>
-                    <Download size={16} className="mr-2" />
-                    Download Resume
-                  </Button>
+                  {!student.isProspective && (
+                    <Button variant="secondary" className="w-full" onClick={handleDownloadResume}>
+                      <Download size={16} className="mr-2" />
+                      Download Resume
+                    </Button>
+                  )}
                 </div>
               )}
             </div>
@@ -182,18 +216,33 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                 <MapPin size={16} className="mr-2 text-gray-500" />
                 <span>{student.location}</span>
               </div>
-              <div className="flex items-center text-gray-700">
-                <GraduationCap size={16} className="mr-2 text-gray-500" />
-                <span>{student.school} - {student.program}</span>
-              </div>
-              <div className="flex items-center text-gray-700">
-                <Briefcase size={16} className="mr-2 text-gray-500" />
-                <span>{student.yearsExperience} years experience</span>
-              </div>
-              <div className="flex items-center text-gray-700">
-                <Calendar size={16} className="mr-2 text-gray-500" />
-                <span>Available {student.availableDate}</span>
-              </div>
+              {student.isProspective ? (
+                <>
+                  <div className="flex items-center text-gray-700">
+                    <User size={16} className="mr-2 text-gray-500" />
+                    <span>Background: {student.backgroundType}</span>
+                  </div>
+                  <div className="flex items-center text-gray-700">
+                    <Calendar size={16} className="mr-2 text-gray-500" />
+                    <span>{student.availableDate}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center text-gray-700">
+                    <GraduationCap size={16} className="mr-2 text-gray-500" />
+                    <span>{student.school} - {student.program}</span>
+                  </div>
+                  <div className="flex items-center text-gray-700">
+                    <Briefcase size={16} className="mr-2 text-gray-500" />
+                    <span>{student.yearsExperience} years experience</span>
+                  </div>
+                  <div className="flex items-center text-gray-700">
+                    <Calendar size={16} className="mr-2 text-gray-500" />
+                    <span>Available {student.availableDate}</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           
@@ -204,31 +253,65 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
             <h3 className="text-lg font-medium mb-2">Skills</h3>
             <div className="flex flex-wrap gap-2 mb-6">
               {student.skills.map((skill, index) => (
-                <Badge key={index} variant="secondary">{skill}</Badge>
+                <Badge 
+                  key={index} 
+                  variant={student.isProspective ? "outline" : "secondary"}
+                  className={student.isProspective ? 'text-accent/80 border-accent/30' : ''}
+                >
+                  {skill}
+                </Badge>
               ))}
             </div>
             
-            <h3 className="text-lg font-medium mb-2">Academic Performance</h3>
-            <div className="bg-gray-50 p-4 rounded-md">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-sm text-gray-500">Program Completion</div>
-                  <div className="font-semibold">100%</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500">GPA Equivalent</div>
-                  <div className="font-semibold">3.8/4.0</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500">Technical Assessment</div>
-                  <div className="font-semibold">92nd Percentile</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500">Instructor Recommendation</div>
-                  <div className="font-semibold">Highly Recommended</div>
+            {student.isProspective ? (
+              <div>
+                <h3 className="text-lg font-medium mb-2">Sponsorship Program</h3>
+                <div className="bg-gray-50 p-4 rounded-md">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div>
+                      <div className="text-sm text-gray-500">Training Duration</div>
+                      <div className="font-semibold">16 weeks</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Estimated Start Date</div>
+                      <div className="font-semibold">Within 30 days of sponsorship</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Program Cost</div>
+                      <div className="font-semibold">$15,000 (includes tuition and living stipend)</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Hiring Guarantee</div>
+                      <div className="font-semibold">100% job placement upon successful completion</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div>
+                <h3 className="text-lg font-medium mb-2">Academic Performance</h3>
+                <div className="bg-gray-50 p-4 rounded-md">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-sm text-gray-500">Program Completion</div>
+                      <div className="font-semibold">100%</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">GPA Equivalent</div>
+                      <div className="font-semibold">3.8/4.0</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Technical Assessment</div>
+                      <div className="font-semibold">92nd Percentile</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Instructor Recommendation</div>
+                      <div className="font-semibold">Highly Recommended</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </DialogContent>
