@@ -25,8 +25,12 @@ const TalentStats = ({
   // For FOMO elements - social proof
   const recentActivity = [
     { company: "TechCorp", action: "reserved 2 candidates", time: "5 min ago" },
-    { company: "MedLabs", action: "sponsored 1 candidate", time: "12 min ago" },
-    { company: "FinanceHub", action: "viewing this pool", time: "just now" },
+    {
+      company: "MedLabs",
+      action: "sponsored 5 candidates",
+      time: "12 min ago",
+    },
+    { company: "FinanceHub", action: "viewed this pool", time: "just now" },
   ];
 
   // For statistical visualization - market trends
