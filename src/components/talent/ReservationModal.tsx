@@ -137,7 +137,7 @@ const ReservationModal = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Complete Your Reservation</DialogTitle>
+          <DialogTitle>You're almost there...</DialogTitle>
           <DialogDescription>
             {bulkReservation
               ? `You're reserving ${totalStudents} total candidates. We'll schedule a call to discuss your needs.`

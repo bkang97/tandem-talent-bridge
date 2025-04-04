@@ -35,11 +35,11 @@ const TalentNeeds = ({
 }: TalentNeedsProps) => {
   const [location, setLocation] = useState("");
   const [skillSet, setSkillSet] = useState("");
-  const [quantity, setQuantity] = useState([10]);
+  const [quantity, setQuantity] = useState(10);
   const [timeframe, setTimeframe] = useState("90days");
 
   // Calculate metrics based on inputs
-  const neededCandidates = quantity[0];
+  const neededCandidates = quantity;
   const availableActive = Math.min(availableCurrentStudents, neededCandidates);
   const gapAmount = Math.max(0, neededCandidates - availableActive);
   const availablePercent = Math.round(
@@ -84,7 +84,7 @@ const TalentNeeds = ({
 
               <div>
                 <label className="text-sm font-medium mb-1 block">
-                  Primary Skill Set
+                  Skill Set
                 </label>
                 <Select value={skillSet} onValueChange={setSkillSet}>
                   <SelectTrigger>
@@ -113,15 +113,14 @@ const TalentNeeds = ({
             <div>
               <div className="flex justify-between mb-1">
                 <label className="text-sm font-medium">Candidates Needed</label>
-                <span className="text-sm font-semibold">{quantity[0]}</span>
               </div>
-              <Slider
-                value={quantity}
-                onValueChange={setQuantity}
-                max={20}
+              <Input
+                id="candidates"
+                type="number"
                 min={1}
-                step={1}
-                className="my-4"
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
+                className="text-xl h-14 text-center font-semibold"
               />
             </div>
 
