@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Info, ArrowDownUp, RefreshCw, Search, Users, Filter, CalendarClock, BarChart } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -873,7 +872,7 @@ const TalentRequestPage = () => {
               </TabsContent>
 
               <TabsContent value="stats" className="overflow-hidden">
-                <MarketAnalysis onOpenSponsorshipModal={handleOpenSponsorshipModal} onScheduleConsultation={handleScheduleConsultation} />
+                <MarketAnalysis />
               </TabsContent>
             </Tabs>
           </div>

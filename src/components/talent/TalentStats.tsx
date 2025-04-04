@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BarChart, TrendingUp, Users, Clock, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SupplyDemandChart from "./SupplyDemandChart";
@@ -24,8 +24,9 @@ const TalentStats = ({
 }: TalentStatsProps) => {
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [activityIndex, setActivityIndex] = useState(0);
 
-  // For FOMO elements - social proof
+  // For FOMO elements - social proof with rotation
   const recentActivity = [
     { company: "TechCorp", action: "reserved 2 candidates", time: "5 min ago" },
     {
@@ -42,6 +43,15 @@ const TalentStats = ({
     timeFrame: "last 30 days",
     isDecreasing: true,
   };
+
+  // Rotation effect for recent activity
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActivityIndex((prevIndex) => (prevIndex + 1) % recentActivity.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleOpenSponsorshipModal = () => {
     setShowSponsorshipModal(true);
@@ -122,24 +132,22 @@ const TalentStats = ({
         </div>
       </div>
 
-      {/* Social proof activity feed - FOMO social proof */}
+      {/* Social proof activity feed with rotation - FOMO social proof */}
       <div className="bg-gray-50 p-3 rounded-md mb-4 border border-gray-200">
         <div className="flex items-center mb-2">
           <Users size={14} className="text-primary mr-2" />
           <span className="text-sm font-medium">Recent Platform Activity</span>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {recentActivity.map((activity, index) => (
-            <Badge
-              key={index}
-              variant="outline"
-              className="bg-white border-primary/20 text-xs"
-            >
-              <span className="font-medium">{activity.company}</span>&nbsp;
-              {activity.action}
-              <span className="ml-1 text-gray-500">{activity.time}</span>
-            </Badge>
-          ))}
+        <div className="h-8 flex items-center">
+          <Badge
+            key={activityIndex}
+            variant="outline"
+            className="bg-white border-primary/20 text-xs animate-fade-in"
+          >
+            <span className="font-medium">{recentActivity[activityIndex].company}</span>&nbsp;
+            {recentActivity[activityIndex].action}
+            <span className="ml-1 text-gray-500">{recentActivity[activityIndex].time}</span>
+          </Badge>
         </div>
       </div>
 
