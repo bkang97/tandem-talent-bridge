@@ -28,6 +28,7 @@ interface TalentCardProps {
     availableDate: string;
     yearsExperience: number;
     isReserved: boolean;
+    isOffMarket?: boolean;
     isProspective: boolean;
     about: string;
     resumeUrl?: string;
@@ -58,7 +59,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className={`bg-white rounded-lg border ${student.isReserved ? 'border-accent/30' : 'border-gray-200'} ${student.isProspective ? 'border-l-4 border-l-accent' : ''} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
+        <div className={`bg-white rounded-lg border ${student.isReserved ? 'border-gray-300' : 'border-gray-200'} ${student.isProspective ? 'border-l-4 border-l-accent' : ''} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
@@ -84,8 +85,8 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                 </div>
               </div>
               {student.isReserved && (
-                <Badge variant="outline" className="border-accent/30 text-accent bg-accent/5">
-                  Reserved
+                <Badge variant="outline" className="border-gray-300 text-gray-700 bg-gray-100">
+                  Off-market
                 </Badge>
               )}
             </div>
@@ -180,8 +181,8 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               
               {student.isReserved ? (
                 <div className="w-full">
-                  <div className="mb-4 py-2 px-4 bg-accent/10 text-accent rounded-md text-center font-medium">
-                    {student.isProspective ? 'Sponsored Candidate' : 'Reserved Candidate'}
+                  <div className="mb-4 py-2 px-4 bg-gray-100 text-gray-700 rounded-md text-center font-medium">
+                    {student.isProspective ? 'Sponsored Candidate' : 'Off-market Candidate'}
                   </div>
                   {!student.isProspective && (
                     <Button variant="secondary" className="w-full" onClick={handleDownloadResume}>

@@ -3,10 +3,11 @@ import { Info, ArrowDownUp, RefreshCw } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import TalentFilters from '@/components/talent/TalentFilters';
 import TalentCard from '@/components/talent/TalentCard';
-import BulkReservation from '@/components/talent/BulkReservation';
 import TalentStats from '@/components/talent/TalentStats';
 import ReservationModal from '@/components/talent/ReservationModal';
 import SupplyDemandChart from '@/components/talent/SupplyDemandChart';
+import TalentNeeds from '@/components/talent/TalentNeeds';
+import MarketAnalysis from '@/components/talent/MarketAnalysis';
 import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu,
@@ -61,6 +62,8 @@ const generateMockStudents = () => {
     const program = programs[Math.floor(Math.random() * programs.length)];
     const yearsExp = Math.floor(Math.random() * 5) + 1;
     
+    const isOffMarket = i <= 37;
+    
     students.push({
       id: i.toString(),
       name: `Student ${i}`,
@@ -71,7 +74,8 @@ const generateMockStudents = () => {
       program,
       availableDate: availabilityOptions[Math.floor(Math.random() * availabilityOptions.length)],
       yearsExperience: yearsExp,
-      isReserved: i <= 24,
+      isReserved: isOffMarket,
+      isOffMarket: isOffMarket,
       isProspective: false,
       about: `${aboutTexts[program]} ${yearsExp} years of relevant experience in the field.`
     });
@@ -192,7 +196,7 @@ const TalentRequestPage = () => {
       setCurrentStudents(prevStudents => 
         prevStudents.map(student => 
           updatedSelectedIds.includes(student.id)
-            ? { ...student, isReserved: true } 
+            ? { ...student, isReserved: true, isOffMarket: true } 
             : student
         )
       );
@@ -241,6 +245,12 @@ const TalentRequestPage = () => {
             Reserve current candidates to take them off-market, or sponsor prospective candidates to build your future talent pipeline through our Tandem Sponsorship program.
           </AlertDescription>
         </Alert>
+        
+        <TalentNeeds 
+          availableCurrentStudents={currentStudents.filter(s => !s.isReserved).length}
+          availableProspectiveStudents={prospectiveStudents.filter(s => !s.isReserved).length}
+          className="mb-6"
+        />
         
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="lg:w-3/4">
@@ -334,99 +344,56 @@ const TalentRequestPage = () => {
               </TabsContent>
               
               <TabsContent value="stats">
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h2 className="text-xl font-semibold mb-4">Talent Market Analysis</h2>
-                  <div className="h-96">
-                    <SupplyDemandChart />
-                  </div>
-                  <div className="mt-6 bg-primary/5 border border-primary/20 rounded-lg p-4">
-                    <h3 className="text-lg font-medium mb-2">Understanding the Talent Gap</h3>
-                    <p className="text-gray-700 mb-4">
-                      This visualization shows the significant gap between available talent and market demand for 
-                      key technical roles. The current candidate pool meets only approximately 23% of market demand, 
-                      highlighting the strategic value of building a sustainable talent pipeline.
-                    </p>
-                    <div className="flex flex-wrap justify-between items-center gap-4">
-                      <div className="text-sm text-gray-600">
-                        <div className="flex items-center mb-1">
-                          <div className="w-3 h-3 bg-primary/70 rounded-full mr-2"></div>
-                          <span>Current candidates: {currentStudents.length}</span>
-                        </div>
-                        <div className="flex items-center mb-1">
-                          <div className="w-3 h-3 bg-accent/70 rounded-full mr-2"></div>
-                          <span>Prospective candidates: {prospectiveStudents.length}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <div className="w-3 h-3 bg-gray-300 rounded-full mr-2"></div>
-                          <span>Market demand: 175+</span>
-                        </div>
-                      </div>
-                      <Button>Learn About Sponsorship</Button>
-                    </div>
-                  </div>
-                </div>
+                <MarketAnalysis />
               </TabsContent>
             </Tabs>
           </div>
           
           <div className="lg:w-1/4">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="browse">Recent</TabsTrigger>
-                <TabsTrigger value="bulk">Bulk</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="browse">
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <h3 className="font-medium mb-3">Recently Reserved</h3>
-                  <ScrollArea className="h-[300px]">
-                    {students.filter(s => s.isReserved).length > 0 ? (
-                      <div className="space-y-2 pr-3">
-                        {students.filter(s => s.isReserved).slice(0, 8).map(student => (
-                          <div key={student.id} className="p-2 border-b flex items-center justify-between">
-                            <div className="flex items-center">
-                              <div className="h-8 w-8 bg-secondary/20 rounded-full flex items-center justify-center text-secondary-foreground text-xs mr-2">
-                                {student.name.split(' ').map(n => n[0]).join('')}
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium">{student.name}</div>
-                                <div className="text-xs text-gray-500">{student.program}</div>
-                              </div>
-                            </div>
-                            <div className="flex items-center">
-                              {student.isProspective && (
-                                <Badge variant="outline" className="mr-2 bg-accent/5 text-accent border-accent/20 text-xs">
-                                  Prospective
-                                </Badge>
-                              )}
-                              <div className="bg-accent/10 text-accent text-xs px-2 py-1 rounded-full">
-                                Reserved
-                              </div>
-                            </div>
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <h3 className="font-medium mb-3">Recently Reserved</h3>
+              <ScrollArea className="h-[300px]">
+                {students.filter(s => s.isReserved).length > 0 ? (
+                  <div className="space-y-2 pr-3">
+                    {students.filter(s => s.isReserved).slice(0, 8).map(student => (
+                      <div key={student.id} className="p-2 border-b flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className="h-8 w-8 bg-secondary/20 rounded-full flex items-center justify-center text-secondary-foreground text-xs mr-2">
+                            {student.name.split(' ').map(n => n[0]).join('')}
                           </div>
-                        ))}
+                          <div>
+                            <div className="text-sm font-medium">{student.name}</div>
+                            <div className="text-xs text-gray-500">{student.program}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center">
+                          {student.isProspective && (
+                            <Badge variant="outline" className="mr-2 bg-accent/5 text-accent border-accent/20 text-xs">
+                              Prospective
+                            </Badge>
+                          )}
+                          <div className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
+                            Off-market
+                          </div>
+                        </div>
                       </div>
-                    ) : (
-                      <div className="text-center py-8 text-gray-500">
-                        <p>No candidates reserved yet</p>
-                      </div>
-                    )}
-                  </ScrollArea>
-                  
-                  <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                    <h3 className="font-medium mb-2">Need more talent?</h3>
-                    <p className="text-sm text-gray-600 mb-3">
-                      Through our Tandem Sponsorship program, you can create a pipeline of candidates tailored to your specific needs.
-                    </p>
-                    <Button variant="outline" className="w-full">Learn About Sponsorship</Button>
+                    ))}
                   </div>
-                </div>
-              </TabsContent>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No candidates reserved yet</p>
+                  </div>
+                )}
+              </ScrollArea>
               
-              <TabsContent value="bulk">
-                <BulkReservation />
-              </TabsContent>
-            </Tabs>
+              <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <h3 className="font-medium mb-2">Need more talent?</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Through our Tandem Sponsorship program, you can create a pipeline of candidates tailored to your specific needs.
+                </p>
+                <Button variant="outline" className="w-full">Learn About Sponsorship</Button>
+              </div>
+            </div>
           </div>
         </div>
       </main>
