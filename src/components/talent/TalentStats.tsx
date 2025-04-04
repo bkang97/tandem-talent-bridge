@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { BarChart, TrendingUp, Users, Clock, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,19 +21,19 @@ const TalentStats = ({
   showChart,
 }: TalentStatsProps) => {
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
-  
+
   // For FOMO elements - social proof
   const recentActivity = [
     { company: "TechCorp", action: "reserved 2 candidates", time: "5 min ago" },
     { company: "MedLabs", action: "sponsored 1 candidate", time: "12 min ago" },
     { company: "FinanceHub", action: "viewing this pool", time: "just now" },
   ];
-  
+
   // For statistical visualization - market trends
   const marketTrend = {
     percentChange: -12,
     timeFrame: "last 30 days",
-    isDecreasing: true
+    isDecreasing: true,
   };
 
   return (
@@ -85,20 +84,28 @@ const TalentStats = ({
             </span>
             <span>{totalCount} total</span>
           </div>
-          
+
           {/* Market trend indicator - FOMO statistical visualization */}
           <div className="mt-3 bg-orange-50 border border-orange-100 rounded p-2 flex items-center animate-pulse">
-            <TrendingUp 
-              size={16} 
-              className={`mr-2 ${marketTrend.isDecreasing ? "text-red-500 rotate-180" : "text-green-500"}`} 
+            <TrendingUp
+              size={16}
+              className={`mr-2 ${
+                marketTrend.isDecreasing
+                  ? "text-red-500 rotate-180"
+                  : "text-green-500"
+              }`}
             />
             <span className="text-xs font-medium">
-              Pool availability <span className="text-red-500 font-semibold">{marketTrend.percentChange}%</span> in {marketTrend.timeFrame}
+              Pool availability{" "}
+              <span className="text-red-500 font-semibold">
+                {marketTrend.percentChange}%
+              </span>{" "}
+              in {marketTrend.timeFrame}
             </span>
           </div>
         </div>
       </div>
-      
+
       {/* Social proof activity feed - FOMO social proof */}
       <div className="bg-gray-50 p-3 rounded-md mb-4 border border-gray-200">
         <div className="flex items-center mb-2">
@@ -107,12 +114,13 @@ const TalentStats = ({
         </div>
         <div className="flex flex-wrap gap-2">
           {recentActivity.map((activity, index) => (
-            <Badge 
-              key={index} 
-              variant="outline" 
+            <Badge
+              key={index}
+              variant="outline"
               className="bg-white border-primary/20 text-xs animate-fade-in"
             >
-              <span className="font-medium">{activity.company}</span> {activity.action} 
+              <span className="font-medium">{activity.company}</span>&nbsp;
+              {activity.action}
               <span className="ml-1 text-gray-500">{activity.time}</span>
             </Badge>
           ))}
@@ -124,8 +132,8 @@ const TalentStats = ({
           <div>
             <div className="mt-3 absolute right-4 top-2 z-10 justify-end items-end">
               {/* Urgency in visual design - FOMO visual design */}
-              <Button 
-                variant="default" 
+              <Button
+                variant="default"
                 size="sm"
                 onClick={() => setShowSponsorshipModal(true)}
                 className="relative overflow-hidden group hover:bg-primary/90 transition-all duration-300"
@@ -145,9 +153,9 @@ const TalentStats = ({
 
       {/* Sponsorship Modal */}
       {showSponsorshipModal && (
-        <SponsorshipModal 
-          isOpen={showSponsorshipModal} 
-          onClose={() => setShowSponsorshipModal(false)} 
+        <SponsorshipModal
+          isOpen={showSponsorshipModal}
+          onClose={() => setShowSponsorshipModal(false)}
         />
       )}
     </div>
