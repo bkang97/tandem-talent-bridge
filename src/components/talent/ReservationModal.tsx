@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -142,9 +141,7 @@ const ReservationModal = ({
           <DialogDescription>
             {bulkReservation
               ? `You're reserving ${totalStudents} total candidates. We'll schedule a call to discuss your needs.`
-              : `You're reserving ${reservedStudents.length} candidate${
-                  reservedStudents.length > 1 ? "s" : ""
-                }. Fill in your details to confirm.`}
+              : `You're reserving ${totalStudents} total candidates. Fill in your details to confirm.`}
           </DialogDescription>
         </DialogHeader>
 
@@ -263,7 +260,8 @@ const ReservationModal = ({
                         </PopoverContent>
                       </Popover>
                       <FormDescription>
-                        Choose a date within the next two weeks for our intro call.
+                        Choose a date within the next two weeks for our intro
+                        call.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -297,7 +295,7 @@ const ReservationModal = ({
                   <h3 className="text-base font-medium mb-3">
                     Talent Allocation
                   </h3>
-                  
+
                   <Alert className="bg-blue-50 border-blue-200 mb-4">
                     <Info className="h-4 w-4 text-primary" />
                     <AlertDescription className="text-sm text-gray-700">
@@ -311,17 +309,19 @@ const ReservationModal = ({
                   <div className="space-y-6">
                     <div>
                       <div className="flex justify-between mb-1">
-                        <FormLabel>Current Students</FormLabel>
+                        <FormLabel>Allocation to current students</FormLabel>
                         <span className="text-sm font-medium">
-                          {activeStudentCount}
+                          {activeStudentCount} / {totalStudents}
                         </span>
                       </div>
                       <Slider
                         value={[activeStudentCount]}
                         onValueChange={(value) =>
-                          setActiveStudentCount(value[0])
+                          setActiveStudentCount(
+                            Math.min(availableActiveCount, value[0])
+                          )
                         }
-                        max={availableActiveCount}
+                        max={totalStudents}
                         min={0}
                         step={1}
                         className="my-2"
@@ -329,21 +329,14 @@ const ReservationModal = ({
                     </div>
 
                     <div className="flex items-center gap-4">
-                      <div className="flex-1 bg-gray-200 h-2 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-primary"
-                          style={{ width: `${activePercentage}%` }}
-                        ></div>
-                      </div>
-
                       <div className="flex gap-2">
-                        <Badge variant="secondary">
+                        <Badge
+                          variant="secondary"
+                          className="bg-gray-600 text-white hover:bg-gray-600"
+                        >
                           {activeStudentCount} Current
                         </Badge>
-                        <Badge
-                          variant="outline"
-                          className="bg-accent/5 text-accent border-accent/30"
-                        >
+                        <Badge variant="default" className="">
                           {prospectiveCount} Prospective
                         </Badge>
                       </div>
@@ -357,9 +350,11 @@ const ReservationModal = ({
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 mt-4">
-                      <h4 className="font-medium text-sm text-primary mb-2">Tandem Sponsorship Benefits</h4>
+                      <h4 className="font-medium text-sm text-primary mb-2">
+                        Tandem Sponsorship Benefits
+                      </h4>
                       <ul className="text-xs space-y-1.5 text-gray-700">
                         <li className="flex gap-1.5">
                           <span>✓</span> Lock in candidates before competitors
