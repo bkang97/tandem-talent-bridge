@@ -43,13 +43,17 @@ const TalentStats = ({
     isDecreasing: true,
   };
 
+  const handleOpenSponsorshipModal = () => {
+    setShowSponsorshipModal(true);
+  };
+
   const handleScheduleConsultation = () => {
     setShowSponsorshipModal(false);
     setShowReservationModal(true);
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg border border-black/20 mb-6">
+    <div className="bg-white p-6 rounded-lg border border-gray-200 mb-6 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div>
           <div className="flex items-center gap-2">
@@ -98,7 +102,7 @@ const TalentStats = ({
           </div>
 
           {/* Market trend indicator - FOMO statistical visualization */}
-          <div className="mt-3 bg-orange-50 border border-orange-100 rounded p-2 flex items-center animate-pulse">
+          <div className="mt-3 bg-orange-50 border border-orange-100 rounded p-2 flex items-center">
             <TrendingUp
               size={16}
               className={`mr-2 ${
@@ -129,7 +133,7 @@ const TalentStats = ({
             <Badge
               key={index}
               variant="outline"
-              className="bg-white border-primary/20 text-xs animate-fade-in"
+              className="bg-white border-primary/20 text-xs"
             >
               <span className="font-medium">{activity.company}</span>&nbsp;
               {activity.action}
@@ -147,11 +151,11 @@ const TalentStats = ({
               <Button
                 variant="default"
                 size="sm"
-                onClick={() => setShowSponsorshipModal(true)}
+                onClick={handleOpenSponsorshipModal}
                 className="relative overflow-hidden group hover:bg-primary/90 transition-all duration-300"
               >
                 <span className="absolute inset-0 w-1/3 bg-white/20 skew-x-12 transform -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out"></span>
-                <Bell size={14} className="mr-2 animate-pulse" />
+                <Bell size={14} className="mr-2" />
                 <span>Learn About Sponsorship</span>
                 <span className="ml-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
                   Limited

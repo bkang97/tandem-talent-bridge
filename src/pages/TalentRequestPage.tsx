@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from "react";
-import { Info, ArrowDownUp, RefreshCw } from "lucide-react";
+import { Info, ArrowDownUp, RefreshCw, Search, Users, Filter, CalendarClock, BarChart } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import TalentFilters from "@/components/talent/TalentFilters";
 import TalentCard from "@/components/talent/TalentCard";
@@ -9,7 +10,7 @@ import SupplyDemandChart from "@/components/talent/SupplyDemandChart";
 import TalentNeeds from "@/components/talent/TalentNeeds";
 import MarketAnalysis from "@/components/talent/MarketAnalysis";
 import SponsoredTalentInfo from "@/components/talent/SponsoredTalentInfo";
-import SponsorshipModal from "@/components/talent/SponsorshipModal"; // Fixed import path
+import SponsorshipModal from "@/components/talent/SponsorshipModal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -21,6 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
 const generateMockStudents = () => {
   const locations = [
@@ -277,8 +279,8 @@ const TalentRequestPage = () => {
   const [bulkReservation, setBulkReservation] = useState(false);
   const [hiringNeeds, setHiringNeeds] = useState({
     neededCandidates: 10,
-    location: "",
-    skillSet: "",
+    location: "Dallas, TX",
+    skillSet: "medical-assistant",
   });
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
 
@@ -320,6 +322,15 @@ const TalentRequestPage = () => {
   const handleStartReservation = (data: any) => {
     setBulkReservation(true);
     setHiringNeeds(data);
+    setShowReservationModal(true);
+  };
+
+  const handleOpenSponsorshipModal = () => {
+    setShowSponsorshipModal(true);
+  };
+
+  const handleScheduleConsultation = () => {
+    setShowSponsorshipModal(false);
     setShowReservationModal(true);
   };
 
@@ -368,80 +379,314 @@ const TalentRequestPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-primary/5 border-b border-primary/20">
+      <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-3">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-3 font-bold text-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
               <img
                 src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
                 alt="Skilltrade"
                 className="h-8"
               />
+              <div className="h-6 w-px bg-gray-300"></div>
+              <h2 className="text-black font-semibold">
+                Employer Talent Portal
+              </h2>
             </div>
-            <div className="mt-2 md:mt-0">
-              <div>
-                <h2 className="text-black font-semibold">
-                  Employer Talent Portal
-                </h2>
-                <p className="text-sm text-black/80">
-                  Access to SkillTrade's current and prospective talent pool
-                </p>
-              </div>
-              <div className="gap-2 flex mt-1">
-                <Badge variant="outline" className="border-black text-black">
-                  Spring 2025 Cohort
-                </Badge>
-              </div>
-            </div>
+            <Badge variant="outline" className="border-black/20 text-black">
+              Spring 2025 Cohort
+            </Badge>
           </div>
         </div>
       </div>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-primary">
+          <h1 className="text-2xl font-bold text-black">
             SkillTrade Talent Placement
           </h1>
           <p className="text-gray-600 mt-1">
-            Connect with qualified candidates from SkillTrade who are ready to
-            be hired immediately or sponsored for training.
+            Connect with qualified candidates who are ready to be hired immediately or sponsored for training.
           </p>
         </div>
 
-        <Alert className="mb-6 bg-white border border-black/20 ">
-          <Info size={16} className="mr-1.5 text-black" />
-          <AlertTitle className="text-black font-semibold">
-            How do I use this?
-          </AlertTitle>
-          <AlertDescription className="text-black">
-            Reserve current candidates to take them off-market, or sponsor
-            prospective candidates to build your future talent pipeline through
-            our SkillTrade Sponsorship program.
-          </AlertDescription>
-        </Alert>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div className="lg:col-span-2">
-            <TalentNeeds
-              availableCurrentStudents={currentAvailableCount}
-              availableProspectiveStudents={prospectiveAvailableCount}
-              onStartReservation={handleStartReservation}
-              hiringNeeds={hiringNeeds}
-              setHiringNeeds={setHiringNeeds}
-            />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Left section - Hiring Needs Form */}
+          <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-primary/5 border-b border-primary/10 px-6 py-4 flex items-center gap-2">
+              <Users size={18} className="text-primary" />
+              <h2 className="text-lg font-semibold">Define Your Hiring Needs</h2>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-1 block">Location</label>
+                    <Input 
+                      value={hiringNeeds.location} 
+                      onChange={(e) => setHiringNeeds({...hiringNeeds, location: e.target.value})}
+                      placeholder="e.g., Dallas, TX" 
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium mb-1 block">Job Role</label>
+                    <div className="relative">
+                      <select 
+                        className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md appearance-none"
+                        value={hiringNeeds.skillSet}
+                        onChange={(e) => setHiringNeeds({...hiringNeeds, skillSet: e.target.value})}
+                      >
+                        <option value="medical-assistant">Medical Assistant</option>
+                        <option value="surgical-tech">Surgical Technologist</option>
+                        <option value="sterile-processing-tech">Sterile Processing Technician</option>
+                        <option value="patient-care-tech">Patient Care Technician</option>
+                        <option value="medical-administrative-assistant">Medical Administrative Assistant</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium mb-1 block">Candidates Needed</label>
+                    <Input 
+                      type="number" 
+                      min="1"
+                      value={hiringNeeds.neededCandidates} 
+                      onChange={(e) => setHiringNeeds({...hiringNeeds, neededCandidates: parseInt(e.target.value) || 0})}
+                      className="text-lg h-10 font-medium"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium mb-1 block">Hiring Timeframe</label>
+                    <div className="relative">
+                      <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md appearance-none">
+                        <option value="30days">Within 30 days</option>
+                        <option value="60days">Within 60 days</option>
+                        <option value="90days">Within 90 days</option>
+                        <option value="6months">Within 6 months</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                  <h3 className="font-medium mb-3 flex items-center gap-2">
+                    <CalendarClock size={16} className="text-primary" />
+                    Talent Availability
+                  </h3>
+                  
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center text-sm">
+                      <span>Total Need:</span>
+                      <span className="font-semibold">{hiringNeeds.neededCandidates} Candidates</span>
+                    </div>
+                    
+                    <div className="h-px bg-gray-200 my-3"></div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between items-center mb-1 text-sm">
+                          <span>Current Students:</span>
+                          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                            {Math.min(currentAvailableCount, hiringNeeds.neededCandidates)} / {hiringNeeds.neededCandidates}
+                          </Badge>
+                        </div>
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-primary rounded-full"
+                            style={{ width: `${Math.min(100, (currentAvailableCount / hiringNeeds.neededCandidates) * 100)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between items-center mb-1 text-sm">
+                          <span>Prospective Needed:</span>
+                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                            {Math.max(0, hiringNeeds.neededCandidates - currentAvailableCount)} / {hiringNeeds.neededCandidates}
+                          </Badge>
+                        </div>
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-amber-500 rounded-full"
+                            style={{ width: `${Math.min(100, Math.max(0, hiringNeeds.neededCandidates - currentAvailableCount) / hiringNeeds.neededCandidates * 100)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {hiringNeeds.neededCandidates > currentAvailableCount && (
+                    <Alert className="bg-amber-50 border-amber-200 mb-4">
+                      <AlertDescription className="text-amber-800 text-xs">
+                        Only {currentAvailableCount} current students available. Consider sponsoring {hiringNeeds.neededCandidates - currentAvailableCount} prospective students.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  
+                  <Button 
+                    className="w-full" 
+                    onClick={() => {
+                      const element = document.getElementById("view-students");
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                  >
+                    Start Reserving Talent
+                  </Button>
+                </div>
+              </div>
+              
+              {hiringNeeds.skillSet === "medical-assistant" && (
+                <div className="mt-5 p-4 bg-primary/5 rounded-lg border border-primary/20 grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="md:col-span-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
+                        alt="Skilltrade"
+                        className="h-5"
+                      />
+                      <h3 className="font-medium text-primary">Certified Medical Assistant Program</h3>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-xs">
+                        <Users size={12} className="mr-1" />
+                        {currentAvailableCount} Current
+                      </Badge>
+                      <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs">
+                        {prospectiveAvailableCount} Prospective
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="md:col-span-4">
+                    <p className="text-sm text-gray-600">
+                      Learn essential clinical and administrative skills to assist physicians in healthcare settings.
+                    </p>
+                  </div>
+                  
+                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                    <div className="text-xs text-gray-500 mb-1">Duration</div>
+                    <div className="font-medium text-primary">20 Weeks</div>
+                  </div>
+                  
+                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                    <div className="text-xs text-gray-500 mb-1">Certification</div>
+                    <div className="font-medium text-primary">CCMA</div>
+                  </div>
+                  
+                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                    <div className="text-xs text-gray-500 mb-1">Format</div>
+                    <div className="font-medium text-primary">Hybrid & Online</div>
+                  </div>
+                  
+                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                    <div className="text-xs text-gray-500 mb-1">Classes Start</div>
+                    <div className="font-medium text-primary">Monthly</div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
+          
+          {/* Right section - Sponsored Talent Info */}
           <div className="lg:col-span-1">
-            <SponsoredTalentInfo />
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden h-full">
+              <div className="bg-primary/5 border-b border-primary/10 px-6 py-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <CalendarClock size={18} className="text-primary" />
+                  Sponsored Talent
+                </h2>
+              </div>
+              
+              <div className="p-5">
+                <p className="text-gray-700 mb-6">
+                  Guarantee a pipeline of qualified talent by sponsoring prospective candidates 
+                  through our SkillTrade training programs.
+                </p>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary text-sm font-medium">1</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Create sponsored job opportunities</p>
+                      <p className="text-xs text-gray-600">Include training sponsorship in your hiring plan</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary text-sm font-medium">2</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Get matched with qualified candidates</p>
+                      <p className="text-xs text-gray-600">Pre-screened for aptitude and interest in your field</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary text-sm font-medium">3</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Interview and select candidates</p>
+                      <p className="text-xs text-gray-600">Choose who to sponsor based on your needs</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary text-sm font-medium">4</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Candidates complete training</p>
+                      <p className="text-xs text-gray-600">We train them with skills tailored to your needs</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="text-xs text-gray-500">Custom Pipeline</div>
+                    <div className="font-medium">Tailored to your needs</div>
+                  </div>
+                  
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="text-xs text-gray-500">Reduce Costs</div>
+                    <div className="font-medium">No hiring fees</div>
+                  </div>
+                </div>
+                
+                <Button 
+                  className="w-full"
+                  onClick={handleOpenSponsorshipModal}
+                >
+                  Learn About Sponsorship
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <hr className="my-4 mb-6" />
-
+        {/* View Students Section */}
         <div className="flex flex-col lg:flex-row gap-6" id="view-students">
           <div className="lg:w-3/4">
-            <h1 className="text-2xl font-bold text-black mb-4">
-              Reserve Your Talent
-            </h1>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-black">Reserve Your Talent</h2>
+            </div>
+            
             <Tabs defaultValue="browse" className="space-y-6">
               <TabsList className="w-full grid grid-cols-2 bg-black/5 text-black/80 border border-black/20 h-11 px-1.5">
                 <TabsTrigger
@@ -459,69 +704,46 @@ const TalentRequestPage = () => {
               </TabsList>
 
               <TabsContent value="browse" className="space-y-6">
-                <TalentStats
-                  availableCount={
-                    displayMode === "current"
-                      ? currentAvailableCount
-                      : displayMode === "prospective"
-                      ? prospectiveAvailableCount
-                      : totalAvailableCount
-                  }
-                  reservedCount={
-                    displayMode === "current"
-                      ? currentReservedCount
-                      : displayMode === "prospective"
-                      ? prospectiveReservedCount
-                      : totalReservedCount
-                  }
-                  totalCount={
-                    displayMode === "current"
-                      ? currentStudents.length
-                      : displayMode === "prospective"
-                      ? prospectiveStudents.length
-                      : totalCount
-                  }
-                  onShowChart={() =>
-                    setShowSupplyDemandChart(!showSupplyDemandChart)
-                  }
-                  showChart={showSupplyDemandChart}
-                />
-
-                <div
-                  className={`bg-white p-6 rounded-lg border ${
-                    displayMode === "prospective"
-                      ? "border-primary"
-                      : "border-black"
-                  }`}
-                >
+                <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
                   <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
-                    <h2
-                      className={`text-xl font-semibold text-black ${
-                        displayMode === "prospective"
-                          ? "text-primary"
-                          : "text-black"
-                      }`}
-                    >
-                      {displayMode === "current"
-                        ? "View Current Students"
-                        : displayMode === "prospective"
-                        ? "Sponsor Prospective Students"
-                        : "All Candidates"}
-                    </h2>
-
-                    <div className="flex items-center space-x-3">
-                      <div
-                        className={`flex rounded-md overflow-hidden border ${
-                          displayMode === "prospective"
-                            ? "border-primary"
-                            : "border-black"
-                        }`}
+                    <div className="flex items-center gap-4">
+                      <div className="flex flex-col">
+                        <div className="text-2xl font-bold">{displayMode === "current" ? currentAvailableCount : displayMode === "prospective" ? prospectiveAvailableCount : totalAvailableCount}</div>
+                        <div className="text-sm text-gray-500">Available</div>
+                      </div>
+                      
+                      <div className="h-10 w-px bg-gray-200"></div>
+                      
+                      <div className="flex flex-col">
+                        <div className="text-2xl font-bold">{displayMode === "current" ? currentReservedCount : displayMode === "prospective" ? prospectiveReservedCount : totalReservedCount}</div>
+                        <div className="text-sm text-gray-500">Reserved</div>
+                      </div>
+                      
+                      <div className="h-10 w-px bg-gray-200"></div>
+                      
+                      <div className="flex flex-col">
+                        <div className="text-2xl font-bold">{displayMode === "current" ? currentStudents.length : displayMode === "prospective" ? prospectiveStudents.length : totalCount}</div>
+                        <div className="text-sm text-gray-500">Total</div>
+                      </div>
+                      
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowSupplyDemandChart(!showSupplyDemandChart)}
+                        className="ml-2"
                       >
+                        <BarChart size={16} className="mr-1" />
+                        {showSupplyDemandChart ? "Hide Chart" : "Market Gap"}
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <div className="border rounded-md overflow-hidden flex">
                         <button
                           className={`px-3 py-1.5 text-sm ${
                             displayMode === "current"
-                              ? "bg-black/80 text-white"
-                              : "bg-white text-primary"
+                              ? "bg-black text-white"
+                              : "bg-white text-gray-700"
                           }`}
                           onClick={() => handleDisplayModeChange("current")}
                         >
@@ -531,7 +753,7 @@ const TalentRequestPage = () => {
                           className={`px-3 py-1.5 text-sm ${
                             displayMode === "prospective"
                               ? "bg-primary text-white"
-                              : "bg-white text-black/80"
+                              : "bg-white text-gray-700"
                           }`}
                           onClick={() => handleDisplayModeChange("prospective")}
                         >
@@ -544,16 +766,10 @@ const TalentRequestPage = () => {
                           <Button
                             variant="outline"
                             size="sm"
-                            className={`flex items-center gap-2 border border-black/20 text-black ${
-                              displayMode === "prospective"
-                                ? "bg-primary text-white border-none"
-                                : "bg-white hover:bg-black"
-                            }`}
+                            className="flex items-center gap-1"
                           >
-                            <ArrowDownUp size={16} />
-                            Sort:{" "}
-                            {sortOption.charAt(0).toUpperCase() +
-                              sortOption.slice(1)}
+                            <ArrowDownUp size={14} />
+                            Sort: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1)}
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -574,19 +790,64 @@ const TalentRequestPage = () => {
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        title="Refresh results"
-                        className="text-primary/80"
-                      >
-                        <RefreshCw size={16} />
-                      </Button>
                     </div>
                   </div>
+                  
+                  {showSupplyDemandChart && (
+                    <div className="bg-gray-50 p-4 mb-5 rounded-lg border border-gray-200">
+                      <SupplyDemandChart />
+                    </div>
+                  )}
+                  
+                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-5 flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+                    <Users size={14} className="text-gray-700 flex-shrink-0" />
+                    <span className="text-sm font-medium text-gray-700">Recent Activity:</span>
+                    <Badge variant="outline" className="bg-white text-xs">
+                      <span className="font-medium">TechCorp</span> reserved 2 candidates
+                      <span className="ml-1 text-gray-500">5 min ago</span>
+                    </Badge>
+                    <Badge variant="outline" className="bg-white text-xs">
+                      <span className="font-medium">MedLabs</span> sponsored 5 candidates
+                      <span className="ml-1 text-gray-500">12 min ago</span>
+                    </Badge>
+                    <Badge variant="outline" className="bg-white text-xs">
+                      <span className="font-medium">FinanceHub</span> viewed this pool
+                      <span className="ml-1 text-gray-500">just now</span>
+                    </Badge>
+                  </div>
 
-                  <TalentFilters onFilterChange={handleFilterChange} />
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={16} />
+                      <Input
+                        placeholder="Search skills, programs, or keywords"
+                        className="pl-9 w-[300px]"
+                      />
+                    </div>
+                    
+                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+                      <Filter size={14} />
+                      Skills
+                    </Button>
+                    
+                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+                      <Filter size={14} />
+                      Location
+                    </Button>
+                    
+                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+                      <Filter size={14} />
+                      Availability
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      Clear All
+                    </Button>
+                  </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                     {students.map((student) => (
@@ -612,14 +873,18 @@ const TalentRequestPage = () => {
               </TabsContent>
 
               <TabsContent value="stats" className="overflow-hidden">
-                <MarketAnalysis />
+                <MarketAnalysis onOpenSponsorshipModal={handleOpenSponsorshipModal} onScheduleConsultation={handleScheduleConsultation} />
               </TabsContent>
             </Tabs>
           </div>
 
           <div className="lg:w-1/4">
-            <div className="bg-white p-4 rounded-lg shadow-sm border border-black/20">
-              <h3 className="font-medium mb-3 text-black">Recently Reserved</h3>
+            <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 mb-5">
+              <h3 className="font-medium mb-4 text-black flex items-center gap-2">
+                <Users size={16} className="text-gray-700" />
+                Recently Reserved
+              </h3>
+              
               <ScrollArea className="h-[300px]">
                 {students.filter((s) => s.isReserved).length > 0 ? (
                   <div className="space-y-2 pr-3">
@@ -632,7 +897,7 @@ const TalentRequestPage = () => {
                           className="p-2 border-b flex items-center justify-between"
                         >
                           <div className="flex items-center">
-                            <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center text-primary/80 text-xs mr-2">
+                            <div className="h-8 w-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 text-xs mr-2">
                               {student.name
                                 .split(" ")
                                 .map((n) => n[0])
@@ -656,7 +921,7 @@ const TalentRequestPage = () => {
                                 Prospective
                               </Badge>
                             )}
-                            <div className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
+                            <div className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
                               Off-market
                             </div>
                           </div>
@@ -669,41 +934,43 @@ const TalentRequestPage = () => {
                   </div>
                 )}
               </ScrollArea>
+            </div>
 
-              <div className="mt-4 p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                <h3 className="font-medium mb-2 text-primary">
-                  Need more talent?
-                </h3>
-                <p className="text-sm text-primary/80 mb-3">
-                  Through our SkillTrade Sponsorship program, you can create a
-                  pipeline of candidates tailored to your specific needs.
-                </p>
-                <Button
-                  variant="outline"
-                  className="w-full border-primary/30 text-primary/80 hover:bg-primary/10"
-                  onClick={() => setShowSponsorshipModal(true)}
-                >
-                  Learn About Sponsorship
-                </Button>
-              </div>
+            <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 mb-5">
+              <h3 className="font-medium mb-4 text-primary flex items-center gap-2">
+                Need more talent?
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Through our SkillTrade Sponsorship program, you can create a pipeline 
+                of candidates tailored to your specific needs.
+              </p>
+              <Button
+                className="w-full"
+                variant="outline"
+                onClick={handleOpenSponsorshipModal}
+              >
+                Learn About Sponsorship
+              </Button>
+            </div>
 
-              <div className="mt-4 p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                <h3 className="font-medium mb-2 text-primary">
-                  SkillTrade Talent Success
-                </h3>
-                <div className="space-y-3 text-sm">
-                  <div>
-                    <div className="font-semibold text-primary">96%</div>
-                    <div className="text-primary/80">Placement rate</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-primary">94%</div>
-                    <div className="text-primary/80">Employer satisfaction</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-primary">92%</div>
-                    <div className="text-primary/80">1-year retention rate</div>
-                  </div>
+            <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="font-medium mb-4 text-primary flex items-center gap-2">
+                SkillTrade Talent Success
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-gray-600">Placement rate</div>
+                  <div className="font-semibold text-primary">96%</div>
+                </div>
+                <div className="h-px bg-gray-100"></div>
+                <div className="flex items-center justify-between">
+                  <div className="text-gray-600">Employer satisfaction</div>
+                  <div className="font-semibold text-primary">94%</div>
+                </div>
+                <div className="h-px bg-gray-100"></div>
+                <div className="flex items-center justify-between">
+                  <div className="text-gray-600">1-year retention rate</div>
+                  <div className="font-semibold text-primary">92%</div>
                 </div>
               </div>
             </div>
@@ -737,7 +1004,7 @@ const TalentRequestPage = () => {
         <SponsorshipModal
           isOpen={showSponsorshipModal}
           onClose={() => setShowSponsorshipModal(false)}
-          onScheduleConsultation={() => setShowReservationModal(true)}
+          onScheduleConsultation={handleScheduleConsultation}
         />
       )}
     </div>
