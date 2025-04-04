@@ -348,7 +348,7 @@ const TalentNeeds = ({
                         variant="outline"
                         className="bg-primary/10 text-primary border-primary/20"
                       >
-                        {availableActive} / {neededCandidates}
+                        {availableActive}&nbsp;/&nbsp;{neededCandidates}
                       </Badge>
                     </span>
                   </div>
@@ -368,7 +368,7 @@ const TalentNeeds = ({
                         variant="outline"
                         className="bg-accent/10 text-accent border-accent/20"
                       >
-                        {gapAmount} / {neededCandidates}
+                        {gapAmount}&nbsp;/&nbsp;{neededCandidates}
                       </Badge>
                     </span>
                   </div>
