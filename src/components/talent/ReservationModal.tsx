@@ -37,7 +37,6 @@ import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-// Form validation schema
 const reservationFormSchema = z.object({
   companyName: z.string().min(2, { message: "Company name is required" }),
   contactName: z.string().min(2, { message: "Contact name is required" }),
