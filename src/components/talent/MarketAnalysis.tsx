@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Bar,
   BarChart,
@@ -36,8 +36,13 @@ import {
   Award,
   ExternalLink,
 } from "lucide-react";
+import SponsorshipModal from "./SponsorshipModal";
+import ReservationModal from "./ReservationModal";
 
 const MarketAnalysis = () => {
+  const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
+  const [showReservationModal, setShowReservationModal] = useState(false);
+
   // Supply/demand data by tech field
   const supplyDemandData = [
     { field: "Cybersecurity", supply: 35, demand: 100, gap: 65 },
@@ -112,6 +117,11 @@ const MarketAnalysis = () => {
     },
     { metric: "Ramp-Up Time", traditional: "2-3 months", sponsored: "2 weeks" },
   ];
+
+  const handleScheduleConsultation = () => {
+    setShowSponsorshipModal(false);
+    setShowReservationModal(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -196,7 +206,11 @@ const MarketAnalysis = () => {
                         the limited active talent market.
                       </p>
                     </div>
-                    <Button size="sm" className="whitespace-nowrap">
+                    <Button 
+                      size="sm" 
+                      className="whitespace-nowrap"
+                      onClick={() => setShowSponsorshipModal(true)}
+                    >
                       Learn More
                     </Button>
                   </div>
@@ -328,7 +342,11 @@ const MarketAnalysis = () => {
                         hire over a three-year period.
                       </p>
                     </div>
-                    <Button size="sm" className="whitespace-nowrap">
+                    <Button 
+                      size="sm" 
+                      className="whitespace-nowrap"
+                      onClick={() => setShowSponsorshipModal(true)}
+                    >
                       Calculate ROI
                     </Button>
                   </div>
@@ -410,11 +428,33 @@ const MarketAnalysis = () => {
                   through sponsored training and guaranteed placement.
                 </p>
               </div>
-              <Button>Start Sponsorship Program</Button>
+              <Button onClick={() => setShowSponsorshipModal(true)}>
+                Start Sponsorship Program
+              </Button>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {showSponsorshipModal && (
+        <SponsorshipModal
+          isOpen={showSponsorshipModal}
+          onClose={() => setShowSponsorshipModal(false)}
+          onScheduleConsultation={handleScheduleConsultation}
+        />
+      )}
+
+      {showReservationModal && (
+        <ReservationModal
+          isOpen={showReservationModal}
+          onClose={() => setShowReservationModal(false)}
+          reservedStudents={[]}
+          bulkReservation={true}
+          bulkAmount={5}
+          availableActiveCount={3}
+          totalHiringNeed={5}
+        />
+      )}
     </div>
   );
 };

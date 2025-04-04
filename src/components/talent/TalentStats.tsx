@@ -1,8 +1,10 @@
+
 import React, { useState } from "react";
 import { BarChart, TrendingUp, Users, Clock, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SupplyDemandChart from "./SupplyDemandChart";
 import SponsorshipModal from "./SponsorshipModal";
+import ReservationModal from "./ReservationModal";
 import { Badge } from "@/components/ui/badge";
 
 interface TalentStatsProps {
@@ -21,6 +23,7 @@ const TalentStats = ({
   showChart,
 }: TalentStatsProps) => {
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
+  const [showReservationModal, setShowReservationModal] = useState(false);
 
   // For FOMO elements - social proof
   const recentActivity = [
@@ -38,6 +41,11 @@ const TalentStats = ({
     percentChange: -12,
     timeFrame: "last 30 days",
     isDecreasing: true,
+  };
+
+  const handleScheduleConsultation = () => {
+    setShowSponsorshipModal(false);
+    setShowReservationModal(true);
   };
 
   return (
@@ -160,6 +168,20 @@ const TalentStats = ({
         <SponsorshipModal
           isOpen={showSponsorshipModal}
           onClose={() => setShowSponsorshipModal(false)}
+          onScheduleConsultation={handleScheduleConsultation}
+        />
+      )}
+
+      {/* Reservation Modal */}
+      {showReservationModal && (
+        <ReservationModal
+          isOpen={showReservationModal}
+          onClose={() => setShowReservationModal(false)}
+          reservedStudents={[]}
+          bulkReservation={true}
+          bulkAmount={5}
+          availableActiveCount={3}
+          totalHiringNeed={5}
         />
       )}
     </div>
