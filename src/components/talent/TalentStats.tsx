@@ -1,7 +1,9 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { BarChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SupplyDemandChart from "./SupplyDemandChart";
+import SponsorshipModal from "./SponsorshipModal";
 
 interface TalentStatsProps {
   availableCount: number;
@@ -18,6 +20,8 @@ const TalentStats = ({
   onShowChart,
   showChart,
 }: TalentStatsProps) => {
+  const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
+
   return (
     <div className="bg-white p-6 rounded-lg border border-black/20 mb-6">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -73,13 +77,25 @@ const TalentStats = ({
         <div className="bg-gray-50 p-4 mt-6 relative rounded-lg border border-gray-200">
           <div>
             <div className="mt-3 absolute right-4 top-2 z-10 justify-end items-end">
-              <Button variant="default" size="sm">
+              <Button 
+                variant="default" 
+                size="sm"
+                onClick={() => setShowSponsorshipModal(true)}
+              >
                 Learn About Sponsorship
               </Button>
             </div>
             <SupplyDemandChart />
           </div>
         </div>
+      )}
+
+      {/* Sponsorship Modal */}
+      {showSponsorshipModal && (
+        <SponsorshipModal 
+          isOpen={showSponsorshipModal} 
+          onClose={() => setShowSponsorshipModal(false)} 
+        />
       )}
     </div>
   );

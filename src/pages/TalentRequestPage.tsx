@@ -9,6 +9,7 @@ import SupplyDemandChart from "@/components/talent/SupplyDemandChart";
 import TalentNeeds from "@/components/talent/TalentNeeds";
 import MarketAnalysis from "@/components/talent/MarketAnalysis";
 import SponsoredTalentInfo from "@/components/talent/SponsoredTalentInfo";
+import SponsorshipModal from "./talent/SponsorshipModal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -279,6 +280,7 @@ const TalentRequestPage = () => {
     location: "",
     skillSet: "",
   });
+  const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
 
   const getFilteredStudents = () => {
     let students = [];
@@ -680,6 +682,7 @@ const TalentRequestPage = () => {
                 <Button
                   variant="outline"
                   className="w-full border-primary/30 text-primary/80 hover:bg-primary/10"
+                  onClick={() => setShowSponsorshipModal(true)}
                 >
                   Learn About Sponsorship
                 </Button>
@@ -728,6 +731,13 @@ const TalentRequestPage = () => {
             hiringNeeds.neededCandidates
           )}
           totalHiringNeed={hiringNeeds.neededCandidates}
+        />
+      )}
+
+      {showSponsorshipModal && (
+        <SponsorshipModal 
+          isOpen={showSponsorshipModal} 
+          onClose={() => setShowSponsorshipModal(false)} 
         />
       )}
     </div>

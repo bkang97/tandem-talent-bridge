@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { UsersRound, AlertCircle, ArrowRight, Check, GraduationCap } from 'lucide-react';
 import ReservationModal from './ReservationModal';
+import SponsorshipModal from './SponsorshipModal';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -49,14 +49,11 @@ const BulkReservation = () => {
   const [quantity, setQuantity] = useState([5]);
   const [timeframe, setTimeframe] = useState('90days');
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
   
-  // Get the program based on the selected job role
   const selectedProgram = jobRole ? programInfo[jobRoleMap[jobRole]] : null;
   
-  // Calculate availability based on selected criteria
   const calculateAvailableTalent = () => {
-    // In a real app, this would query availability based on the selected criteria
-    // For now, we'll return a fixed number that's less than what they need
     return Math.max(1, Math.floor(quantity[0] * 0.6));
   };
   
@@ -222,7 +219,12 @@ const BulkReservation = () => {
                     <span className="text-xs text-gray-600">Fulfills your exact hiring needs with targeted talent</span>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" className="flex items-center gap-1 border-primary/30 text-primary whitespace-nowrap">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex items-center gap-1 border-primary/30 text-primary whitespace-nowrap"
+                  onClick={() => setShowSponsorshipModal(true)}
+                >
                   Learn More <ArrowRight size={14} />
                 </Button>
               </AlertDescription>
@@ -238,6 +240,13 @@ const BulkReservation = () => {
           reservedStudents={[]} // In bulk mode, we don't have specific students
           bulkReservation={true}
           bulkAmount={availableAmount}
+        />
+      )}
+
+      {showSponsorshipModal && (
+        <SponsorshipModal 
+          isOpen={showSponsorshipModal} 
+          onClose={() => setShowSponsorshipModal(false)} 
         />
       )}
     </>
