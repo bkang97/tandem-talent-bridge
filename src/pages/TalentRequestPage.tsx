@@ -6,6 +6,7 @@ import TalentCard from '@/components/talent/TalentCard';
 import BulkReservation from '@/components/talent/BulkReservation';
 import TalentStats from '@/components/talent/TalentStats';
 import ReservationModal from '@/components/talent/ReservationModal';
+import SupplyDemandChart from '@/components/talent/SupplyDemandChart';
 import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu,
@@ -16,7 +17,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { SupplyDemandChart } from '@/components/talent/SupplyDemandChart';
 
 const generateMockStudents = () => {
   const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Chicago, IL', 'Seattle, WA', 'Remote'];
