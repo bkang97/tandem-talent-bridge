@@ -379,7 +379,7 @@ const ReservationModal = ({
               <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit">Complete Reservation</Button>
+              <Button type="submit">Reserve these candidates</Button>
             </DialogFooter>
           </form>
         </Form>

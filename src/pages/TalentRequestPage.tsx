@@ -436,8 +436,11 @@ const TalentRequestPage = () => {
 
         <hr className="my-4 mb-6" />
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-6" id="view-students">
           <div className="lg:w-3/4">
+            <h1 className="text-2xl font-bold text-black mb-4">
+              Reserve Your Talent
+            </h1>
             <Tabs defaultValue="browse" className="space-y-6">
               <TabsList className="w-full grid grid-cols-2 bg-black/5 text-black/80 border border-black/20 h-11 px-1.5">
                 <TabsTrigger

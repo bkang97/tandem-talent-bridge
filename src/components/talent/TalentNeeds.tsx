@@ -115,10 +115,10 @@ const TalentNeeds = ({
   availableProspectiveStudents,
   onStartReservation,
 }: TalentNeedsProps) => {
-  const [location, setLocation] = useState("");
-  const [jobRole, setJobRole] = useState("");
+  const [location, setLocation] = useState("Dallas, TX");
+  const [jobRole, setJobRole] = useState("medical-assistant");
   const [quantity, setQuantity] = useState(10);
-  const [timeframe, setTimeframe] = useState("90days");
+  const [timeframe, setTimeframe] = useState("30days");
 
   // Get the program based on the selected job role
   const selectedProgram = jobRole ? programInfo[jobRoleMap[jobRole]] : null;
@@ -230,17 +230,17 @@ const TalentNeeds = ({
 
             {selectedProgram && (
               <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                <div className="flex items-center justify-between gap-2 mb-4">
-                  <div className="flex items-center gap-8">
+                <div className="flex items-center justify-between gap-8 mb-4">
+                  <div className="flex items-center">
                     <img
                       src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
                       alt="Skilltrade"
                       className="h-5"
                     />
-                    <h3 className="font-medium text-lg flex items-center gap-2">
-                      {selectedProgram.title} Program
-                    </h3>
                   </div>
+                  <h3 className="font-medium text-lg flex items-center gap-2">
+                    {selectedProgram.title} Program
+                  </h3>
                   <div className="flex flex-col gap-2">
                     <Badge
                       variant="outline"
@@ -429,10 +429,15 @@ const TalentNeeds = ({
 
             <Button
               className="w-full"
-              onClick={handleStartReservation}
+              onClick={() => {
+                const element = document.getElementById("view-students");
+                if (element) {
+                  element.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
               disabled={!location || !jobRole || !timeframe}
             >
-              Reserve Talent Now
+              Start Reserving Talent
             </Button>
           </div>
         </div>
