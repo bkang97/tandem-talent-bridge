@@ -505,7 +505,7 @@ const TalentRequestPage = () => {
                       {displayMode === "current"
                         ? "View Current Students"
                         : displayMode === "prospective"
-                        ? "Hire Prospective Students"
+                        ? "Sponsor Prospective Students"
                         : "All Candidates"}
                     </h2>
 
