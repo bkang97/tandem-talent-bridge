@@ -1,194 +1,77 @@
 
-import React, { useState, useEffect } from 'react';
-import { MapPin, Briefcase, User, ArrowRight, Users, Info } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger 
-} from "@/components/ui/tooltip";
+import { Slider } from '@/components/ui/slider';
+import { UsersRound, AlertCircle, ArrowRight, CalendarClock } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 
 interface TalentNeedsProps {
+  className?: string;
   availableCurrentStudents: number;
   availableProspectiveStudents: number;
-  className?: string;
-  onStartReservation?: (data: {
-    neededCandidates: number;
-    location: string;
-    skillSet: string;
-  }) => void;
+  onStartReservation: (data: any) => void;
 }
 
-const TalentNeeds = ({ 
-  availableCurrentStudents, 
-  availableProspectiveStudents, 
+const TalentNeeds = ({
   className,
+  availableCurrentStudents,
+  availableProspectiveStudents,
   onStartReservation
 }: TalentNeedsProps) => {
-  const [neededCandidates, setNeededCandidates] = useState<number>(10);
-  const [location, setLocation] = useState<string>('');
-  const [skillSet, setSkillSet] = useState<string>('');
-  const [currentAvailable, setCurrentAvailable] = useState<number>(0);
-  const [prospectiveNeeded, setProspectiveNeeded] = useState<number>(0);
+  const [location, setLocation] = useState('');
+  const [skillSet, setSkillSet] = useState('');
+  const [quantity, setQuantity] = useState([10]);
+  const [timeframe, setTimeframe] = useState('90days');
   
-  useEffect(() => {
-    // Calculate how many candidates are available from current pool (max availableCurrentStudents)
-    const availableCurrent = Math.min(availableCurrentStudents, neededCandidates);
-    setCurrentAvailable(availableCurrent);
-    
-    // Calculate how many more candidates need to be sponsored
-    const needed = Math.max(0, neededCandidates - availableCurrent);
-    setProspectiveNeeded(needed);
-  }, [neededCandidates, availableCurrentStudents]);
-
+  // Calculate metrics based on inputs
+  const neededCandidates = quantity[0];
+  const availableActive = Math.min(availableCurrentStudents, neededCandidates);
+  const gapAmount = Math.max(0, neededCandidates - availableActive);
+  const availablePercent = Math.round((availableActive / neededCandidates) * 100);
+  const prospectivePercent = 100 - availablePercent;
+  
   const handleStartReservation = () => {
-    if (onStartReservation) {
-      onStartReservation({
-        neededCandidates,
-        location,
-        skillSet
-      });
-    }
+    onStartReservation({
+      neededCandidates,
+      location,
+      skillSet,
+      timeframe,
+      availableActive,
+      gapAmount
+    });
   };
   
   return (
-    <Card className={`bg-white overflow-hidden border-none shadow-sm ${className}`}>
-      <CardContent className="p-0">
-        <div className="p-6 border-b border-gray-100">
-          <h2 className="text-xl font-semibold mb-2 text-purple-900">Define Your Hiring Needs</h2>
-          <p className="text-gray-600 text-sm mb-4">
-            Tell us your requirements to see available SkillTrade candidates and sponsorship options
-          </p>
-          
-          <div className="mb-6">
-            <div className="flex flex-col md:flex-row items-start md:items-end gap-4 mb-4">
-              <div className="flex-grow">
-                <Label htmlFor="candidates" className="block mb-2 text-base font-medium">
-                  How many candidates do you need?
-                </Label>
-                <div className="flex">
-                  <Input
-                    id="candidates"
-                    type="number"
-                    min={1}
-                    value={neededCandidates}
-                    onChange={(e) => setNeededCandidates(parseInt(e.target.value) || 0)}
-                    className="text-xl h-14 text-center font-semibold"
-                  />
-                </div>
+    <Card className={`shadow-sm ${className}`}>
+      <CardHeader className="pb-3 bg-primary/5">
+        <CardTitle className="text-lg flex items-center gap-2">
+          <UsersRound size={20} className="text-primary" />
+          Define Your Hiring Needs
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="pt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-4 md:col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Location</label>
+                <Input 
+                  placeholder="e.g., San Francisco, Remote, etc." 
+                  value={location} 
+                  onChange={(e) => setLocation(e.target.value)} 
+                />
               </div>
               
-              <div className="w-full md:w-auto">
-                <Alert className="bg-purple-50 border-purple-100 text-purple-800">
-                  <Info className="h-4 w-4 text-purple-500" />
-                  <AlertDescription className="text-xs">
-                    Currently only {availableCurrentStudents} active candidates available from SkillTrade.
-                  </AlertDescription>
-                </Alert>
-              </div>
-            </div>
-            
-            {neededCandidates > 0 && (
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-medium text-sm text-purple-900">Talent Allocation Preview</h3>
-                  <div className="text-sm text-gray-500">
-                    Total need: <span className="font-medium">{neededCandidates}</span>
-                  </div>
-                </div>
-                
-                <div className="mb-3">
-                  <div className="flex justify-between text-xs text-gray-500 mb-1">
-                    <span className="flex items-center">
-                      <Users size={12} className="mr-1 text-purple-700" />
-                      Current Students
-                    </span>
-                    <span className="font-medium text-purple-800">{currentAvailable} candidates</span>
-                  </div>
-                  <div className="w-full bg-gray-200 h-3 rounded-full">
-                    <div 
-                      className="h-3 rounded-full bg-purple-700" 
-                      style={{ width: `${(currentAvailable / neededCandidates) * 100}%` }}
-                    />
-                  </div>
-                </div>
-                
-                <div className="mb-2">
-                  <div className="flex justify-between text-xs text-gray-500 mb-1">
-                    <span className="flex items-center">
-                      <User size={12} className="mr-1 text-purple-400" />
-                      Prospective Students
-                    </span>
-                    <span className="font-medium text-purple-600">{prospectiveNeeded} candidates</span>
-                  </div>
-                  <div className="w-full bg-gray-200 h-3 rounded-full">
-                    <div 
-                      className="h-3 rounded-full bg-purple-400" 
-                      style={{ width: `${(prospectiveNeeded / neededCandidates) * 100}%` }}
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex flex-wrap mt-3 gap-1 items-center">
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
-                    {currentAvailable} Ready Now
-                  </Badge>
-                  {prospectiveNeeded > 0 && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Badge className="bg-purple-50 text-purple-600 border-purple-200">
-                            +{prospectiveNeeded} To Sponsor
-                          </Badge>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-xs max-w-[200px]">These candidates need to be sponsored for SkillTrade's training program to fulfill your hiring needs</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                  
-                  {prospectiveNeeded > availableProspectiveStudents && (
-                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 ml-auto">
-                      {prospectiveNeeded - availableProspectiveStudents} additional needed
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="location" className="block mb-2">
-                Location
-              </Label>
-              <div className="relative">
-                <Input
-                  id="location"
-                  placeholder="e.g., San Francisco, Remote"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="pl-9"
-                />
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-              </div>
-            </div>
-            
-            <div>
-              <Label htmlFor="skill" className="block mb-2">
-                Primary Skill Set
-              </Label>
-              <div className="relative">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Primary Skill Set</label>
                 <Select value={skillSet} onValueChange={setSkillSet}>
-                  <SelectTrigger className="pl-9">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select skill set" />
                   </SelectTrigger>
                   <SelectContent>
@@ -200,50 +83,108 @@ const TalentNeeds = ({
                     <SelectItem value="projectmanagement">Project Management</SelectItem>
                   </SelectContent>
                 </Select>
-                <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10" size={16} />
               </div>
             </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <label className="text-sm font-medium">Candidates Needed</label>
+                <span className="text-sm font-semibold">{quantity[0]}</span>
+              </div>
+              <Slider 
+                value={quantity} 
+                onValueChange={setQuantity} 
+                max={20} 
+                min={1} 
+                step={1} 
+                className="my-4"
+              />
+            </div>
+            
+            <div>
+              <label className="text-sm font-medium mb-1 block">Hiring Timeframe</label>
+              <Select value={timeframe} onValueChange={setTimeframe}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select timeframe" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="30days">Within 30 days</SelectItem>
+                  <SelectItem value="60days">Within 60 days</SelectItem>
+                  <SelectItem value="90days">Within 90 days</SelectItem>
+                  <SelectItem value="6months">Within 6 months</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </div>
-        
-        <div className="bg-gray-50 p-4 border-t border-gray-100">
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-            <div className="w-full md:w-auto">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white p-3 rounded-lg border border-purple-200">
-                  <div className="text-xs text-gray-500 mb-1">Current Students</div>
-                  <div className="font-semibold text-lg flex items-center text-purple-900">
-                    <Users size={16} className="mr-1 text-purple-700" />
-                    {availableCurrentStudents} available
+          
+          <div className="bg-primary/5 rounded-lg p-4">
+            <h3 className="font-medium mb-3 flex items-center">
+              <CalendarClock size={16} className="mr-1.5 text-primary" />
+              Talent Availability
+            </h3>
+            
+            <div className="mb-4">
+              <div className="flex justify-between items-center text-sm">
+                <span>Total Hiring Need:</span>
+                <span className="font-semibold">{neededCandidates} Candidates</span>
+              </div>
+              
+              <Separator className="my-3" />
+              
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between items-center mb-1 text-sm">
+                    <span>Current Students Available:</span>
+                    <span className="font-medium">
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                        {availableActive} / {neededCandidates}
+                      </Badge>
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-primary rounded-full"
+                      style={{ width: `${availablePercent}%` }}
+                    ></div>
                   </div>
                 </div>
                 
-                <div className="bg-white p-3 rounded-lg border border-purple-200">
-                  <div className="text-xs text-gray-500 mb-1">Prospective</div>
-                  <div className="font-semibold text-lg flex items-center text-purple-700">
-                    <User size={16} className="mr-1" />
-                    {availableProspectiveStudents} available
+                <div>
+                  <div className="flex justify-between items-center mb-1 text-sm">
+                    <span>Prospective Students Needed:</span>
+                    <span className="font-medium">
+                      <Badge variant="outline" className="bg-accent/10 text-accent border-accent/20">
+                        {gapAmount} / {neededCandidates}
+                      </Badge>
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-accent rounded-full"
+                      style={{ width: `${prospectivePercent}%` }}
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="flex gap-3 w-full md:w-auto">
-              <Button 
-                variant="default" 
-                className="flex-1 md:flex-none bg-purple-700 hover:bg-purple-800"
-                disabled={!neededCandidates || (!location && !skillSet)}
-                onClick={handleStartReservation}
-              >
-                Find Candidates
-              </Button>
-              {prospectiveNeeded > 0 && (
-                <Button variant="outline" className="flex-1 md:flex-none text-purple-700 border-purple-200 hover:bg-purple-50">
-                  <span>Sponsorship Options</span>
-                  <ArrowRight size={16} className="ml-2" />
-                </Button>
-              )}
-            </div>
+            {gapAmount > 0 && (
+              <Alert variant="default" className="bg-amber-50 border-amber-200 mt-3 mb-3">
+                <AlertCircle className="h-4 w-4 text-amber-500" />
+                <AlertDescription className="text-amber-800 text-xs">
+                  Only {availableActive} current students available.
+                  You'll need to sponsor {gapAmount} prospective students to fulfill your needs.
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            <Button 
+              className="w-full" 
+              onClick={handleStartReservation}
+              disabled={!location || !skillSet || !timeframe}
+            >
+              Reserve Talent Now
+            </Button>
           </div>
         </div>
       </CardContent>
