@@ -3,7 +3,6 @@ import { Info, ArrowDownUp, RefreshCw, Search, Users, Filter, CalendarClock, Bar
 import Navbar from "@/components/layout/Navbar";
 import TalentFilters from "@/components/talent/TalentFilters";
 import TalentCard from "@/components/talent/TalentCard";
-import TalentStats from "@/components/talent/TalentStats";
 import ReservationModal from "@/components/talent/ReservationModal";
 import SupplyDemandChart from "@/components/talent/SupplyDemandChart";
 import TalentNeeds from "@/components/talent/TalentNeeds";
@@ -282,6 +281,7 @@ const TalentRequestPage = () => {
     skillSet: "medical-assistant",
   });
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
+  const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
 
   const getFilteredStudents = () => {
     let students = [];
@@ -375,6 +375,42 @@ const TalentRequestPage = () => {
   const totalReservedCount = currentReservedCount + prospectiveReservedCount;
   const totalAvailableCount = currentAvailableCount + prospectiveAvailableCount;
   const totalCount = currentStudents.length + prospectiveStudents.length;
+
+  const recentActivity = [
+    {
+      company: "TechCorp",
+      action: "reserved 2 candidates",
+      time: "5 min ago"
+    },
+    {
+      company: "MedLabs",
+      action: "sponsored 5 candidates",
+      time: "12 min ago"
+    },
+    {
+      company: "FinanceHub",
+      action: "viewed this pool",
+      time: "just now"
+    },
+    {
+      company: "Healthcare Partners",
+      action: "scheduled a consultation",
+      time: "23 min ago"
+    },
+    {
+      company: "City Medical",
+      action: "reserved 8 candidates",
+      time: "1 hour ago"
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentActivityIndex(prev => (prev + 1) % recentActivity.length);
+    }, 3000); // Rotate every 3 seconds
+    
+    return () => clearInterval(interval);
+  }, [recentActivity.length]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -798,21 +834,25 @@ const TalentRequestPage = () => {
                     </div>
                   )}
                   
-                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-5 flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-5 flex items-center gap-2 overflow-hidden whitespace-nowrap relative">
                     <Users size={14} className="text-gray-700 flex-shrink-0" />
-                    <span className="text-sm font-medium text-gray-700">Recent Activity:</span>
-                    <Badge variant="outline" className="bg-white text-xs">
-                      <span className="font-medium">TechCorp</span> reserved 2 candidates
-                      <span className="ml-1 text-gray-500">5 min ago</span>
-                    </Badge>
-                    <Badge variant="outline" className="bg-white text-xs">
-                      <span className="font-medium">MedLabs</span> sponsored 5 candidates
-                      <span className="ml-1 text-gray-500">12 min ago</span>
-                    </Badge>
-                    <Badge variant="outline" className="bg-white text-xs">
-                      <span className="font-medium">FinanceHub</span> viewed this pool
-                      <span className="ml-1 text-gray-500">just now</span>
-                    </Badge>
+                    <span className="text-sm font-medium text-gray-700 flex-shrink-0">Recent Activity:</span>
+                    <div className="overflow-hidden relative flex-1">
+                      {recentActivity.map((activity, index) => (
+                        <Badge 
+                          key={index}
+                          variant="outline" 
+                          className={`bg-white text-xs absolute inset-0 transition-all duration-500 w-full flex items-center ${
+                            index === currentActivityIndex 
+                              ? "opacity-100 translate-x-0" 
+                              : "opacity-0 translate-x-full"
+                          }`}
+                        >
+                          <span className="font-medium">{activity.company}</span> {activity.action}
+                          <span className="ml-1 text-gray-500">{activity.time}</span>
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-5">
