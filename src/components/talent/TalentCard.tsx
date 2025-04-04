@@ -84,9 +84,12 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                   </div>
                 </div>
               </div>
-              {student.isReserved && (
-                <Badge variant="outline" className="border-gray-300 text-gray-700 bg-gray-100">
-                  Off-market
+              {!student.isProspective && (
+                <Badge 
+                  variant={student.isReserved ? "outline" : "secondary"} 
+                  className={`${student.isReserved ? 'border-gray-300 text-gray-700 bg-gray-100' : 'bg-emerald-100 text-emerald-700 border-emerald-200'}`}
+                >
+                  {student.isReserved ? 'Off-market' : `Available ${student.availableDate}`}
                 </Badge>
               )}
             </div>
@@ -127,10 +130,12 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                     <Briefcase size={12} className="mr-1 flex-shrink-0" />
                     <span>{student.yearsExperience} yrs exp</span>
                   </div>
-                  <div className="flex items-center col-span-2">
-                    <Calendar size={12} className="mr-1 flex-shrink-0" />
-                    <span>Available {student.availableDate}</span>
-                  </div>
+                  {student.isReserved && (
+                    <div className="flex items-center col-span-2">
+                      <Calendar size={12} className="mr-1 flex-shrink-0" />
+                      <span>Available {student.availableDate}</span>
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -151,6 +156,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                 size="icon" 
                 className="h-8 w-8" 
                 onClick={handleDownloadResume}
+                disabled={student.isReserved}
               >
                 <Download size={14} />
               </Button>

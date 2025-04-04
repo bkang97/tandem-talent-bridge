@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Info, ArrowDownUp, RefreshCw } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import TalentFilters from '@/components/talent/TalentFilters';
@@ -62,7 +63,8 @@ const generateMockStudents = () => {
     const program = programs[Math.floor(Math.random() * programs.length)];
     const yearsExp = Math.floor(Math.random() * 5) + 1;
     
-    const isOffMarket = i <= 37;
+    // Make all but 3 off-market
+    const isOffMarket = i > 3;
     
     students.push({
       id: i.toString(),
@@ -154,6 +156,12 @@ const TalentRequestPage = () => {
   const [showSupplyDemandChart, setShowSupplyDemandChart] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [bulkReservation, setBulkReservation] = useState(false);
+  const [hiringNeeds, setHiringNeeds] = useState({
+    neededCandidates: 10,
+    location: '',
+    skillSet: '',
+  });
   
   const getFilteredStudents = () => {
     let students = [];
@@ -186,7 +194,14 @@ const TalentRequestPage = () => {
     if (student) {
       setSelectedStudents([student]);
       setShowReservationModal(true);
+      setBulkReservation(false);
     }
+  };
+
+  const handleStartReservation = (data: any) => {
+    setBulkReservation(true);
+    setHiringNeeds(data);
+    setShowReservationModal(true);
   };
   
   const completeReservation = () => {
@@ -214,6 +229,7 @@ const TalentRequestPage = () => {
     
     setShowReservationModal(false);
     setSelectedStudents([]);
+    setBulkReservation(false);
   };
   
   const currentReservedCount = currentStudents.filter(s => s.isReserved).length;
@@ -247,9 +263,10 @@ const TalentRequestPage = () => {
         </Alert>
         
         <TalentNeeds 
-          availableCurrentStudents={currentStudents.filter(s => !s.isReserved).length}
-          availableProspectiveStudents={prospectiveStudents.filter(s => !s.isReserved).length}
+          availableCurrentStudents={currentAvailableCount}
+          availableProspectiveStudents={prospectiveAvailableCount}
           className="mb-6"
+          onStartReservation={handleStartReservation}
         />
         
         <div className="flex flex-col lg:flex-row gap-6">
@@ -268,6 +285,12 @@ const TalentRequestPage = () => {
                   onShowChart={() => setShowSupplyDemandChart(!showSupplyDemandChart)}
                   showChart={showSupplyDemandChart}
                 />
+                
+                {showSupplyDemandChart && (
+                  <div className="bg-white p-6 rounded-lg shadow-sm mb-6" style={{ height: "500px" }}>
+                    <SupplyDemandChart />
+                  </div>
+                )}
                 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
@@ -324,7 +347,7 @@ const TalentRequestPage = () => {
                   <TalentFilters onFilterChange={handleFilterChange} />
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    {students.filter(s => !s.isReserved).slice(0, 8).map(student => (
+                    {students.map(student => (
                       <TalentCard 
                         key={student.id} 
                         student={student} 
@@ -333,10 +356,10 @@ const TalentRequestPage = () => {
                     ))}
                   </div>
                   
-                  {students.filter(s => !s.isReserved).length > 8 && (
+                  {students.length > 8 && (
                     <div className="mt-8 text-center">
                       <Button variant="outline">
-                        Load More ({students.filter(s => !s.isReserved).length - 8} Remaining)
+                        Load More ({students.length - 8} Remaining)
                       </Button>
                     </div>
                   )}
@@ -403,6 +426,10 @@ const TalentRequestPage = () => {
           isOpen={showReservationModal}
           onClose={() => setShowReservationModal(false)}
           reservedStudents={selectedStudents}
+          bulkReservation={bulkReservation}
+          bulkAmount={hiringNeeds.neededCandidates}
+          availableActiveCount={Math.min(currentAvailableCount, hiringNeeds.neededCandidates)}
+          totalHiringNeed={hiringNeeds.neededCandidates}
         />
       )}
     </div>

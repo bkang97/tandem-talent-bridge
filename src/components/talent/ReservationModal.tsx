@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Calendar } from 'lucide-react';
+import { Calendar, Info } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,10 @@ import { format } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+import { Slider } from '@/components/ui/slider';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 // Form validation schema
 const reservationFormSchema = z.object({
@@ -22,6 +26,7 @@ const reservationFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().min(10, { message: 'Valid phone number is required' }),
   callDate: z.date({ required_error: 'Please select a date for the call' }),
+  activeStudentCount: z.number().optional(),
   hiringNeeds: z.string().optional(),
 });
 
@@ -33,6 +38,8 @@ interface ReservationModalProps {
   reservedStudents: Array<any>;
   bulkReservation?: boolean;
   bulkAmount?: number;
+  availableActiveCount?: number;
+  totalHiringNeed?: number;
 }
 
 const ReservationModal = ({
@@ -40,10 +47,23 @@ const ReservationModal = ({
   onClose,
   reservedStudents,
   bulkReservation = false,
-  bulkAmount = 0
+  bulkAmount = 0,
+  availableActiveCount = 3, // Default to 3 active students available
+  totalHiringNeed = 10 // Default to 10 total students needed
 }: ReservationModalProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Track the slider value for active students
+  const [activeStudentCount, setActiveStudentCount] = useState<number>(availableActiveCount);
+  const [prospectiveCount, setProspectiveCount] = useState<number>(
+    Math.max(0, totalHiringNeed - availableActiveCount)
+  );
+  
+  // Update prospective count whenever activeStudentCount changes
+  useEffect(() => {
+    setProspectiveCount(Math.max(0, totalHiringNeed - activeStudentCount));
+  }, [activeStudentCount, totalHiringNeed]);
 
   // Set up form with validation
   const form = useForm<ReservationFormValues>({
@@ -53,6 +73,7 @@ const ReservationModal = ({
       contactName: '',
       email: '',
       phone: '',
+      activeStudentCount: availableActiveCount,
       hiringNeeds: '',
     },
   });
@@ -65,7 +86,9 @@ const ReservationModal = ({
       email: data.email,
       phone: data.phone,
       scheduledDate: format(data.callDate, 'PPP'),
-      hiringNeeds: data.hiringNeeds || 'Not specified'
+      hiringNeeds: data.hiringNeeds || 'Not specified',
+      activeStudentCount,
+      prospectiveCount
     };
     
     // Show success toast
@@ -83,10 +106,13 @@ const ReservationModal = ({
         reservedStudents,
         callDetails,
         bulkReservation,
-        bulkAmount
+        bulkAmount: activeStudentCount + prospectiveCount
       }
     });
   };
+
+  const totalStudents = activeStudentCount + prospectiveCount;
+  const activePercentage = (activeStudentCount / totalStudents) * 100;
 
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
@@ -95,7 +121,7 @@ const ReservationModal = ({
           <DialogTitle>Complete Your Reservation</DialogTitle>
           <DialogDescription>
             {bulkReservation
-              ? `You're reserving ${bulkAmount} candidates. We'll schedule a call to discuss your needs.`
+              ? `You're reserving ${totalStudents} total candidates. We'll schedule a call to discuss your needs.`
               : `You're reserving ${reservedStudents.length} candidate${reservedStudents.length > 1 ? 's' : ''}. Fill in your details to confirm.`
             }
           </DialogDescription>
@@ -163,6 +189,66 @@ const ReservationModal = ({
               />
             </div>
             
+            {bulkReservation && (
+              <>
+                <Separator />
+                
+                <div>
+                  <h3 className="text-base font-medium mb-3">Talent Allocation</h3>
+                  <Alert variant="outline" className="bg-blue-50 border-blue-200 mb-4">
+                    <Info className="h-4 w-4 text-blue-500" />
+                    <AlertDescription className="text-sm text-gray-700">
+                      Based on your total hiring need of {totalStudents} candidates, you can reserve up to {availableActiveCount} current students and sponsor the remaining as prospective candidates.
+                    </AlertDescription>
+                  </Alert>
+                  
+                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div className="flex flex-col space-y-6">
+                      <div>
+                        <div className="flex justify-between mb-1">
+                          <FormLabel>Current Students</FormLabel>
+                          <span className="text-sm font-medium">{activeStudentCount}</span>
+                        </div>
+                        <Slider 
+                          value={[activeStudentCount]} 
+                          onValueChange={(value) => setActiveStudentCount(value[0])}
+                          max={availableActiveCount} 
+                          min={0} 
+                          step={1} 
+                          className="my-2"
+                        />
+                      </div>
+                      
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1 bg-gray-200 h-2 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-primary"
+                            style={{ width: `${activePercentage}%` }}
+                          ></div>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <Badge variant="secondary">
+                            {activeStudentCount} Current
+                          </Badge>
+                          <Badge variant="outline" className="bg-accent/5 text-accent border-accent/30">
+                            {prospectiveCount} Prospective
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      <div className="text-sm">
+                        <div className="flex justify-between text-gray-500">
+                          <span>Total Candidates: {totalStudents}</span>
+                          <span className="font-medium text-primary">Ready to Reserve</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            
             <FormField
               control={form.control}
               name="callDate"
@@ -208,27 +294,25 @@ const ReservationModal = ({
               )}
             />
             
-            {bulkReservation && (
-              <FormField
-                control={form.control}
-                name="hiringNeeds"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Hiring Needs (Optional)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="Briefly describe your role requirements and timeline"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      This helps us understand your specific requirements.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name="hiringNeeds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Hiring Needs (Optional)</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Briefly describe your role requirements and timeline"
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    This helps us understand your specific requirements.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             
             <DialogFooter className="pt-4">
               <Button type="button" variant="outline" onClick={onClose}>
