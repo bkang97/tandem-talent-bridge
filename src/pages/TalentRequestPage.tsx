@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Info, ArrowDownUp, RefreshCw } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -9,7 +10,7 @@ import SupplyDemandChart from "@/components/talent/SupplyDemandChart";
 import TalentNeeds from "@/components/talent/TalentNeeds";
 import MarketAnalysis from "@/components/talent/MarketAnalysis";
 import SponsoredTalentInfo from "@/components/talent/SponsoredTalentInfo";
-import SponsorshipModal from "./talent/SponsorshipModal";
+import SponsorshipModal from "@/components/talent/SponsorshipModal"; // Fixed import path
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
