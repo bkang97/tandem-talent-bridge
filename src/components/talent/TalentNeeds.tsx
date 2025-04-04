@@ -19,6 +19,7 @@ import {
   Award,
   Building,
   Check,
+  Users,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -181,10 +182,29 @@ const TalentNeeds = ({
 
             {selectedProgram && (
               <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                <h3 className="font-medium text-lg flex items-center gap-2 mb-4">
-                  <GraduationCap size={20} className="text-primary" />
-                  {selectedProgram.title} Program
-                </h3>
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
+                      alt="Skilltrade"
+                      className="h-5"
+                    />
+                    <h3 className="font-medium text-lg flex items-center gap-2">
+                      <GraduationCap size={20} className="text-primary" />
+                      {selectedProgram.title} Program
+                    </h3>
+                  </div>
+                  <div className="flex gap-2">
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                      <Users size={14} className="mr-1" />
+                      {availableCurrentStudents} Current
+                    </Badge>
+                    <Badge variant="outline" className="bg-accent/10 text-accent border-accent/20">
+                      {availableProspectiveStudents} Prospective
+                    </Badge>
+                  </div>
+                </div>
+                
                 <p className="text-sm text-gray-600 mb-4">{selectedProgram.description}</p>
                 
                 <div className="grid grid-cols-3 gap-4 mb-4">

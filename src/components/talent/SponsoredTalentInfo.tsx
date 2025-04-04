@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Card,
@@ -31,6 +32,13 @@ const SponsoredTalentInfo = ({
       className={`border border-black/20 shadow-md animate-fade-in ${className}`}
     >
       <CardHeader className="pb-3 border-b border-black/20 bg-black/5 ">
+        <div className="flex items-center gap-2 mb-2">
+          <img
+            src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
+            alt="Skilltrade"
+            className="h-6"
+          />
+        </div>
         <CardTitle className="text-lg text-black flex items-center">
           SkillTrade Sponsored Talent
         </CardTitle>
