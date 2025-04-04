@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Card,
@@ -40,7 +39,7 @@ const SponsoredTalentInfo = ({
           />
         </div>
         <CardTitle className="text-lg text-black flex items-center">
-          SkillTrade Sponsored Talent
+          Sponsored Talent
         </CardTitle>
         <CardDescription>
           Guarantee a pipeline of qualified talent by sponsoring prospective

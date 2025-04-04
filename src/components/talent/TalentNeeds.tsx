@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,30 +35,69 @@ interface TalentNeedsProps {
 const programInfo = {
   "certified-medical-assistant": {
     title: "Certified Medical Assistant",
-    description: "Learn essential clinical and administrative skills to assist physicians in healthcare settings.",
+    description:
+      "Learn essential clinical and administrative skills to assist physicians in healthcare settings.",
     duration: "20 Weeks",
     certification: "CCMA",
     format: "Hybrid & Online",
-    classes: ["Foundations of Medical Assisting", "Clinical Procedures", "Pharmacology", "Medical Terminology", "Healthcare Law and Ethics"],
-    companies: ["Mayo Clinic", "Cleveland Clinic", "Kaiser Permanente", "Johns Hopkins Medicine", "Ascension"],
+    classes: [
+      "Foundations of Medical Assisting",
+      "Clinical Procedures",
+      "Pharmacology",
+      "Medical Terminology",
+      "Healthcare Law and Ethics",
+    ],
+    companies: [
+      "Mayo Clinic",
+      "Cleveland Clinic",
+      "Kaiser Permanente",
+      "Johns Hopkins Medicine",
+      "Ascension",
+    ],
   },
   "surgical-technologist": {
     title: "Surgical Technologist",
-    description: "Prepare for a career assisting surgeons in the operating room with proper techniques and protocols.",
+    description:
+      "Prepare for a career assisting surgeons in the operating room with proper techniques and protocols.",
     duration: "24 Weeks",
     certification: "CST",
     format: "Hybrid",
-    classes: ["Surgical Procedures", "Sterilization Techniques", "Anatomy & Physiology", "Surgical Pharmacology", "Operating Room Protocols"],
-    companies: ["HCA Healthcare", "Tenet Healthcare", "Intermountain Healthcare", "NYU Langone", "UPMC"],
+    classes: [
+      "Surgical Procedures",
+      "Sterilization Techniques",
+      "Anatomy & Physiology",
+      "Surgical Pharmacology",
+      "Operating Room Protocols",
+    ],
+    companies: [
+      "HCA Healthcare",
+      "Tenet Healthcare",
+      "Intermountain Healthcare",
+      "NYU Langone",
+      "UPMC",
+    ],
   },
   "sterile-processing": {
     title: "Sterile Processing Technician",
-    description: "Learn to clean, sterilize, and prepare medical instruments and equipment for surgeries and procedures.",
+    description:
+      "Learn to clean, sterilize, and prepare medical instruments and equipment for surgeries and procedures.",
     duration: "16 Weeks",
     certification: "CRCST",
     format: "Online with Labs",
-    classes: ["Decontamination Procedures", "Sterilization Processes", "Inventory Management", "Medical Terminology", "Infection Control"],
-    companies: ["Steris", "Hospital Corporation of America", "Banner Health", "AdventHealth", "Providence Health"],
+    classes: [
+      "Decontamination Procedures",
+      "Sterilization Processes",
+      "Inventory Management",
+      "Medical Terminology",
+      "Infection Control",
+    ],
+    companies: [
+      "Steris",
+      "Hospital Corporation of America",
+      "Banner Health",
+      "AdventHealth",
+      "Providence Health",
+    ],
   },
 };
 
@@ -139,11 +177,21 @@ const TalentNeeds = ({
                     <SelectValue placeholder="Select job role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="medical-assistant">Medical Assistant</SelectItem>
-                    <SelectItem value="surgical-tech">Surgical Technologist</SelectItem>
-                    <SelectItem value="sterile-processing-tech">Sterile Processing Technician</SelectItem>
-                    <SelectItem value="patient-care-tech">Patient Care Technician</SelectItem>
-                    <SelectItem value="medical-administrative-assistant">Medical Administrative Assistant</SelectItem>
+                    <SelectItem value="medical-assistant">
+                      Medical Assistant
+                    </SelectItem>
+                    <SelectItem value="surgical-tech">
+                      Surgical Technologist
+                    </SelectItem>
+                    <SelectItem value="sterile-processing-tech">
+                      Sterile Processing Technician
+                    </SelectItem>
+                    <SelectItem value="patient-care-tech">
+                      Patient Care Technician
+                    </SelectItem>
+                    <SelectItem value="medical-administrative-assistant">
+                      Medical Administrative Assistant
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -183,45 +231,60 @@ const TalentNeeds = ({
             {selectedProgram && (
               <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
                 <div className="flex items-center justify-between gap-2 mb-4">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-8">
                     <img
                       src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
                       alt="Skilltrade"
                       className="h-5"
                     />
                     <h3 className="font-medium text-lg flex items-center gap-2">
-                      <GraduationCap size={20} className="text-primary" />
                       {selectedProgram.title} Program
                     </h3>
                   </div>
-                  <div className="flex gap-2">
-                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                  <div className="flex flex-col gap-2">
+                    <Badge
+                      variant="outline"
+                      className="bg-primary/10 text-primary border-primary/20"
+                    >
                       <Users size={14} className="mr-1" />
-                      {availableCurrentStudents} Current
+                      {availableCurrentStudents}&nbsp;Current
                     </Badge>
-                    <Badge variant="outline" className="bg-accent/10 text-accent border-accent/20">
-                      {availableProspectiveStudents} Prospective
+                    <Badge
+                      variant="outline"
+                      className="bg-accent/10 text-accent border-accent/20"
+                    >
+                      {availableProspectiveStudents}&nbsp;Prospective
                     </Badge>
                   </div>
                 </div>
-                
-                <p className="text-sm text-gray-600 mb-4">{selectedProgram.description}</p>
-                
+
+                <p className="text-sm text-gray-600 mb-4">
+                  {selectedProgram.description}
+                </p>
+
                 <div className="grid grid-cols-3 gap-4 mb-4">
                   <div className="text-center p-2 bg-white rounded-md border border-primary/10">
                     <div className="text-xs text-gray-500 mb-1">Duration</div>
-                    <div className="font-medium text-primary">{selectedProgram.duration}</div>
+                    <div className="font-medium text-primary">
+                      {selectedProgram.duration}
+                    </div>
                   </div>
                   <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">Certification</div>
-                    <div className="font-medium text-primary">{selectedProgram.certification}</div>
+                    <div className="text-xs text-gray-500 mb-1">
+                      Certification
+                    </div>
+                    <div className="font-medium text-primary">
+                      {selectedProgram.certification}
+                    </div>
                   </div>
                   <div className="text-center p-2 bg-white rounded-md border border-primary/10">
                     <div className="text-xs text-gray-500 mb-1">Format</div>
-                    <div className="font-medium text-primary">{selectedProgram.format}</div>
+                    <div className="font-medium text-primary">
+                      {selectedProgram.format}
+                    </div>
                   </div>
                 </div>
-                
+
                 <div className="mb-4">
                   <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
                     <Award size={16} className="text-primary" />
@@ -229,9 +292,9 @@ const TalentNeeds = ({
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedProgram.classes.map((className, index) => (
-                      <Badge 
-                        key={index} 
-                        variant="outline" 
+                      <Badge
+                        key={index}
+                        variant="outline"
                         className="bg-white border-primary/20 text-primary"
                       >
                         {className}
@@ -239,7 +302,7 @@ const TalentNeeds = ({
                     ))}
                   </div>
                 </div>
-                
+
                 <div>
                   <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
                     <Building size={16} className="text-primary" />
@@ -247,8 +310,8 @@ const TalentNeeds = ({
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedProgram.companies.map((company, index) => (
-                      <span 
-                        key={index} 
+                      <span
+                        key={index}
                         className="px-2 py-1 bg-white text-xs rounded-md border border-primary/10"
                       >
                         {company}
@@ -335,19 +398,29 @@ const TalentNeeds = ({
 
             <div className="space-y-3 mb-4">
               <div className="flex items-start gap-2">
-                <Check size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                <Check
+                  size={16}
+                  className="text-primary mt-0.5 flex-shrink-0"
+                />
                 <span className="text-xs">
-                  Skilltrade graduates deliver immediately with real-world skills
+                  Skilltrade graduates deliver immediately with real-world
+                  skills
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <Check size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                <Check
+                  size={16}
+                  className="text-primary mt-0.5 flex-shrink-0"
+                />
                 <span className="text-xs">
                   Training and certification are included in sponsorship
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <Check size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                <Check
+                  size={16}
+                  className="text-primary mt-0.5 flex-shrink-0"
+                />
                 <span className="text-xs">
                   94% employer satisfaction rate with Skilltrade graduates
                 </span>
