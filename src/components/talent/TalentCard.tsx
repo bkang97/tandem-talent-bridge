@@ -48,16 +48,6 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
   const handleReserve = (e: React.MouseEvent) => {
     e.stopPropagation();
     onReserve(student.id);
-    toast({
-      title: student.isProspective
-        ? "Prospective Candidate Reserved!"
-        : "Candidate Reserved!",
-      description: `You've successfully reserved ${student.name}. ${
-        student.isProspective
-          ? "They will be sponsored for training."
-          : "They are now off-market for other employers."
-      }`,
-    });
   };
 
   const handleDownloadResume = (e: React.MouseEvent) => {
