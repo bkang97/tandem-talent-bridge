@@ -17,6 +17,7 @@ import {
   Users,
 } from "lucide-react";
 import SponsorshipModal from "./SponsorshipModal";
+import ReservationModal from "./ReservationModal";
 
 interface SponsoredTalentInfoProps {
   onClose?: () => void;
@@ -28,6 +29,11 @@ const SponsoredTalentInfo = ({
   className,
 }: SponsoredTalentInfoProps) => {
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
+  const [showReservationModal, setShowReservationModal] = useState(false);
+
+  const handleScheduleConsultation = () => {
+    setShowReservationModal(true);
+  };
 
   return (
     <>
@@ -130,6 +136,19 @@ const SponsoredTalentInfo = ({
         <SponsorshipModal
           isOpen={showSponsorshipModal}
           onClose={() => setShowSponsorshipModal(false)}
+          onScheduleConsultation={handleScheduleConsultation}
+        />
+      )}
+
+      {showReservationModal && (
+        <ReservationModal
+          isOpen={showReservationModal}
+          onClose={() => setShowReservationModal(false)}
+          reservedStudents={[]}
+          bulkReservation={true}
+          bulkAmount={5}
+          availableActiveCount={3}
+          totalHiringNeed={5}
         />
       )}
     </>

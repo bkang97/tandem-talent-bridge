@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Dialog,
@@ -19,9 +20,21 @@ import {
 interface SponsorshipModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onScheduleConsultation?: () => void;
 }
 
-const SponsorshipModal = ({ isOpen, onClose }: SponsorshipModalProps) => {
+const SponsorshipModal = ({ 
+  isOpen, 
+  onClose, 
+  onScheduleConsultation 
+}: SponsorshipModalProps) => {
+  const handleConsultationClick = () => {
+    onClose();
+    if (onScheduleConsultation) {
+      onScheduleConsultation();
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="p-0 overflow-y-auto max-h-[90%] bg-white">
@@ -153,7 +166,9 @@ const SponsorshipModal = ({ isOpen, onClose }: SponsorshipModalProps) => {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-col gap-3">
-                <Button className="flex-1">Schedule a Consultation</Button>
+                <Button className="flex-1" onClick={handleConsultationClick}>
+                  Schedule a Consultation
+                </Button>
                 <Button
                   variant="outline"
                   className="flex-1 border-primary/30 text-primary/80"
