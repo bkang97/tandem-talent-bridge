@@ -387,13 +387,11 @@ const TalentRequestPage = () => {
                   Access to SkillTrade's current and prospective talent pool
                 </p>
               </div>
-              <div>
-                <Badge className="bg-black text-white border-black/20 mr-2">
-                  Powered by Tandem
-                </Badge>
+              <div className="gap-2 flex mt-1">
                 <Badge variant="outline" className="border-black text-black">
                   Spring 2025 Cohort
                 </Badge>
+                <Badge className="">Powered by Tandem</Badge>
               </div>
             </div>
           </div>
