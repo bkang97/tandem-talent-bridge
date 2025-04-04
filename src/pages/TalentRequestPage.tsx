@@ -165,12 +165,11 @@ const generateProspectiveStudents = () => {
     "Bootcamp Graduate",
   ];
   const programs = [
-    "Cybersecurity Analyst",
-    "Cloud Solutions Architect",
-    "Data Analytics",
-    "Full Stack Developer",
-    "UX/UI Designer",
-    "IT Project Management",
+    "Certified Medical Assistant",
+    "Surgical Technologist",
+    "Sterile Processing Technician",
+    "Patient Care Technician",
+    "Medical Administrative Assistant",
   ];
 
   const availabilityOptions = [
@@ -180,63 +179,54 @@ const generateProspectiveStudents = () => {
   ];
 
   const skillSets = {
-    "Cybersecurity Analyst": [
-      "Security Fundamentals",
-      "Network Basics",
-      "Programming Knowledge",
-      "Problem Solving",
-      "Technical Aptitude",
+    "Certified Medical Assistant": [
+      "Patient Care",
+      "Vital Signs",
+      "Medical Terminology",
+      "EHR Systems",
+      "Clinical Procedures",
     ],
-    "Cloud Solutions Architect": [
-      "IT Background",
-      "Problem Solving",
-      "Technical Curiosity",
-      "Systems Thinking",
-      "Project Management",
+    "Surgical Technologist": [
+      "Surgical Procedures",
+      "Sterilization",
+      "Medical Instruments",
+      "Perioperative Care",
+      "Aseptic Technique",
     ],
-    "Data Analytics": [
-      "Mathematical Aptitude",
-      "Excel",
-      "Critical Thinking",
-      "Communication",
-      "Problem Solving",
+    "Sterile Processing Technician": [
+      "Sterilization Techniques",
+      "Decontamination",
+      "Inventory Management",
+      "Medical Instruments",
+      "Quality Control",
     ],
-    "Full Stack Developer": [
-      "HTML/CSS Basics",
-      "JavaScript Fundamentals",
-      "Logical Thinking",
-      "Problem Solving",
-      "Self-Learning",
+    "Patient Care Technician": [
+      "Basic Care",
+      "Vital Monitoring",
+      "Patient Mobility",
+      "Medical Terminology",
+      "Phlebotomy",
     ],
-    "UX/UI Designer": [
-      "Visual Design Skills",
-      "Creativity",
-      "User Empathy",
-      "Communication",
-      "Problem Solving",
-    ],
-    "IT Project Management": [
-      "Organization Skills",
-      "Communication",
-      "Leadership",
-      "Technical Background",
-      "Strategic Thinking",
+    "Medical Administrative Assistant": [
+      "Medical Office",
+      "Medical Billing",
+      "Medical Coding",
+      "Patient Scheduling",
+      "Medical Transcription",
     ],
   };
 
   const aboutTexts = {
-    "Cybersecurity Analyst":
-      "Prospective cybersecurity professional with strong fundamentals and enthusiasm for network security. Ready to develop skills in security monitoring and vulnerability assessment.",
-    "Cloud Solutions Architect":
-      "Aspiring cloud professional with technical background and interest in cloud infrastructure. Eager to learn cloud platforms and best practices.",
-    "Data Analytics":
-      "Future data analyst with strong analytical thinking and basic data manipulation skills. Ready to develop expertise in business intelligence tools and statistical analysis.",
-    "Full Stack Developer":
-      "Prospective developer with coding fundamentals and eagerness to build web applications. Excited to enhance programming skills and learn modern frameworks.",
-    "UX/UI Designer":
-      "Creative individual with design foundation looking to specialize in user experience. Motivated to learn user research methods and design systems.",
-    "IT Project Management":
-      "Organized professional with leadership skills seeking to transition into IT project management. Ready to learn agile methodologies and technical project coordination.",
+    "Certified Medical Assistant":
+      "Prospective medical assistant with strong foundations in patient care and clinical procedures. Ready to provide both administrative and clinical support in healthcare settings.",
+    "Surgical Technologist":
+      "Future surgical technologist with interest in operating room procedures and sterile techniques. Eager to assist surgeons and prepare for surgical procedures.",
+    "Sterile Processing Technician":
+      "Prospective sterile processing technician with attention to detail and knowledge of basic sterilization concepts. Ready to ensure medical instruments are properly prepared.",
+    "Patient Care Technician":
+      "Aspiring patient care technician with compassion for patients and fundamental care skills. Ready to provide basic care under nursing supervision.",
+    "Medical Administrative Assistant":
+      "Future medical administrative assistant with organizational skills and customer service experience. Ready to manage front office operations in healthcare settings.",
   };
 
   const students = [];
@@ -376,7 +366,7 @@ const TalentRequestPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-black/5 border-b border-black/20">
+      <div className="bg-primary/5 border-b border-primary/20">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3 font-bold text-xl">
@@ -388,18 +378,18 @@ const TalentRequestPage = () => {
             </div>
             <div className="mt-2 md:mt-0">
               <div>
-                <h2 className="text-black font-semibold">
+                <h2 className="text-primary font-semibold">
                   Employer Talent Portal
                 </h2>
-                <p className="text-sm text-black/80">
+                <p className="text-sm text-primary/80">
                   Access to SkillTrade's current and prospective talent pool
                 </p>
               </div>
               <div>
-                <Badge className="bg-black text-white border-black/20 mr-2">
+                <Badge className="bg-primary text-white border-primary/20 mr-2">
                   Powered by Tandem
                 </Badge>
-                <Badge variant="outline" className="border-black text-black">
+                <Badge variant="outline" className="border-primary text-primary">
                   Spring 2025 Cohort
                 </Badge>
               </div>
@@ -410,7 +400,7 @@ const TalentRequestPage = () => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-black">
+          <h1 className="text-3xl font-bold text-primary">
             SkillTrade Talent Placement
           </h1>
           <p className="text-gray-600 mt-1">
