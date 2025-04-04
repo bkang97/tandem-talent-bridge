@@ -59,7 +59,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className={`bg-white rounded-lg border ${student.isReserved ? 'border-gray-300' : 'border-gray-200'} ${student.isProspective ? 'border-l-4 border-l-accent' : ''} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
+        <div className={`bg-white rounded-lg border ${student.isReserved && !student.isProspective ? 'border-gray-300' : 'border-gray-200'} ${student.isProspective ? 'border-l-4 border-l-accent' : ''} overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
@@ -84,12 +84,19 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                   </div>
                 </div>
               </div>
-              {!student.isProspective && (
-                <Badge 
-                  variant={student.isReserved ? "outline" : "secondary"} 
-                  className={`${student.isReserved ? 'border-gray-300 text-gray-700 bg-gray-100' : 'bg-emerald-100 text-emerald-700 border-emerald-200'}`}
-                >
-                  {student.isReserved ? 'Off-market' : `Available ${student.availableDate}`}
+              {!student.isProspective ? (
+                student.isReserved ? (
+                  <Badge variant="outline" className="border-gray-300 text-gray-700 bg-gray-100">
+                    Off-market
+                  </Badge>
+                ) : (
+                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 border-emerald-200">
+                    Available {student.availableDate}
+                  </Badge>
+                )
+              ) : (
+                <Badge variant="outline" className="bg-accent/5 text-accent border-accent/20">
+                  {student.availableDate}
                 </Badge>
               )}
             </div>
@@ -140,13 +147,14 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               )}
             </div>
             
-            <div className={`flex ${student.isReserved ? 'justify-end' : 'justify-between'} gap-2`}>
-              {!student.isReserved && (
+            <div className={`flex ${student.isReserved && !student.isProspective ? 'justify-end' : 'justify-between'} gap-2`}>
+              {(student.isProspective || !student.isReserved) && (
                 <Button 
                   variant={student.isProspective ? "outline" : "default"}
                   size="sm" 
                   className={`flex-grow ${student.isProspective ? 'border-accent text-accent hover:bg-accent/10' : ''}`}
                   onClick={handleReserve}
+                  disabled={!student.isProspective && student.isReserved}
                 >
                   {student.isProspective ? 'Sponsor' : 'Reserve'}
                 </Button>
@@ -156,7 +164,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                 size="icon" 
                 className="h-8 w-8" 
                 onClick={handleDownloadResume}
-                disabled={student.isReserved}
+                disabled={student.isReserved && !student.isProspective}
               >
                 <Download size={14} />
               </Button>
@@ -185,17 +193,15 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                 </AvatarFallback>
               </Avatar>
               
-              {student.isReserved ? (
+              {student.isReserved && !student.isProspective ? (
                 <div className="w-full">
                   <div className="mb-4 py-2 px-4 bg-gray-100 text-gray-700 rounded-md text-center font-medium">
-                    {student.isProspective ? 'Sponsored Candidate' : 'Off-market Candidate'}
+                    Off-market Candidate
                   </div>
-                  {!student.isProspective && (
-                    <Button variant="secondary" className="w-full" onClick={handleDownloadResume}>
-                      <Download size={16} className="mr-2" />
-                      Download Resume
-                    </Button>
-                  )}
+                  <Button variant="secondary" className="w-full" onClick={handleDownloadResume}>
+                    <Download size={16} className="mr-2" />
+                    Download Resume
+                  </Button>
                 </div>
               ) : (
                 <div className="w-full space-y-3">
@@ -203,6 +209,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                     className={`w-full ${student.isProspective ? 'border-accent bg-white text-accent hover:bg-accent/10' : ''}`}
                     variant={student.isProspective ? "outline" : "default"}
                     onClick={handleReserve}
+                    disabled={!student.isProspective && student.isReserved}
                   >
                     {student.isProspective ? 'Sponsor This Candidate' : 'Reserve This Candidate'}
                   </Button>

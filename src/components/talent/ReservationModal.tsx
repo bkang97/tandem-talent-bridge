@@ -189,13 +189,13 @@ const ReservationModal = ({
               />
             </div>
             
-            {bulkReservation && (
+            {(bulkReservation || reservedStudents.length > 0) && (
               <>
                 <Separator />
                 
                 <div>
                   <h3 className="text-base font-medium mb-3">Talent Allocation</h3>
-                  <Alert variant="outline" className="bg-blue-50 border-blue-200 mb-4">
+                  <Alert className="bg-blue-50 border-blue-200 mb-4">
                     <Info className="h-4 w-4 text-blue-500" />
                     <AlertDescription className="text-sm text-gray-700">
                       Based on your total hiring need of {totalStudents} candidates, you can reserve up to {availableActiveCount} current students and sponsor the remaining as prospective candidates.

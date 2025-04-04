@@ -244,20 +244,50 @@ const TalentRequestPage = () => {
   
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <div className="bg-gradient-to-r from-purple-700 to-purple-900 text-white p-4">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <img src="/placeholder.svg" alt="Skilltrade" className="h-8 w-8 bg-white rounded" />
+              <span className="font-bold text-xl">SkillTrade</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <a href="#" className="text-white/80 hover:text-white text-sm">About</a>
+              <a href="#" className="text-white/80 hover:text-white text-sm">Programs</a>
+              <a href="#" className="text-white/80 hover:text-white text-sm">For Employers</a>
+              <a href="#" className="text-white/80 hover:text-white text-sm">Apply Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="bg-purple-100 border-b border-purple-200">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-purple-900 font-semibold">Employer Talent Portal</h2>
+              <p className="text-sm text-purple-700">Access to SkillTrade's current and prospective talent pool</p>
+            </div>
+            <div className="mt-2 md:mt-0">
+              <Badge className="bg-purple-200 text-purple-800 border-purple-300 mr-2">Powered by SkillTrade</Badge>
+              <Badge variant="outline" className="border-purple-300 text-purple-800">Spring 2025 Cohort</Badge>
+            </div>
+          </div>
+        </div>
+      </div>
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Talent Placement</h1>
+          <h1 className="text-3xl font-bold text-purple-900">SkillTrade Talent Placement</h1>
           <p className="text-gray-600 mt-1">
-            Connect with qualified candidates from our academic partners who are ready to be hired immediately or sponsored for training.
+            Connect with qualified candidates from SkillTrade who are ready to be hired immediately or sponsored for training.
           </p>
         </div>
         
-        <Alert className="mb-6 bg-blue-50 border-blue-200">
-          <Info className="h-4 w-4" />
-          <AlertTitle>Talent Pipeline Solutions</AlertTitle>
-          <AlertDescription>
+        <Alert className="mb-6 bg-purple-50 border-purple-200">
+          <Info className="h-4 w-4 text-purple-500" />
+          <AlertTitle className="text-purple-800">SkillTrade Talent Pipeline Solutions</AlertTitle>
+          <AlertDescription className="text-purple-700">
             Reserve current candidates to take them off-market, or sponsor prospective candidates to build your future talent pipeline through our Tandem Sponsorship program.
           </AlertDescription>
         </Alert>
@@ -272,9 +302,9 @@ const TalentRequestPage = () => {
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="lg:w-3/4">
             <Tabs defaultValue="browse" className="space-y-6">
-              <TabsList className="w-full grid grid-cols-2">
-                <TabsTrigger value="browse">Browse Candidates</TabsTrigger>
-                <TabsTrigger value="stats">Market Analysis</TabsTrigger>
+              <TabsList className="w-full grid grid-cols-2 bg-purple-100 text-purple-700">
+                <TabsTrigger value="browse" className="data-[state=active]:bg-white data-[state=active]:text-purple-900">Browse Candidates</TabsTrigger>
+                <TabsTrigger value="stats" className="data-[state=active]:bg-white data-[state=active]:text-purple-900">Market Analysis</TabsTrigger>
               </TabsList>
               
               <TabsContent value="browse" className="space-y-6">
@@ -294,24 +324,24 @@ const TalentRequestPage = () => {
                 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
-                    <h2 className="text-xl font-semibold">Available Candidates</h2>
+                    <h2 className="text-xl font-semibold text-purple-900">Available Candidates</h2>
                     
                     <div className="flex items-center space-x-3">
-                      <div className="flex rounded-md overflow-hidden border">
+                      <div className="flex rounded-md overflow-hidden border border-purple-200">
                         <button 
-                          className={`px-3 py-1.5 text-sm ${displayMode === 'all' ? 'bg-primary text-white' : 'bg-white'}`}
+                          className={`px-3 py-1.5 text-sm ${displayMode === 'all' ? 'bg-purple-700 text-white' : 'bg-white text-purple-800'}`}
                           onClick={() => handleDisplayModeChange('all')}
                         >
                           All
                         </button>
                         <button 
-                          className={`px-3 py-1.5 text-sm ${displayMode === 'current' ? 'bg-primary text-white' : 'bg-white'}`}
+                          className={`px-3 py-1.5 text-sm ${displayMode === 'current' ? 'bg-purple-700 text-white' : 'bg-white text-purple-800'}`}
                           onClick={() => handleDisplayModeChange('current')}
                         >
                           Current
                         </button>
                         <button 
-                          className={`px-3 py-1.5 text-sm ${displayMode === 'prospective' ? 'bg-primary text-white' : 'bg-white'}`}
+                          className={`px-3 py-1.5 text-sm ${displayMode === 'prospective' ? 'bg-purple-700 text-white' : 'bg-white text-purple-800'}`}
                           onClick={() => handleDisplayModeChange('prospective')}
                         >
                           Prospective
@@ -320,7 +350,7 @@ const TalentRequestPage = () => {
                       
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="outline" size="sm" className="flex items-center gap-2">
+                          <Button variant="outline" size="sm" className="flex items-center gap-2 border-purple-200 text-purple-800">
                             <ArrowDownUp size={16} />
                             Sort: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1)}
                           </Button>
@@ -338,7 +368,7 @@ const TalentRequestPage = () => {
                         </DropdownMenuContent>
                       </DropdownMenu>
                       
-                      <Button variant="ghost" size="icon" title="Refresh results">
+                      <Button variant="ghost" size="icon" title="Refresh results" className="text-purple-800">
                         <RefreshCw size={16} />
                       </Button>
                     </div>
@@ -358,7 +388,7 @@ const TalentRequestPage = () => {
                   
                   {students.length > 8 && (
                     <div className="mt-8 text-center">
-                      <Button variant="outline">
+                      <Button variant="outline" className="border-purple-200 text-purple-800 hover:bg-purple-50">
                         Load More ({students.length - 8} Remaining)
                       </Button>
                     </div>
@@ -373,15 +403,15 @@ const TalentRequestPage = () => {
           </div>
           
           <div className="lg:w-1/4">
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <h3 className="font-medium mb-3">Recently Reserved</h3>
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-purple-100">
+              <h3 className="font-medium mb-3 text-purple-900">Recently Reserved</h3>
               <ScrollArea className="h-[300px]">
                 {students.filter(s => s.isReserved).length > 0 ? (
                   <div className="space-y-2 pr-3">
                     {students.filter(s => s.isReserved).slice(0, 8).map(student => (
                       <div key={student.id} className="p-2 border-b flex items-center justify-between">
                         <div className="flex items-center">
-                          <div className="h-8 w-8 bg-secondary/20 rounded-full flex items-center justify-center text-secondary-foreground text-xs mr-2">
+                          <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-800 text-xs mr-2">
                             {student.name.split(' ').map(n => n[0]).join('')}
                           </div>
                           <div>
@@ -391,7 +421,7 @@ const TalentRequestPage = () => {
                         </div>
                         <div className="flex items-center">
                           {student.isProspective && (
-                            <Badge variant="outline" className="mr-2 bg-accent/5 text-accent border-accent/20 text-xs">
+                            <Badge variant="outline" className="mr-2 bg-purple-50 text-purple-700 border-purple-200 text-xs">
                               Prospective
                             </Badge>
                           )}
@@ -409,15 +439,39 @@ const TalentRequestPage = () => {
                 )}
               </ScrollArea>
               
-              <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                <h3 className="font-medium mb-2">Need more talent?</h3>
-                <p className="text-sm text-gray-600 mb-3">
+              <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                <h3 className="font-medium mb-2 text-purple-900">Need more talent?</h3>
+                <p className="text-sm text-purple-700 mb-3">
                   Through our Tandem Sponsorship program, you can create a pipeline of candidates tailored to your specific needs.
                 </p>
-                <Button variant="outline" className="w-full">Learn About Sponsorship</Button>
+                <Button variant="outline" className="w-full border-purple-300 text-purple-800 hover:bg-purple-100">Learn About Sponsorship</Button>
+              </div>
+              
+              <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                <h3 className="font-medium mb-2 text-purple-900">SkillTrade Talent Success</h3>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <div className="font-semibold text-purple-800">96%</div>
+                    <div className="text-purple-700">Placement rate</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-purple-800">94%</div>
+                    <div className="text-purple-700">Employer satisfaction</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-purple-800">92%</div>
+                    <div className="text-purple-700">1-year retention rate</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+        
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-500">
+            © 2025 SkillTrade. This talent portal is provided exclusively for SkillTrade employer partners.
+          </p>
         </div>
       </main>
       
