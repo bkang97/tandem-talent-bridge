@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 import {
   Bar,
   BarChart,
@@ -9,47 +8,47 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from 'recharts';
+} from "recharts";
 
 // Enhanced data showing the supply/demand gap with more fields
 const supplyDemandData = [
   {
-    field: 'Cybersecurity',
+    field: "Cybersecurity",
     current: 35,
     prospective: 25,
     demand: 100,
     gap: 40,
   },
   {
-    field: 'Cloud Computing',
+    field: "Cloud Computing",
     current: 42,
     prospective: 22,
     demand: 85,
     gap: 21,
   },
   {
-    field: 'Data Analytics',
+    field: "Data Analytics",
     current: 50,
     prospective: 18,
     demand: 80,
     gap: 12,
   },
   {
-    field: 'Software Dev',
+    field: "Software Dev",
     current: 60,
     prospective: 30,
     demand: 95,
     gap: 5,
   },
   {
-    field: 'UX/UI Design',
+    field: "UX/UI Design",
     current: 28,
     prospective: 20,
     demand: 60,
     gap: 12,
   },
   {
-    field: 'IT Project Mgmt',
+    field: "IT Project Mgmt",
     current: 32,
     prospective: 15,
     demand: 55,
@@ -59,7 +58,7 @@ const supplyDemandData = [
 
 const SupplyDemandChart = () => {
   return (
-    <div className="w-full h-[400px] min-h-[300px]">
+    <div className="w-full h-[400px] min-h-[300px] mb-4">
       <h4 className="text-sm font-medium mb-2">Tech Talent Supply vs Demand</h4>
       <div className="h-[calc(100%-30px)]">
         <ResponsiveContainer width="100%" height="100%">
@@ -72,36 +71,60 @@ const SupplyDemandChart = () => {
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis dataKey="field" tick={{ fontSize: 12 }} />
             <YAxis tick={{ fontSize: 12 }} />
-            <Tooltip 
-              contentStyle={{ borderRadius: '8px', border: '1px solid #eee' }} 
+            <Tooltip
+              contentStyle={{ borderRadius: "8px", border: "1px solid #eee" }}
               formatter={(value, name) => {
-                const formattedName = 
-                  name === 'current' ? 'Current Talent' : 
-                  name === 'prospective' ? 'Prospective Talent' : 
-                  name === 'demand' ? 'Market Demand' : 
-                  'Remaining Gap';
+                const formattedName =
+                  name === "current"
+                    ? "Current Talent"
+                    : name === "prospective"
+                    ? "Prospective Talent"
+                    : name === "demand"
+                    ? "Market Demand"
+                    : "Remaining Gap";
                 return [value, formattedName];
               }}
             />
-            <Legend 
+            <Legend
               formatter={(value) => {
-                return value === 'current' ? 'Current Talent' : 
-                      value === 'prospective' ? 'Prospective Talent' : 
-                      value === 'demand' ? 'Market Demand' : 
-                      'Remaining Gap';
+                return value === "current"
+                  ? "Current Talent"
+                  : value === "prospective"
+                  ? "Prospective Talent"
+                  : value === "demand"
+                  ? "Market Demand"
+                  : "Remaining Gap";
               }}
               margin={{ top: 0, left: 0, right: 0, bottom: 10 }}
               wrapperStyle={{ paddingTop: 15 }}
             />
-            <Bar dataKey="current" fill="#93C5FD" radius={[4, 4, 0, 0]} stackId="a" />
-            <Bar dataKey="prospective" fill="#C4B5FD" radius={[4, 4, 0, 0]} stackId="a" />
-            <Bar dataKey="gap" fill="#FED7AA" radius={[4, 4, 0, 0]} stackId="a" />
-            <Bar dataKey="demand" fill="transparent" stroke="#1E3A8A" strokeWidth={2} strokeDasharray="5 5" />
+            <Bar
+              dataKey="current"
+              fill="#93C5FD"
+              radius={[4, 4, 0, 0]}
+              stackId="a"
+            />
+            <Bar
+              dataKey="prospective"
+              fill="#C4B5FD"
+              radius={[4, 4, 0, 0]}
+              stackId="a"
+            />
+            <Bar
+              dataKey="gap"
+              fill="#1E3A8A10"
+              stroke="#1E3A8A"
+              strokeWidth={2}
+              strokeDasharray="5 5"
+              radius={[4, 4, 0, 0]}
+              stackId="a"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
       <p className="text-xs text-gray-500 mt-1 text-center">
-        Even with current and prospective talent, significant gaps remain in key tech fields
+        Even with current and prospective talent, significant gaps remain in key
+        tech fields
       </p>
     </div>
   );
