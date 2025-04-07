@@ -14,15 +14,13 @@ import {
   Check,
   Award,
 } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
 import TalentFilters from "@/components/talent/TalentFilters";
 import TalentCard from "@/components/talent/TalentCard";
 import ReservationModal from "@/components/talent/ReservationModal";
 import SupplyDemandChart from "@/components/talent/SupplyDemandChart";
-import TalentNeeds from "@/components/talent/TalentNeeds";
 import MarketAnalysis from "@/components/talent/MarketAnalysis";
-import SponsoredTalentInfo from "@/components/talent/SponsoredTalentInfo";
 import SponsorshipModal from "@/components/talent/SponsorshipModal";
+import AccessMoreTalentTooltip from "@/components/talent/AccessMoreTalentTooltip";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -373,6 +371,7 @@ const TalentRequestPage = () => {
   });
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
+  const [showAccessTooltip, setShowAccessTooltip] = useState(true);
 
   const getFilteredStudents = () => {
     let students = [];
@@ -496,12 +495,25 @@ const TalentRequestPage = () => {
   ];
 
   useEffect(() => {
+    const tooltipTimer = setTimeout(() => {
+      setShowAccessTooltip(false);
+    }, 20000);
+
     const interval = setInterval(() => {
       setCurrentActivityIndex((prev) => (prev + 1) % recentActivity.length);
-    }, 8000); // Rotate every 3 seconds
+    }, 3000); // Rotate every 3 seconds
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(tooltipTimer);
+    };
   }, [recentActivity.length]);
+
+  useEffect(() => {
+    if (displayMode === "prospective") {
+      setShowAccessTooltip(false);
+    }
+  }, [displayMode]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -538,7 +550,6 @@ const TalentRequestPage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Left section - Hiring Needs Form */}
           <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
             <div className="bg-primary/5 border-b border-primary/10 px-6 py-4 flex items-center gap-2">
               <Users size={18} className="text-primary" />
@@ -902,7 +913,6 @@ const TalentRequestPage = () => {
             </div>
           </div>
 
-          {/* Right section - Sponsored Talent Info */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden h-full">
               <div className="bg-primary/5 border-b border-primary/10 px-6 py-4 flex items-center justify-between">
@@ -1005,7 +1015,6 @@ const TalentRequestPage = () => {
           </div>
         </div>
 
-        {/* View Students Section */}
         <div className="flex flex-col lg:flex-row gap-6" id="view-students">
           <div className="lg:w-3/4">
             <div className="flex items-center justify-between mb-4">
@@ -1085,7 +1094,8 @@ const TalentRequestPage = () => {
                     </div>
 
                     <div className="flex items-center space-x-3">
-                      <div className="border rounded-md overflow-hidden flex">
+                      <div className="border rounded-md overflow-hidden flex relative">
+                        {showAccessTooltip && <AccessMoreTalentTooltip />}
                         <button
                           className={`px-3 py-1.5 text-sm ${
                             displayMode === "current"
@@ -1376,8 +1386,8 @@ const TalentRequestPage = () => {
         <ReservationModal
           isOpen={showReservationModal}
           onClose={() => setShowReservationModal(false)}
-          reservedStudents={[]}
-          bulkReservation={true}
+          reservedStudents={selectedStudents}
+          bulkReservation={bulkReservation}
           bulkAmount={hiringNeeds.neededCandidates}
           availableActiveCount={Math.min(
             currentAvailableCount,

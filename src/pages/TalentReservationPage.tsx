@@ -1,6 +1,6 @@
+
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,6 +34,8 @@ const TalentReservationPage = () => {
       email: "",
       phone: "",
       scheduledDate: "",
+      activeStudentCount: 0,
+      prospectiveCount: 0,
     },
     bulkReservation: false,
   };
@@ -52,8 +54,8 @@ const TalentReservationPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-primary to-primary/80 text-white p-4">
-        <div className="container mx-auto">
+      <div className="bg-white border-b">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
@@ -61,27 +63,19 @@ const TalentReservationPage = () => {
                 alt="Skilltrade"
                 className="h-8"
               />
-              <span className="font-bold text-xl">SkillTrade</span>
+              <div className="h-6 w-px bg-gray-300"></div>
+              <h2 className="text-black font-semibold">
+                Employer Talent Portal
+              </h2>
             </div>
-            <div className="flex items-center gap-3">
-              <a href="#" className="text-white/80 hover:text-white text-sm">
-                About
-              </a>
-              <a href="#" className="text-white/80 hover:text-white text-sm">
-                Programs
-              </a>
-              <a href="#" className="text-white/80 hover:text-white text-sm">
-                For Employers
-              </a>
-              <a href="#" className="text-white/80 hover:text-white text-sm">
-                Apply Now
-              </a>
-            </div>
+            <Badge variant="outline" className="border-black/20 text-black">
+              Spring 2025 Cohort
+            </Badge>
           </div>
         </div>
       </div>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2 text-primary">
             Reservation Confirmation
@@ -113,8 +107,9 @@ const TalentReservationPage = () => {
                     variant="outline"
                     size="sm"
                     onClick={handleDownloadReceipt}
+                    className="gap-1.5"
                   >
-                    <Download size={16} className="mr-1" /> Receipt
+                    <Download size={16} /> Receipt
                   </Button>
                 </div>
               </CardHeader>
@@ -125,42 +120,30 @@ const TalentReservationPage = () => {
                     <h3 className="font-medium text-lg mb-2">
                       Reservation Details
                     </h3>
-                    <div className="rounded-md bg-gray-50 p-4">
-                      <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <dt className="text-sm text-gray-500">
-                            Company Name
-                          </dt>
-                          <dd className="font-medium">
-                            {callDetails.companyName}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="text-sm text-gray-500">
-                            Contact Person
-                          </dt>
-                          <dd className="font-medium">
-                            {callDetails.contactName}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="text-sm text-gray-500">Email</dt>
-                          <dd className="font-medium">{callDetails.email}</dd>
-                        </div>
-                        <div>
-                          <dt className="text-sm text-gray-500">Phone</dt>
-                          <dd className="font-medium">{callDetails.phone}</dd>
-                        </div>
-                        <div className="md:col-span-2">
-                          <dt className="text-sm text-gray-500">
-                            Meeting Scheduled
-                          </dt>
-                          <dd className="font-medium flex items-center gap-1">
-                            <CalendarClock size={16} />
-                            {callDetails.scheduledDate}
-                          </dd>
-                        </div>
-                      </dl>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-5 rounded-lg">
+                      <div>
+                        <p className="text-sm text-gray-500">Company Name</p>
+                        <p className="font-medium">{callDetails.companyName}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Contact Person</p>
+                        <p className="font-medium">{callDetails.contactName}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Email</p>
+                        <p className="font-medium">{callDetails.email}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Phone</p>
+                        <p className="font-medium">{callDetails.phone}</p>
+                      </div>
+                      <div className="md:col-span-2">
+                        <p className="text-sm text-gray-500">Meeting Scheduled</p>
+                        <p className="font-medium flex items-center gap-1.5">
+                          <CalendarClock size={16} />
+                          {callDetails.scheduledDate}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
@@ -169,29 +152,29 @@ const TalentReservationPage = () => {
                       <h3 className="font-medium text-lg mb-2">
                         Talent Allocation
                       </h3>
-                      <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div className="p-5 bg-gray-50 rounded-lg">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                           <div>
                             <div className="text-sm text-gray-500">
                               Current Students
                             </div>
-                            <div className="font-medium text-lg">
-                              {callDetails.activeStudentCount}
+                            <div className="font-medium text-2xl">
+                              {callDetails.activeStudentCount || 0}
                             </div>
                           </div>
                           <div>
                             <div className="text-sm text-gray-500">
                               Prospective Students
                             </div>
-                            <div className="font-medium text-lg">
-                              {callDetails.prospectiveCount}
+                            <div className="font-medium text-2xl">
+                              {callDetails.prospectiveCount || 0}
                             </div>
                           </div>
                         </div>
 
-                        <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden mb-1">
+                        <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden mb-1.5">
                           <div
-                            className="h-2 bg-primary"
+                            className="h-2.5 bg-primary"
                             style={{
                               width: `${
                                 (callDetails.activeStudentCount /
@@ -203,7 +186,7 @@ const TalentReservationPage = () => {
                           ></div>
                         </div>
 
-                        <div className="flex justify-between text-xs text-gray-500 mb-4">
+                        <div className="flex justify-between text-xs text-gray-500 mb-5">
                           <span>
                             Current:{" "}
                             {Math.round(
@@ -226,11 +209,11 @@ const TalentReservationPage = () => {
                           </span>
                         </div>
 
-                        <div className="text-sm text-center text-gray-700">
+                        <div className="text-center font-medium py-1 bg-gray-100 rounded-md">
                           Total:{" "}
-                          <span className="font-medium">
-                            {callDetails.activeStudentCount +
-                              callDetails.prospectiveCount}{" "}
+                          <span className="text-primary">
+                            {(callDetails.activeStudentCount || 0) +
+                              (callDetails.prospectiveCount || 0)}{" "}
                             candidates
                           </span>
                         </div>
@@ -284,10 +267,13 @@ const TalentReservationPage = () => {
                   )}
 
                   <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-                    <h4 className="font-semibold mb-2">What happens next?</h4>
-                    <p className="text-gray-700 text-sm">
+                    <h4 className="font-medium mb-2 flex items-center gap-1.5">
+                      <CalendarClock size={16} className="text-primary" />
+                      What happens next?
+                    </h4>
+                    <p className="text-gray-700">
                       We've scheduled a call with our talent team on
-                      <span className="font-semibold">
+                      <span className="font-medium">
                         {" "}
                         {callDetails.scheduledDate}
                       </span>
@@ -298,6 +284,20 @@ const TalentReservationPage = () => {
                   </div>
                 </div>
               </CardContent>
+
+              <CardFooter className="flex justify-between border-t pt-4">
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/talent-request')}
+                  className="gap-1.5"
+                >
+                  Browse More Talent
+                </Button>
+                <Button onClick={() => window.print()} className="gap-1.5">
+                  <Download size={16} />
+                  Save Confirmation
+                </Button>
+              </CardFooter>
             </Card>
           </div>
 
