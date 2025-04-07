@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Info, ArrowDownUp, RefreshCw, Search, Users, Filter, CalendarClock, BarChart } from "lucide-react";
+import {
+  Info,
+  ArrowDownUp,
+  RefreshCw,
+  Search,
+  Users,
+  Filter,
+  CalendarClock,
+  BarChart,
+  TrendingUp,
+  Star,
+  Building,
+  Check,
+  Award,
+} from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import TalentFilters from "@/components/talent/TalentFilters";
 import TalentCard from "@/components/talent/TalentCard";
@@ -260,6 +274,83 @@ const generateProspectiveStudents = () => {
   return students;
 };
 
+const programInfo = {
+  "certified-medical-assistant": {
+    title: "Certified Medical Assistant",
+    description:
+      "Learn essential clinical and administrative skills to assist physicians in healthcare settings.",
+    duration: "20 Weeks",
+    certification: "CCMA",
+    format: "Hybrid & Online",
+    classes: [
+      "Foundations of Medical Assisting",
+      "Clinical Procedures",
+      "Pharmacology",
+      "Medical Terminology",
+      "Healthcare Law and Ethics",
+    ],
+    companies: [
+      "Mayo Clinic",
+      "Cleveland Clinic",
+      "Kaiser Permanente",
+      "Johns Hopkins Medicine",
+      "Ascension",
+    ],
+  },
+  "surgical-technologist": {
+    title: "Surgical Technologist",
+    description:
+      "Prepare for a career assisting surgeons in the operating room with proper techniques and protocols.",
+    duration: "24 Weeks",
+    certification: "CST",
+    format: "Hybrid",
+    classes: [
+      "Surgical Procedures",
+      "Sterilization Techniques",
+      "Anatomy & Physiology",
+      "Surgical Pharmacology",
+      "Operating Room Protocols",
+    ],
+    companies: [
+      "HCA Healthcare",
+      "Tenet Healthcare",
+      "Intermountain Healthcare",
+      "NYU Langone",
+      "UPMC",
+    ],
+  },
+  "sterile-processing": {
+    title: "Sterile Processing Technician",
+    description:
+      "Learn to clean, sterilize, and prepare medical instruments and equipment for surgeries and procedures.",
+    duration: "16 Weeks",
+    certification: "CRCST",
+    format: "Online with Labs",
+    classes: [
+      "Decontamination Procedures",
+      "Sterilization Processes",
+      "Inventory Management",
+      "Medical Terminology",
+      "Infection Control",
+    ],
+    companies: [
+      "Steris",
+      "Hospital Corporation of America",
+      "Banner Health",
+      "AdventHealth",
+      "Providence Health",
+    ],
+  },
+};
+
+const jobRoleMap = {
+  "medical-assistant": "certified-medical-assistant",
+  "surgical-tech": "surgical-technologist",
+  "sterile-processing-tech": "sterile-processing",
+  "patient-care-tech": "certified-medical-assistant",
+  "medical-administrative-assistant": "certified-medical-assistant",
+};
+
 const TalentRequestPage = () => {
   const [currentStudents, setCurrentStudents] = useState(
     generateMockStudents()
@@ -380,35 +471,35 @@ const TalentRequestPage = () => {
     {
       company: "TechCorp",
       action: "reserved 2 candidates",
-      time: "5 min ago"
+      time: "5 min ago",
     },
     {
       company: "MedLabs",
       action: "sponsored 5 candidates",
-      time: "12 min ago"
+      time: "12 min ago",
     },
     {
       company: "FinanceHub",
       action: "viewed this pool",
-      time: "just now"
+      time: "just now",
     },
     {
       company: "Healthcare Partners",
       action: "scheduled a consultation",
-      time: "23 min ago"
+      time: "23 min ago",
     },
     {
       company: "City Medical",
       action: "reserved 8 candidates",
-      time: "1 hour ago"
-    }
+      time: "1 hour ago",
+    },
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentActivityIndex(prev => (prev + 1) % recentActivity.length);
-    }, 3000); // Rotate every 3 seconds
-    
+      setCurrentActivityIndex((prev) => (prev + 1) % recentActivity.length);
+    }, 8000); // Rotate every 3 seconds
+
     return () => clearInterval(interval);
   }, [recentActivity.length]);
 
@@ -441,7 +532,8 @@ const TalentRequestPage = () => {
             SkillTrade Talent Placement
           </h1>
           <p className="text-gray-600 mt-1">
-            Connect with qualified candidates who are ready to be hired immediately or sponsored for training.
+            Connect with qualified candidates who are ready to be hired
+            immediately or sponsored for training.
           </p>
         </div>
 
@@ -450,54 +542,101 @@ const TalentRequestPage = () => {
           <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
             <div className="bg-primary/5 border-b border-primary/10 px-6 py-4 flex items-center gap-2">
               <Users size={18} className="text-primary" />
-              <h2 className="text-lg font-semibold">Define Your Hiring Needs</h2>
+              <h2 className="text-lg font-semibold">
+                Define Your Hiring Needs
+              </h2>
             </div>
-            
+
             <div className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium mb-1 block">Location</label>
-                    <Input 
-                      value={hiringNeeds.location} 
-                      onChange={(e) => setHiringNeeds({...hiringNeeds, location: e.target.value})}
-                      placeholder="e.g., Dallas, TX" 
+                    <label className="text-sm font-medium mb-1 block">
+                      Location
+                    </label>
+                    <Input
+                      value={hiringNeeds.location}
+                      onChange={(e) =>
+                        setHiringNeeds({
+                          ...hiringNeeds,
+                          location: e.target.value,
+                        })
+                      }
+                      placeholder="e.g., Dallas, TX"
                     />
                   </div>
-                  
+
                   <div>
-                    <label className="text-sm font-medium mb-1 block">Job Role</label>
+                    <label className="text-sm font-medium mb-1 block">
+                      Job Role
+                    </label>
                     <div className="relative">
-                      <select 
+                      <select
                         className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md appearance-none"
                         value={hiringNeeds.skillSet}
-                        onChange={(e) => setHiringNeeds({...hiringNeeds, skillSet: e.target.value})}
+                        onChange={(e) =>
+                          setHiringNeeds({
+                            ...hiringNeeds,
+                            skillSet: e.target.value,
+                          })
+                        }
                       >
-                        <option value="medical-assistant">Medical Assistant</option>
-                        <option value="surgical-tech">Surgical Technologist</option>
-                        <option value="sterile-processing-tech">Sterile Processing Technician</option>
-                        <option value="patient-care-tech">Patient Care Technician</option>
-                        <option value="medical-administrative-assistant">Medical Administrative Assistant</option>
+                        <option value="medical-assistant">
+                          Medical Assistant
+                        </option>
+                        <option value="surgical-tech">
+                          Surgical Technologist
+                        </option>
+                        <option value="sterile-processing-tech">
+                          Sterile Processing Technician
+                        </option>
+                        <option value="patient-care-tech">
+                          Patient Care Technician
+                        </option>
+                        <option value="medical-administrative-assistant">
+                          Medical Administrative Assistant
+                        </option>
                       </select>
                       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div>
-                    <label className="text-sm font-medium mb-1 block">Candidates Needed</label>
-                    <Input 
-                      type="number" 
+                    <label className="text-sm font-medium mb-1 block">
+                      Candidates Needed
+                    </label>
+                    <Input
+                      type="number"
                       min="1"
-                      value={hiringNeeds.neededCandidates} 
-                      onChange={(e) => setHiringNeeds({...hiringNeeds, neededCandidates: parseInt(e.target.value) || 0})}
+                      value={hiringNeeds.neededCandidates}
+                      onChange={(e) =>
+                        setHiringNeeds({
+                          ...hiringNeeds,
+                          neededCandidates: parseInt(e.target.value) || 0,
+                        })
+                      }
                       className="text-lg h-10 font-medium"
                     />
                   </div>
-                  
+
                   <div>
-                    <label className="text-sm font-medium mb-1 block">Hiring Timeframe</label>
+                    <label className="text-sm font-medium mb-1 block">
+                      Hiring Timeframe
+                    </label>
                     <div className="relative">
                       <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md appearance-none">
                         <option value="30days">Within 30 days</option>
@@ -506,69 +645,150 @@ const TalentRequestPage = () => {
                         <option value="6months">Within 6 months</option>
                       </select>
                       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
                   <h3 className="font-medium mb-3 flex items-center gap-2">
                     <CalendarClock size={16} className="text-primary" />
                     Talent Availability
                   </h3>
-                  
+
                   <div className="mb-4">
                     <div className="flex justify-between items-center text-sm">
                       <span>Total Need:</span>
-                      <span className="font-semibold">{hiringNeeds.neededCandidates} Candidates</span>
+                      <span className="font-semibold">
+                        {hiringNeeds.neededCandidates} Candidates
+                      </span>
                     </div>
-                    
+
                     <div className="h-px bg-gray-200 my-3"></div>
-                    
+
                     <div className="space-y-4">
                       <div>
                         <div className="flex justify-between items-center mb-1 text-sm">
                           <span>Current Students:</span>
-                          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                            {Math.min(currentAvailableCount, hiringNeeds.neededCandidates)} / {hiringNeeds.neededCandidates}
+                          <Badge
+                            variant="outline"
+                            className="bg-primary/10 text-primary border-primary/20"
+                          >
+                            {Math.min(
+                              currentAvailableCount,
+                              hiringNeeds.neededCandidates
+                            )}{" "}
+                            / {hiringNeeds.neededCandidates}
                           </Badge>
                         </div>
                         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-primary rounded-full"
-                            style={{ width: `${Math.min(100, (currentAvailableCount / hiringNeeds.neededCandidates) * 100)}%` }}
+                            style={{
+                              width: `${Math.min(
+                                100,
+                                (currentAvailableCount /
+                                  hiringNeeds.neededCandidates) *
+                                  100
+                              )}%`,
+                            }}
                           ></div>
                         </div>
                       </div>
-                      
+
                       <div>
                         <div className="flex justify-between items-center mb-1 text-sm">
                           <span>Prospective Needed:</span>
-                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                            {Math.max(0, hiringNeeds.neededCandidates - currentAvailableCount)} / {hiringNeeds.neededCandidates}
+                          <Badge
+                            variant="outline"
+                            className="bg-amber-50 text-amber-700 border-amber-200"
+                          >
+                            {Math.max(
+                              0,
+                              hiringNeeds.neededCandidates -
+                                currentAvailableCount
+                            )}{" "}
+                            / {hiringNeeds.neededCandidates}
                           </Badge>
                         </div>
                         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-amber-500 rounded-full"
-                            style={{ width: `${Math.min(100, Math.max(0, hiringNeeds.neededCandidates - currentAvailableCount) / hiringNeeds.neededCandidates * 100)}%` }}
+                            style={{
+                              width: `${Math.min(
+                                100,
+                                (Math.max(
+                                  0,
+                                  hiringNeeds.neededCandidates -
+                                    currentAvailableCount
+                                ) /
+                                  hiringNeeds.neededCandidates) *
+                                  100
+                              )}%`,
+                            }}
                           ></div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
+
                   {hiringNeeds.neededCandidates > currentAvailableCount && (
                     <Alert className="bg-amber-50 border-amber-200 mb-4">
                       <AlertDescription className="text-amber-800 text-xs">
-                        Only {currentAvailableCount} current students available. Consider sponsoring {hiringNeeds.neededCandidates - currentAvailableCount} prospective students.
+                        Only {currentAvailableCount} current students available.
+                        Consider sponsoring{" "}
+                        {hiringNeeds.neededCandidates - currentAvailableCount}{" "}
+                        prospective students.
                       </AlertDescription>
                     </Alert>
                   )}
-                  
-                  <Button 
-                    className="w-full" 
+
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-start gap-2">
+                      <Check
+                        size={16}
+                        className="text-primary mt-0.5 flex-shrink-0"
+                      />
+                      <span className="text-xs">
+                        Skilltrade graduates deliver immediately with real-world
+                        skills
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Check
+                        size={16}
+                        className="text-primary mt-0.5 flex-shrink-0"
+                      />
+                      <span className="text-xs">
+                        Training and certification are included in sponsorship
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Check
+                        size={16}
+                        className="text-primary mt-0.5 flex-shrink-0"
+                      />
+                      <span className="text-xs">
+                        94% employer satisfaction rate with Skilltrade graduates
+                      </span>
+                    </div>
+                  </div>
+
+                  <Button
+                    className="w-full"
                     onClick={() => {
                       const element = document.getElementById("view-students");
                       if (element) {
@@ -580,60 +800,108 @@ const TalentRequestPage = () => {
                   </Button>
                 </div>
               </div>
-              
+
               {hiringNeeds.skillSet === "medical-assistant" && (
-                <div className="mt-5 p-4 bg-primary/5 rounded-lg border border-primary/20 grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="md:col-span-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
-                        alt="Skilltrade"
-                        className="h-5"
-                      />
-                      <h3 className="font-medium text-primary">Certified Medical Assistant Program</h3>
+                <div className="mt-5 p-4 bg-primary/5 rounded-lg border border-primary/20 flex flex-col gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="md:col-span-4 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
+                          alt="Skilltrade"
+                          className="h-5"
+                        />
+                        <h3 className="font-medium text-primary">
+                          Certified Medical Assistant Program
+                        </h3>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Badge
+                          variant="outline"
+                          className="bg-primary/10 text-primary border-primary/20 text-xs"
+                        >
+                          <Users size={12} className="mr-1" />
+                          {currentAvailableCount} Current
+                        </Badge>
+                        <Badge
+                          variant="outline"
+                          className="bg-amber-50 text-amber-700 border-amber-200 text-xs"
+                        >
+                          {prospectiveAvailableCount} Prospective
+                        </Badge>
+                      </div>
                     </div>
-                    
-                    <div className="flex gap-2">
-                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-xs">
-                        <Users size={12} className="mr-1" />
-                        {currentAvailableCount} Current
-                      </Badge>
-                      <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs">
-                        {prospectiveAvailableCount} Prospective
-                      </Badge>
+
+                    <div className="md:col-span-4">
+                      <p className="text-sm text-gray-600">
+                        Learn essential clinical and administrative skills to
+                        assist physicians in healthcare settings.
+                      </p>
+                    </div>
+
+                    <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                      <div className="text-xs text-gray-500 mb-1">Duration</div>
+                      <div className="font-medium text-primary">20 Weeks</div>
+                    </div>
+
+                    <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                      <div className="text-xs text-gray-500 mb-1">
+                        Certification
+                      </div>
+                      <div className="font-medium text-primary">CCMA</div>
+                    </div>
+
+                    <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                      <div className="text-xs text-gray-500 mb-1">Format</div>
+                      <div className="font-medium text-primary">
+                        Hybrid & Online
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="md:col-span-4">
-                    <p className="text-sm text-gray-600">
-                      Learn essential clinical and administrative skills to assist physicians in healthcare settings.
-                    </p>
+                  <div className="">
+                    <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                      <Award size={16} className="text-primary" />
+                      Key Classes
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {programInfo[
+                        jobRoleMap[hiringNeeds.skillSet]
+                      ].classes.map((className, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="bg-white border-primary/20 text-primary"
+                        >
+                          {className}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                  
-                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">Duration</div>
-                    <div className="font-medium text-primary">20 Weeks</div>
-                  </div>
-                  
-                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">Certification</div>
-                    <div className="font-medium text-primary">CCMA</div>
-                  </div>
-                  
-                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">Format</div>
-                    <div className="font-medium text-primary">Hybrid & Online</div>
-                  </div>
-                  
-                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">Classes Start</div>
-                    <div className="font-medium text-primary">Monthly</div>
+
+                  <div>
+                    <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                      <Building size={16} className="text-primary" />
+                      Graduates Working At
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {programInfo[
+                        jobRoleMap[hiringNeeds.skillSet]
+                      ].companies.map((company, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-white text-xs rounded-md border border-primary/10"
+                        >
+                          {company}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
             </div>
           </div>
-          
+
           {/* Right section - Sponsored Talent Info */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden h-full">
@@ -643,72 +911,94 @@ const TalentRequestPage = () => {
                   Sponsored Talent
                 </h2>
               </div>
-              
+
               <div className="p-5">
                 <p className="text-gray-700 mb-6">
-                  Guarantee a pipeline of qualified talent by sponsoring prospective candidates 
-                  through our SkillTrade training programs.
+                  Guarantee a pipeline of qualified talent by sponsoring
+                  prospective candidates through our SkillTrade training
+                  programs.
                 </p>
-                
+
                 <div className="space-y-4 mb-6">
                   <div className="flex items-start gap-3">
                     <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-primary text-sm font-medium">1</span>
+                      <span className="text-primary text-sm font-medium">
+                        1
+                      </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Create sponsored job opportunities</p>
-                      <p className="text-xs text-gray-600">Include training sponsorship in your hiring plan</p>
+                      <p className="text-sm font-medium">
+                        Create sponsored job opportunities
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Include training sponsorship in your hiring plan
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-3">
                     <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-primary text-sm font-medium">2</span>
+                      <span className="text-primary text-sm font-medium">
+                        2
+                      </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Get matched with qualified candidates</p>
-                      <p className="text-xs text-gray-600">Pre-screened for aptitude and interest in your field</p>
+                      <p className="text-sm font-medium">
+                        Get matched with qualified candidates
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Pre-screened for aptitude and interest in your field
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-3">
                     <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-primary text-sm font-medium">3</span>
+                      <span className="text-primary text-sm font-medium">
+                        3
+                      </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Interview and select candidates</p>
-                      <p className="text-xs text-gray-600">Choose who to sponsor based on your needs</p>
+                      <p className="text-sm font-medium">
+                        Interview and select candidates
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Choose who to sponsor based on your needs
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-3">
                     <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-primary text-sm font-medium">4</span>
+                      <span className="text-primary text-sm font-medium">
+                        4
+                      </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Candidates complete training</p>
-                      <p className="text-xs text-gray-600">We train them with skills tailored to your needs</p>
+                      <p className="text-sm font-medium">
+                        Candidates complete training
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        We train them with skills tailored to your needs
+                      </p>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                     <div className="text-xs text-gray-500">Custom Pipeline</div>
                     <div className="font-medium">Tailored to your needs</div>
                   </div>
-                  
+
                   <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                     <div className="text-xs text-gray-500">Reduce Costs</div>
                     <div className="font-medium">No hiring fees</div>
                   </div>
                 </div>
-                
-                <Button 
-                  className="w-full"
-                  onClick={handleOpenSponsorshipModal}
-                >
-                  Learn About Sponsorship
+
+                <Button className="w-full" onClick={handleOpenSponsorshipModal}>
+                  Why Sponsor?
                 </Button>
               </div>
             </div>
@@ -719,9 +1009,11 @@ const TalentRequestPage = () => {
         <div className="flex flex-col lg:flex-row gap-6" id="view-students">
           <div className="lg:w-3/4">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-black">Reserve Your Talent</h2>
+              <h2 className="text-xl font-bold text-black">
+                Reserve Your Talent
+              </h2>
             </div>
-            
+
             <Tabs defaultValue="browse" className="space-y-6">
               <TabsList className="w-full grid grid-cols-2 bg-black/5 text-black/80 border border-black/20 h-11 px-1.5">
                 <TabsTrigger
@@ -743,35 +1035,55 @@ const TalentRequestPage = () => {
                   <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
                     <div className="flex items-center gap-4">
                       <div className="flex flex-col">
-                        <div className="text-2xl font-bold">{displayMode === "current" ? currentAvailableCount : displayMode === "prospective" ? prospectiveAvailableCount : totalAvailableCount}</div>
+                        <div className="text-2xl font-bold">
+                          {displayMode === "current"
+                            ? currentAvailableCount
+                            : displayMode === "prospective"
+                            ? prospectiveAvailableCount
+                            : totalAvailableCount}
+                        </div>
                         <div className="text-sm text-gray-500">Available</div>
                       </div>
-                      
+
                       <div className="h-10 w-px bg-gray-200"></div>
-                      
+
                       <div className="flex flex-col">
-                        <div className="text-2xl font-bold">{displayMode === "current" ? currentReservedCount : displayMode === "prospective" ? prospectiveReservedCount : totalReservedCount}</div>
+                        <div className="text-2xl font-bold">
+                          {displayMode === "current"
+                            ? currentReservedCount
+                            : displayMode === "prospective"
+                            ? prospectiveReservedCount
+                            : totalReservedCount}
+                        </div>
                         <div className="text-sm text-gray-500">Reserved</div>
                       </div>
-                      
+
                       <div className="h-10 w-px bg-gray-200"></div>
-                      
+
                       <div className="flex flex-col">
-                        <div className="text-2xl font-bold">{displayMode === "current" ? currentStudents.length : displayMode === "prospective" ? prospectiveStudents.length : totalCount}</div>
+                        <div className="text-2xl font-bold">
+                          {displayMode === "current"
+                            ? currentStudents.length
+                            : displayMode === "prospective"
+                            ? prospectiveStudents.length
+                            : totalCount}
+                        </div>
                         <div className="text-sm text-gray-500">Total</div>
                       </div>
-                      
+
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setShowSupplyDemandChart(!showSupplyDemandChart)}
+                        onClick={() =>
+                          setShowSupplyDemandChart(!showSupplyDemandChart)
+                        }
                         className="ml-2"
                       >
                         <BarChart size={16} className="mr-1" />
                         {showSupplyDemandChart ? "Hide Chart" : "Market Gap"}
                       </Button>
                     </div>
-                    
+
                     <div className="flex items-center space-x-3">
                       <div className="border rounded-md overflow-hidden flex">
                         <button
@@ -804,7 +1116,9 @@ const TalentRequestPage = () => {
                             className="flex items-center gap-1"
                           >
                             <ArrowDownUp size={14} />
-                            Sort: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1)}
+                            Sort:{" "}
+                            {sortOption.charAt(0).toUpperCase() +
+                              sortOption.slice(1)}
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -827,61 +1141,95 @@ const TalentRequestPage = () => {
                       </DropdownMenu>
                     </div>
                   </div>
-                  
+
                   {showSupplyDemandChart && (
                     <div className="bg-gray-50 p-4 mb-5 rounded-lg border border-gray-200">
                       <SupplyDemandChart />
                     </div>
                   )}
-                  
-                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-5 flex items-center gap-2 overflow-hidden whitespace-nowrap relative">
-                    <Users size={14} className="text-gray-700 flex-shrink-0" />
-                    <span className="text-sm font-medium text-gray-700 flex-shrink-0">Recent Activity:</span>
-                    <div className="overflow-hidden relative flex-1">
-                      {recentActivity.map((activity, index) => (
-                        <Badge 
-                          key={index}
-                          variant="outline" 
-                          className={`bg-white text-xs absolute inset-0 transition-all duration-500 w-full flex items-center ${
-                            index === currentActivityIndex 
-                              ? "opacity-100 translate-x-0" 
-                              : "opacity-0 translate-x-full"
-                          }`}
+
+                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-5 flex items-center justify-between overflow-hidden whitespace-nowrap relative">
+                    <div className="flex items-center gap-2">
+                      <Users
+                        size={14}
+                        className="text-gray-700 flex-shrink-0"
+                      />
+                      <span className="text-sm font-medium text-gray-700 flex-shrink-0">
+                        Recent Activity:
+                      </span>
+                      <div className="h-8 flex items-center">
+                        <Badge
+                          key={currentActivityIndex}
+                          variant="outline"
+                          className="bg-white border-primary/20 text-xs animate-fade-in"
                         >
-                          <span className="font-medium">{activity.company}</span> {activity.action}
-                          <span className="ml-1 text-gray-500">{activity.time}</span>
+                          <span className="font-medium">
+                            {recentActivity[currentActivityIndex].company}
+                          </span>
+                          &nbsp;
+                          {recentActivity[currentActivityIndex].action}
+                          <span className="ml-1 text-gray-500">
+                            {recentActivity[currentActivityIndex].time}
+                          </span>
                         </Badge>
-                      ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-orange-50 border border-orange-100 rounded p-2 flex items-center">
+                      <TrendingUp
+                        size={16}
+                        className={`mr-2 ${"text-red-500 rotate-180"}`}
+                      />
+                      <span className="text-xs font-medium">
+                        Pool availability{" "}
+                        <span className="text-red-500 font-semibold">-22%</span>{" "}
+                        in the past week
+                      </span>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-5">
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={16} />
+                      <Search
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                        size={16}
+                      />
                       <Input
                         placeholder="Search skills, programs, or keywords"
                         className="pl-9 w-[300px]"
                       />
                     </div>
-                    
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-1"
+                    >
                       <Filter size={14} />
                       Skills
                     </Button>
-                    
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-1"
+                    >
                       <Filter size={14} />
                       Location
                     </Button>
-                    
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-1"
+                    >
                       <Filter size={14} />
                       Availability
                     </Button>
-                    
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       className="text-gray-500 hover:text-gray-700"
                     >
                       Clear All
@@ -923,7 +1271,7 @@ const TalentRequestPage = () => {
                 <Users size={16} className="text-gray-700" />
                 Recently Reserved
               </h3>
-              
+
               <ScrollArea className="h-[300px]">
                 {students.filter((s) => s.isReserved).length > 0 ? (
                   <div className="space-y-2 pr-3">
@@ -980,15 +1328,15 @@ const TalentRequestPage = () => {
                 Need more talent?
               </h3>
               <p className="text-sm text-gray-600 mb-4">
-                Through our SkillTrade Sponsorship program, you can create a pipeline 
-                of candidates tailored to your specific needs.
+                Through our SkillTrade Sponsorship program, you can create a
+                pipeline of candidates tailored to your specific needs.
               </p>
               <Button
                 className="w-full"
                 variant="outline"
                 onClick={handleOpenSponsorshipModal}
               >
-                Learn About Sponsorship
+                Why Sponsor?
               </Button>
             </div>
 

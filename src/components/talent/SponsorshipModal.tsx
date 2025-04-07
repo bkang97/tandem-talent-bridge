@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Dialog,
@@ -24,10 +23,10 @@ interface SponsorshipModalProps {
   onScheduleConsultation?: () => void;
 }
 
-const SponsorshipModal = ({ 
-  isOpen, 
-  onClose, 
-  onScheduleConsultation 
+const SponsorshipModal = ({
+  isOpen,
+  onClose,
+  onScheduleConsultation,
 }: SponsorshipModalProps) => {
   const handleConsultationClick = () => {
     onClose();
@@ -173,22 +172,6 @@ const SponsorshipModal = ({
                     </span>
                   </li>
                 </ul>
-              </div>
-              
-              {/* Employers section */}
-              <div className="rounded-lg bg-gray-50 border border-gray-200 p-4 mt-4">
-                <h4 className="font-medium text-gray-700 mb-2 flex items-center">
-                  <Star className="text-amber-500 h-4 w-4 mr-2" />
-                  Our Graduates Work At
-                </h4>
-                <div className="grid grid-cols-1 gap-2">
-                  {employers.map((employer, index) => (
-                    <div key={index} className="flex items-center">
-                      <Building className="text-primary/60 h-4 w-4 mr-2" />
-                      <span className="text-sm">{employer}</span>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-col gap-3">
