@@ -1355,7 +1355,7 @@ const TalentRequestPage = () => {
                 variant="default"
                 onClick={handleOpenSponsorshipModal}
               >
-                Why Sponsor?
+                Learn About Sponsorship
               </Button>
             </div>
 
