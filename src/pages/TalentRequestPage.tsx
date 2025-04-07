@@ -1039,7 +1039,13 @@ const TalentRequestPage = () => {
                   <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
                     <div className="flex items-center gap-4">
                       <div className="flex flex-col">
-                        <div className="text-2xl font-bold">
+                        <div
+                          className={`text-2xl font-bold ${
+                            displayMode === "prospective"
+                              ? "text-emerald-500"
+                              : "text-amber-500"
+                          }`}
+                        >
                           {displayMode === "current"
                             ? currentAvailableCount
                             : displayMode === "prospective"
