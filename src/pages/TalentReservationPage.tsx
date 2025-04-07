@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -88,7 +87,7 @@ const TalentReservationPage = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="overflow-hidden">
               <CardHeader className="bg-green-50">
                 <div className="flex items-center justify-between">
                   <div>
@@ -138,7 +137,9 @@ const TalentReservationPage = () => {
                         <p className="font-medium">{callDetails.phone}</p>
                       </div>
                       <div className="md:col-span-2">
-                        <p className="text-sm text-gray-500">Meeting Scheduled</p>
+                        <p className="text-sm text-gray-500">
+                          Meeting Scheduled
+                        </p>
                         <p className="font-medium flex items-center gap-1.5">
                           <CalendarClock size={16} />
                           {callDetails.scheduledDate}
@@ -286,9 +287,9 @@ const TalentReservationPage = () => {
               </CardContent>
 
               <CardFooter className="flex justify-between border-t pt-4">
-                <Button 
-                  variant="outline" 
-                  onClick={() => navigate('/talent-request')}
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/talent-request")}
                   className="gap-1.5"
                 >
                   Browse More Talent
@@ -302,7 +303,7 @@ const TalentReservationPage = () => {
           </div>
 
           <div>
-            <Card className="sticky top-8">
+            <Card className="sticky top-8 overflow-hidden">
               <CardHeader className="bg-primary text-white">
                 <CardTitle className="flex items-center gap-2">
                   <UsersRound size={18} />
