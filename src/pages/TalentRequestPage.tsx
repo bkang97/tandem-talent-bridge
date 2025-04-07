@@ -495,17 +495,12 @@ const TalentRequestPage = () => {
   ];
 
   useEffect(() => {
-    const tooltipTimer = setTimeout(() => {
-      setShowAccessTooltip(false);
-    }, 20000);
-
     const interval = setInterval(() => {
       setCurrentActivityIndex((prev) => (prev + 1) % recentActivity.length);
-    }, 3000); // Rotate every 3 seconds
+    }, 8000); // Rotate every 8 seconds
 
     return () => {
       clearInterval(interval);
-      clearTimeout(tooltipTimer);
     };
   }, [recentActivity.length]);
 
@@ -1093,9 +1088,17 @@ const TalentRequestPage = () => {
                       </Button>
                     </div>
 
-                    <div className="flex items-center space-x-3">
-                      <div className="border rounded-md overflow-hidden flex relative">
-                        {showAccessTooltip && <AccessMoreTalentTooltip />}
+                    <div className="flex items-center space-x-3 relative">
+                      {showAccessTooltip && (
+                        <AccessMoreTalentTooltip
+                          onClick={() => setShowAccessTooltip(false)}
+                        />
+                      )}
+                      <div
+                        className={`border rounded-md overflow-hidden flex ${
+                          showAccessTooltip ? "border-amber-300 border-4" : ""
+                        }`}
+                      >
                         <button
                           className={`px-3 py-1.5 text-sm ${
                             displayMode === "current"
