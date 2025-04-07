@@ -1352,7 +1352,7 @@ const TalentRequestPage = () => {
               </p>
               <Button
                 className="w-full"
-                variant="outline"
+                variant="default"
                 onClick={handleOpenSponsorshipModal}
               >
                 Why Sponsor?
