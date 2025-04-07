@@ -913,7 +913,7 @@ const TalentRequestPage = () => {
               <div className="bg-primary/5 border-b border-primary/10 px-6 py-4 flex items-center justify-between">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
                   <CalendarClock size={18} className="text-primary" />
-                  Sponsored Talent
+                  Access More Talent
                 </h2>
               </div>
 
