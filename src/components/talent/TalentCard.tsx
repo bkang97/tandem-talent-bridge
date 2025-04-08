@@ -52,10 +52,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
 
   const handleDownloadResume = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast({
-      title: "Resume Downloaded",
-      description: `${student.name}'s resume has been downloaded.`,
-    });
+    onReserve(student.id);
   };
 
   // Status badge display logic
@@ -218,7 +215,14 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="sm:max-w-2xl overflow-hidden">
+        {student?.isOffMarket ? (
+          <div className="absolute top-0 left-0 w-full h-full bg-gray-200/90 flex items-center justify-center">
+            <div className="text-lg font-semibold text-gray-700">
+              This candidate is currently off-market.
+            </div>
+          </div>
+        ) : null}
         <DialogHeader>
           <DialogTitle>
             {student.isProspective
