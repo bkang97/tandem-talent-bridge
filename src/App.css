@@ -1,8 +1,15 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
 }
 
 .logo {
@@ -39,4 +46,96 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Mobile optimizations */
+.flex-col-mobile {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .flex-col-mobile {
+    flex-direction: column;
+  }
+}
+
+.gap-mobile-4 {
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .gap-mobile-4 {
+    gap: 1rem;
+  }
+}
+
+.w-full-mobile {
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .w-full-mobile {
+    width: 100%;
+  }
+}
+
+.p-mobile-4 {
+  padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .p-mobile-4 {
+    padding: 1rem;
+  }
+}
+
+.text-mobile-base {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .text-mobile-base {
+    font-size: 0.875rem;
+  }
+}
+
+.text-mobile-lg {
+  font-size: 1.125rem;
+}
+
+@media (max-width: 768px) {
+  .text-mobile-lg {
+    font-size: 1rem;
+  }
+}
+
+.text-mobile-xl {
+  font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .text-mobile-xl {
+    font-size: 1.125rem;
+  }
+}
+
+.hidden-mobile {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none;
+  }
+}
+
+.block-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .block-mobile {
+    display: block;
+  }
 }
