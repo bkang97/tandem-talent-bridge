@@ -13,6 +13,8 @@ import {
   Building,
   Check,
   Award,
+  Menu,
+  X
 } from "lucide-react";
 import TalentFilters from "@/components/talent/TalentFilters";
 import TalentCard from "@/components/talent/TalentCard";
@@ -21,6 +23,9 @@ import SupplyDemandChart from "@/components/talent/SupplyDemandChart";
 import MarketAnalysis from "@/components/talent/MarketAnalysis";
 import SponsorshipModal from "@/components/talent/SponsorshipModal";
 import AccessMoreTalentTooltip from "@/components/talent/AccessMoreTalentTooltip";
+import ResponsiveAccessTooltip from "@/components/talent/ResponsiveAccessTooltip";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useBreakpoint } from "@/hooks/use-breakpoint";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -373,6 +378,8 @@ const TalentRequestPage = () => {
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
   const [showAccessTooltip, setShowAccessTooltip] = useState(true);
   const [showSecondStep, setShowSecondStep] = useState(false);
+  const isMobile = useIsMobile();
+  const isDesktop = useBreakpoint("lg");
 
   const getFilteredStudents = () => {
     let students = [];
@@ -514,51 +521,55 @@ const TalentRequestPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-3">
+        <div className="container mx-auto px-3 sm:px-4 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <img
                 src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
                 alt="Skilltrade"
-                className="h-8"
+                className="h-6 sm:h-8"
               />
-              <div className="h-6 w-px bg-gray-300"></div>
-              <h2 className="text-black font-semibold">
-                Employer Talent Portal
-              </h2>
+              {!isMobile && (
+                <>
+                  <div className="h-6 w-px bg-gray-300"></div>
+                  <h2 className="text-black font-semibold text-sm sm:text-base">
+                    Employer Talent Portal
+                  </h2>
+                </>
+              )}
             </div>
-            <Badge variant="outline" className="border-black/20 text-black">
+            <Badge variant="outline" className="border-black/20 text-black text-xs sm:text-sm">
               Spring 2025 Cohort
             </Badge>
           </div>
         </div>
       </div>
 
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-black">
+      <main className="container mx-auto mobile-container max-w-7xl">
+        <div className="mobile-section">
+          <h1 className="mobile-text-xl md:text-2xl font-bold text-black">
             SkillTrade Talent Placement
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="mobile-text-sm md:text-base text-gray-600 mt-1">
             Connect with qualified candidates who are ready to be hired
             immediately or sponsored for training.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-            <div className="bg-primary/5 border-b border-primary/10 px-6 py-4 flex items-center gap-2">
-              <Users size={18} className="text-primary" />
-              <h2 className="text-lg font-semibold">
+            <div className="bg-primary/5 border-b border-primary/10 px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-2">
+              <Users size={isMobile ? 16 : 18} className="text-primary" />
+              <h2 className="mobile-text-base md:text-lg font-semibold">
                 Define Your Hiring Needs
               </h2>
             </div>
 
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
+            <div className="p-4 sm:p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
-                    <label className="text-sm font-medium mb-1 block">
+                    <label className="mobile-text-sm font-medium mb-1 block">
                       Location
                     </label>
                     <Input
@@ -570,16 +581,17 @@ const TalentRequestPage = () => {
                         })
                       }
                       placeholder="e.g., Dallas, TX"
+                      className="text-sm sm:text-base"
                     />
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-1 block">
+                    <label className="mobile-text-sm font-medium mb-1 block">
                       Job Role
                     </label>
                     <div className="relative">
                       <select
-                        className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md appearance-none"
+                        className="w-full h-9 sm:h-10 px-3 py-1 sm:py-2 bg-background border border-input rounded-md appearance-none text-sm sm:text-base"
                         value={hiringNeeds.skillSet}
                         onChange={(e) =>
                           setHiringNeeds({
@@ -623,7 +635,7 @@ const TalentRequestPage = () => {
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-1 block">
+                    <label className="mobile-text-sm font-medium mb-1 block">
                       Candidates Needed
                     </label>
                     <Input
@@ -636,16 +648,16 @@ const TalentRequestPage = () => {
                           neededCandidates: parseInt(e.target.value) || 0,
                         })
                       }
-                      className="text-lg h-10 font-medium"
+                      className="text-base sm:text-lg h-9 sm:h-10 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-1 block">
+                    <label className="mobile-text-sm font-medium mb-1 block">
                       Hiring Timeframe
                     </label>
                     <div className="relative">
-                      <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md appearance-none">
+                      <select className="w-full h-9 sm:h-10 px-3 py-1 sm:py-2 bg-background border border-input rounded-md appearance-none text-sm sm:text-base">
                         <option value="30days">Within 30 days</option>
                         <option value="60days">Within 60 days</option>
                         <option value="90days">Within 90 days</option>
@@ -670,29 +682,29 @@ const TalentRequestPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
-                  <h3 className="font-medium mb-3 flex items-center gap-2">
-                    <CalendarClock size={16} className="text-primary" />
+                <div className="bg-gray-50 rounded-lg p-3 sm:p-5 border border-gray-200">
+                  <h3 className="mobile-text-sm sm:text-base font-medium mb-3 flex items-center gap-2">
+                    <CalendarClock size={isMobile ? 14 : 16} className="text-primary" />
                     Talent Availability
                   </h3>
 
-                  <div className="mb-4">
-                    <div className="flex justify-between items-center text-sm">
+                  <div className="mb-3 sm:mb-4">
+                    <div className="flex justify-between items-center text-xs sm:text-sm">
                       <span>Total Need:</span>
                       <span className="font-semibold">
                         {hiringNeeds.neededCandidates} Candidates
                       </span>
                     </div>
 
-                    <div className="h-px bg-gray-200 my-3"></div>
+                    <div className="h-px bg-gray-200 my-2 sm:my-3"></div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div>
-                        <div className="flex justify-between items-center mb-1 text-sm">
+                        <div className="flex justify-between items-center mb-1 text-xs sm:text-sm">
                           <span>Current Students:</span>
                           <Badge
                             variant="outline"
-                            className="bg-primary/10 text-primary border-primary/20"
+                            className="bg-primary/10 text-primary border-primary/20 text-xs"
                           >
                             {Math.min(
                               currentAvailableCount,
@@ -717,11 +729,11 @@ const TalentRequestPage = () => {
                       </div>
 
                       <div>
-                        <div className="flex justify-between items-center mb-1 text-sm">
+                        <div className="flex justify-between items-center mb-1 text-xs sm:text-sm">
                           <span>Prospective Needed:</span>
                           <Badge
                             variant="outline"
-                            className="bg-amber-50 text-amber-700 border-amber-200"
+                            className="bg-amber-50 text-amber-700 border-amber-200 text-xs"
                           >
                             {Math.max(
                               0,
@@ -753,7 +765,7 @@ const TalentRequestPage = () => {
                   </div>
 
                   {hiringNeeds.neededCandidates > currentAvailableCount && (
-                    <Alert className="bg-amber-50 border-amber-200 mb-4">
+                    <Alert className="bg-amber-50 border-amber-200 mb-3 sm:mb-4 py-2 sm:py-3">
                       <AlertDescription className="text-amber-800 text-xs">
                         Only {currentAvailableCount} current students available.
                         Consider sponsoring{" "}
@@ -763,10 +775,10 @@ const TalentRequestPage = () => {
                     </Alert>
                   )}
 
-                  <div className="space-y-3 mb-4">
+                  <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
                     <div className="flex items-start gap-2">
                       <Check
-                        size={16}
+                        size={isMobile ? 14 : 16}
                         className="text-primary mt-0.5 flex-shrink-0"
                       />
                       <span className="text-xs">
@@ -776,7 +788,7 @@ const TalentRequestPage = () => {
                     </div>
                     <div className="flex items-start gap-2">
                       <Check
-                        size={16}
+                        size={isMobile ? 14 : 16}
                         className="text-primary mt-0.5 flex-shrink-0"
                       />
                       <span className="text-xs">
@@ -785,7 +797,7 @@ const TalentRequestPage = () => {
                     </div>
                     <div className="flex items-start gap-2">
                       <Check
-                        size={16}
+                        size={isMobile ? 14 : 16}
                         className="text-primary mt-0.5 flex-shrink-0"
                       />
                       <span className="text-xs">
@@ -795,7 +807,7 @@ const TalentRequestPage = () => {
                   </div>
 
                   <Button
-                    className="w-full"
+                    className="w-full text-sm sm:text-base"
                     onClick={() => {
                       setShowSecondStep(true);
                       setTimeout(() => {
@@ -820,18 +832,18 @@ const TalentRequestPage = () => {
 
           <div className="lg:col-span-1 bg-white">
             {hiringNeeds.skillSet === "medical-assistant" && (
-              <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 flex flex-col gap-6 min-h-full">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-3 sm:p-4 bg-primary/5 rounded-lg border border-primary/20 flex flex-col gap-4 sm:gap-6 min-h-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4">
                   <div className="md:col-span-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <img
                         src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
                         alt="Skilltrade"
-                        className="h-5"
+                        className="h-4 sm:h-5"
                       />
                     </div>
 
-                    <div className="flex flex-row gap-2">
+                    <div className="flex flex-row gap-1 sm:gap-2">
                       <Badge
                         variant="outline"
                         className="bg-primary/10 text-primary border-primary/20 text-xs"
@@ -848,11 +860,11 @@ const TalentRequestPage = () => {
                     </div>
                   </div>
 
-                  <div className="md:col-span-4 mb-2">
-                    <h3 className="text-lg font-medium text-primary">
+                  <div className="md:col-span-4 mb-1 sm:mb-2">
+                    <h3 className="mobile-text-base md:text-lg font-medium text-primary">
                       Certified Medical Assistant Program
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs sm:text-sm text-gray-600">
                       Learn essential clinical and administrative skills to
                       assist physicians in healthcare settings.
                     </p>
@@ -860,35 +872,35 @@ const TalentRequestPage = () => {
 
                   <div className="text-center p-2 bg-white rounded-md border border-primary/10">
                     <div className="text-xs text-gray-500 mb-1">Duration</div>
-                    <div className="font-medium text-primary">20 Weeks</div>
+                    <div className="font-medium text-primary text-xs sm:text-sm">20 Weeks</div>
                   </div>
 
                   <div className="text-center p-2 bg-white rounded-md border border-primary/10">
                     <div className="text-xs text-gray-500 mb-1">
                       Certification
                     </div>
-                    <div className="font-medium text-primary">CCMA</div>
+                    <div className="font-medium text-primary text-xs sm:text-sm">CCMA</div>
                   </div>
 
                   <div className="text-center p-2 bg-white rounded-md border border-primary/10">
                     <div className="text-xs text-gray-500 mb-1">Format</div>
-                    <div className="font-medium text-primary">
+                    <div className="font-medium text-primary text-xs sm:text-sm">
                       Hybrid & Online
                     </div>
                   </div>
                 </div>
                 <div className="">
-                  <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                    <Award size={16} className="text-primary" />
+                  <h4 className="text-xs sm:text-sm font-medium mb-2 flex items-center gap-1.5">
+                    <Award size={isMobile ? 14 : 16} className="text-primary" />
                     Key Classes
                   </h4>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5">
                     {programInfo[jobRoleMap[hiringNeeds.skillSet]].classes.map(
                       (className, index) => (
                         <Badge
                           key={index}
                           variant="outline"
-                          className="bg-white border-primary/20 text-primary"
+                          className="bg-white border-primary/20 text-primary text-xs"
                         >
                           {className}
                         </Badge>
@@ -898,17 +910,17 @@ const TalentRequestPage = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                    <Building size={16} className="text-primary" />
+                  <h4 className="text-xs sm:text-sm font-medium mb-2 flex items-center gap-1.5">
+                    <Building size={isMobile ? 14 : 16} className="text-primary" />
                     Graduates Working At
                   </h4>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1 sm:gap-2">
                     {programInfo[
                       jobRoleMap[hiringNeeds.skillSet]
                     ].companies.map((company, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 bg-white text-xs rounded-md border border-primary/10"
+                        className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-white text-xs rounded-md border border-primary/10"
                       >
                         {company}
                       </span>
@@ -917,431 +929,18 @@ const TalentRequestPage = () => {
                 </div>
               </div>
             )}
-            {/* <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden h-full"></div> */}
           </div>
         </div>
 
         {showSecondStep ? (
           <>
-            <div className="flex flex-col lg:flex-row gap-6" id="view-students">
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6" id="view-students">
               <div className="lg:w-3/4">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-black">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h2 className="mobile-text-lg md:text-xl font-bold text-black">
                     Reserve Your Talent
                   </h2>
                 </div>
 
-                <Tabs defaultValue="browse" className="space-y-6">
-                  <TabsList className="w-full grid grid-cols-2 bg-black/5 text-black/80 border border-black/20 h-11 px-1.5">
-                    <TabsTrigger
-                      value="browse"
-                      className="data-[state=active]:bg-white data-[state=active]:text-black"
-                    >
-                      Browse Candidates
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="stats"
-                      className="data-[state=active]:bg-white data-[state=active]:text-black"
-                    >
-                      Market Analysis
-                    </TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="browse" className="space-y-6">
-                    <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                      <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
-                        <div className="flex items-center gap-4">
-                          <div className="flex flex-col">
-                            <div
-                              className={`text-2xl font-bold ${
-                                displayMode === "prospective"
-                                  ? "text-emerald-500"
-                                  : "text-amber-500"
-                              }`}
-                            >
-                              {displayMode === "current"
-                                ? currentAvailableCount
-                                : displayMode === "prospective"
-                                ? prospectiveAvailableCount
-                                : totalAvailableCount}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              Available
-                            </div>
-                          </div>
-
-                          <div className="h-10 w-px bg-gray-200"></div>
-
-                          <div className="flex flex-col">
-                            <div className="text-2xl font-bold">
-                              {displayMode === "current"
-                                ? currentReservedCount
-                                : displayMode === "prospective"
-                                ? prospectiveReservedCount
-                                : totalReservedCount}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              Reserved
-                            </div>
-                          </div>
-
-                          <div className="h-10 w-px bg-gray-200"></div>
-
-                          <div className="flex flex-col">
-                            <div className="text-2xl font-bold">
-                              {displayMode === "current"
-                                ? currentStudents.length
-                                : displayMode === "prospective"
-                                ? prospectiveStudents.length
-                                : totalCount}
-                            </div>
-                            <div className="text-sm text-gray-500">Total</div>
-                          </div>
-
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                              setShowSupplyDemandChart(!showSupplyDemandChart)
-                            }
-                            className="ml-2"
-                          >
-                            <BarChart size={16} className="mr-1" />
-                            {showSupplyDemandChart
-                              ? "Hide Chart"
-                              : "Market Gap"}
-                          </Button>
-                        </div>
-
-                        <div className="flex items-center space-x-3 relative">
-                          {showAccessTooltip && (
-                            <AccessMoreTalentTooltip
-                              onClick={() => setShowAccessTooltip(false)}
-                            />
-                          )}
-                          <div
-                            className={`border rounded-md overflow-hidden flex ${
-                              showAccessTooltip
-                                ? "border-amber-300 border-4"
-                                : ""
-                            }`}
-                          >
-                            <button
-                              className={`px-3 py-1.5 text-sm ${
-                                displayMode === "current"
-                                  ? "bg-black text-white"
-                                  : "bg-white text-gray-700"
-                              }`}
-                              onClick={() => handleDisplayModeChange("current")}
-                            >
-                              Current
-                            </button>
-                            <button
-                              className={`px-3 py-1.5 text-sm ${
-                                displayMode === "prospective"
-                                  ? "bg-primary text-white"
-                                  : "bg-white text-gray-700"
-                              }`}
-                              onClick={() =>
-                                handleDisplayModeChange("prospective")
-                              }
-                            >
-                              Prospective
-                            </button>
-                          </div>
-
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="flex items-center gap-1"
-                              >
-                                <ArrowDownUp size={14} />
-                                Sort:{" "}
-                                {sortOption.charAt(0).toUpperCase() +
-                                  sortOption.slice(1)}
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={() => handleSortChange("relevance")}
-                              >
-                                Relevance
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => handleSortChange("availability")}
-                              >
-                                Availability (Soonest)
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => handleSortChange("experience")}
-                              >
-                                Experience (Most)
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </div>
-
-                      {showSupplyDemandChart && (
-                        <div className="bg-gray-50 p-4 mb-5 rounded-lg border border-gray-200">
-                          <SupplyDemandChart />
-                        </div>
-                      )}
-
-                      <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mb-5 flex items-center justify-between overflow-hidden whitespace-nowrap relative">
-                        <div className="flex items-center gap-2">
-                          <Users
-                            size={14}
-                            className="text-gray-700 flex-shrink-0"
-                          />
-                          <span className="text-sm font-medium text-gray-700 flex-shrink-0">
-                            Recent Activity:
-                          </span>
-                          <div className="h-8 flex items-center">
-                            <Badge
-                              key={currentActivityIndex}
-                              variant="outline"
-                              className="bg-white border-primary/20 text-xs animate-fade-in"
-                            >
-                              <span className="font-medium">
-                                {recentActivity[currentActivityIndex].company}
-                              </span>
-                              &nbsp;
-                              {recentActivity[currentActivityIndex].action}
-                              <span className="ml-1 text-gray-500">
-                                {recentActivity[currentActivityIndex].time}
-                              </span>
-                            </Badge>
-                          </div>
-                        </div>
-
-                        <div className="bg-orange-50 border border-orange-100 rounded p-2 flex items-center">
-                          <TrendingUp
-                            size={16}
-                            className={`mr-2 ${"text-red-500 rotate-180"}`}
-                          />
-                          <span className="text-xs font-medium">
-                            Pool availability{" "}
-                            <span className="text-red-500 font-semibold">
-                              -22%
-                            </span>{" "}
-                            in the past week
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2 mb-5">
-                        <div className="relative">
-                          <Search
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                            size={16}
-                          />
-                          <Input
-                            placeholder="Search skills, programs, or keywords"
-                            className="pl-9 w-[300px]"
-                          />
-                        </div>
-
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-1"
-                        >
-                          <Filter size={14} />
-                          Skills
-                        </Button>
-
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-1"
-                        >
-                          <Filter size={14} />
-                          Location
-                        </Button>
-
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-1"
-                        >
-                          <Filter size={14} />
-                          Availability
-                        </Button>
-
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-gray-500 hover:text-gray-700"
-                        >
-                          Clear All
-                        </Button>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                        {students.map((student) => (
-                          <TalentCard
-                            key={student.id}
-                            student={student}
-                            onReserve={handleReserveStudent}
-                          />
-                        ))}
-                      </div>
-
-                      {students.length > 8 && (
-                        <div className="mt-8 text-center">
-                          <Button
-                            variant="outline"
-                            className="border-primary/20 text-primary/80 hover:bg-primary/5"
-                          >
-                            Load More ({students.length - 8} Remaining)
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="stats" className="overflow-hidden">
-                    <MarketAnalysis />
-                  </TabsContent>
-                </Tabs>
-              </div>
-
-              <div className="lg:w-1/4">
-                <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 mb-5">
-                  <h3 className="font-medium mb-4 text-black flex items-center gap-2">
-                    <Users size={16} className="text-gray-700" />
-                    Recently Reserved
-                  </h3>
-
-                  <ScrollArea className="h-[300px]">
-                    {students.filter((s) => s.isReserved).length > 0 ? (
-                      <div className="space-y-2 pr-3">
-                        {students
-                          .filter((s) => s.isReserved)
-                          .slice(0, 8)
-                          .map((student) => (
-                            <div
-                              key={student.id}
-                              className="p-2 border-b flex items-center justify-between"
-                            >
-                              <div className="flex items-center">
-                                <div className="h-8 w-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 text-xs mr-2">
-                                  {student.name
-                                    .split(" ")
-                                    .map((n) => n[0])
-                                    .join("")}
-                                </div>
-                                <div>
-                                  <div className="text-sm font-medium">
-                                    {student.name}
-                                  </div>
-                                  <div className="text-xs text-gray-500">
-                                    {student.program}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex items-center">
-                                {student.isProspective && (
-                                  <Badge
-                                    variant="outline"
-                                    className="mr-2 bg-primary/5 text-primary/80 border-primary/20 text-xs"
-                                  >
-                                    Prospective
-                                  </Badge>
-                                )}
-                                <div className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
-                                  Off-market
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-8 text-gray-500">
-                        <p>No candidates reserved yet</p>
-                      </div>
-                    )}
-                  </ScrollArea>
-                </div>
-
-                <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 mb-5">
-                  <h3 className="font-medium mb-4 text-primary flex items-center gap-2">
-                    Need more talent?
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Through our SkillTrade Sponsorship program, you can create a
-                    pipeline of candidates tailored to your specific needs.
-                  </p>
-                  <Button
-                    className="w-full"
-                    variant="outline"
-                    onClick={handleOpenSponsorshipModal}
-                  >
-                    Learn About Sponsorship
-                  </Button>
-                </div>
-
-                <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
-                  <h3 className="font-medium mb-4 text-primary flex items-center gap-2">
-                    SkillTrade Talent Success
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-gray-600">Placement rate</div>
-                      <div className="font-semibold text-primary">96%</div>
-                    </div>
-                    <div className="h-px bg-gray-100"></div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-gray-600">Employer satisfaction</div>
-                      <div className="font-semibold text-primary">94%</div>
-                    </div>
-                    <div className="h-px bg-gray-100"></div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-gray-600">1-year retention rate</div>
-                      <div className="font-semibold text-primary">92%</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : null}
-
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
-            © 2025 SkillTrade. This talent portal is provided exclusively for
-            SkillTrade employer partners. Powered by Tandem.
-          </p>
-        </div>
-      </main>
-
-      {showReservationModal && (
-        <ReservationModal
-          isOpen={showReservationModal}
-          onClose={() => setShowReservationModal(false)}
-          reservedStudents={selectedStudents}
-          bulkReservation={bulkReservation}
-          bulkAmount={hiringNeeds.neededCandidates}
-          availableActiveCount={Math.min(
-            currentAvailableCount,
-            hiringNeeds.neededCandidates
-          )}
-          totalHiringNeed={hiringNeeds.neededCandidates}
-        />
-      )}
-
-      {showSponsorshipModal && (
-        <SponsorshipModal
-          isOpen={showSponsorshipModal}
-          onClose={() => setShowSponsorshipModal(false)}
-          onScheduleConsultation={handleScheduleConsultation}
-        />
-      )}
-    </div>
-  );
-};
-
-export default TalentRequestPage;
+                <Tabs defaultValue="browse" className="space-y-4 sm:space-y-6">
+                  <TabsList className="w-full grid grid-cols-2 bg-black/5 text-black/80 border border-black
