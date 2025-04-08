@@ -59,6 +59,41 @@ interface ReservationModalProps {
   totalHiringNeed?: number;
 }
 
+const obfuscateLastName = (name: string): string => {
+  const parts = name.split(' ');
+  if (parts.length === 1) return name; // Single name, return as is
+  
+  // Keep first name and first initial of last name + dots
+  const firstName = parts[0];
+  const lastInitial = parts[1].charAt(0) + '.';
+  
+  return `${firstName} ${lastInitial}`;
+};
+
+const obfuscateEmail = (email: string): string => {
+  const [username, domain] = email.split('@');
+  if (!username || !domain) return email;
+  
+  const visiblePart = username.slice(0, 3);
+  const hiddenPart = '*'.repeat(Math.max(username.length - 3, 2));
+  
+  return `${visiblePart}${hiddenPart}@${domain}`;
+};
+
+const obfuscatePhone = (phone: string): string => {
+  // Remove any non-digit characters
+  const digits = phone.replace(/\D/g, '');
+  
+  // Keep last 4 digits visible, hide the rest
+  if (digits.length >= 4) {
+    const visiblePart = digits.slice(-4);
+    const hiddenPart = '*'.repeat(Math.min(digits.length - 4, 6));
+    return `${hiddenPart}-${visiblePart}`;
+  }
+  
+  return '*'.repeat(phone.length);
+};
+
 const ReservationModal = ({
   isOpen,
   onClose,
@@ -97,16 +132,22 @@ const ReservationModal = ({
   });
 
   const onSubmit = (data: ReservationFormValues) => {
-    // Format the data for submission
+    // Format the data for submission with obfuscation
     const callDetails = {
       companyName: data.companyName,
-      contactName: data.contactName,
-      email: data.email,
-      phone: data.phone,
+      contactName: obfuscateLastName(data.contactName),
+      email: obfuscateEmail(data.email),
+      phone: obfuscatePhone(data.phone),
       scheduledDate: format(data.callDate, "PPP"),
       hiringNeeds: data.hiringNeeds || "Not specified",
       activeStudentCount,
       prospectiveCount,
+      // Keep original values in secure fields for backend processing
+      _secure: {
+        contactName: data.contactName,
+        email: data.email,
+        phone: data.phone,
+      }
     };
 
     // Show success toast
@@ -121,7 +162,10 @@ const ReservationModal = ({
     // Navigate to the confirmation page with the reservation details
     navigate("/talent-reservation", {
       state: {
-        reservedStudents,
+        reservedStudents: reservedStudents.map(student => ({
+          ...student,
+          name: obfuscateLastName(student.name)
+        })),
         callDetails,
         bulkReservation,
         bulkAmount: activeStudentCount + prospectiveCount,

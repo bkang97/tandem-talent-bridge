@@ -42,8 +42,22 @@ interface TalentCardProps {
   onReserve: (id: string) => void;
 }
 
+const obfuscateLastName = (name: string): string => {
+  const parts = name.split(' ');
+  if (parts.length === 1) return name; // Single name, return as is
+  
+  // Keep first name and first initial of last name + dot
+  const firstName = parts[0];
+  const lastInitial = parts[1].charAt(0) + '.';
+  
+  return `${firstName} ${lastInitial}`;
+};
+
 const TalentCard = ({ student, onReserve }: TalentCardProps) => {
   const { toast } = useToast();
+  
+  // Create obfuscated name version for display
+  const displayName = obfuscateLastName(student.name);
 
   const handleReserve = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -108,7 +122,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                         : "bg-secondary/50 text-secondary-foreground"
                     }`}
                   >
-                    {student.name
+                    {displayName
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
@@ -116,7 +130,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                 </Avatar>
                 <div>
                   <div className="flex items-center gap-1">
-                    <h3 className="font-medium">{student.name}</h3>
+                    <h3 className="font-medium">{displayName}</h3>
                   </div>
                   <div className="flex items-center text-gray-500 text-sm">
                     <MapPin size={12} className="mr-1" />
@@ -230,7 +244,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               : "Candidate Profile"}
           </DialogTitle>
           <DialogDescription>
-            Full profile details for {student.name}
+            Full profile details for {displayName}
           </DialogDescription>
         </DialogHeader>
 
@@ -246,7 +260,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                       : "bg-secondary/50 text-secondary-foreground"
                   }`}
                 >
-                  {student.name
+                  {displayName
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
