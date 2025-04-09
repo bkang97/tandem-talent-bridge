@@ -49,11 +49,11 @@ const SponsorshipModal = ({
       <DialogContent className="p-0 overflow-y-auto max-h-[90%] bg-white">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Left Column - Visual Explanation */}
-          <div className="bg-primary/5 p-8 flex flex-col justify-center">
+          <div className="bg-primary/5 p-8 flex flex-col justify-center items-center">
             <img
               src="/images/tidewater-tech-logo.png"
               alt="Tidewater Tech"
-              className="h-8 mb-6"
+              className="h-16 w-16 mb-6"
             />
             <h3 className="text-xl font-bold text-primary mb-4 text-center">
               How Sponsorship Works

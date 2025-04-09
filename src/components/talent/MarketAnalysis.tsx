@@ -39,84 +39,107 @@ import {
 import SponsorshipModal from "./SponsorshipModal";
 import ReservationModal from "./ReservationModal";
 
+const supplyDemandData = [
+  {
+    field: "Auto Technician",
+    supply: 75, // 45 (current) + 30 (prospective)
+    demand: 120,
+    gap: 45, // 120 (demand) - 75 (supply)
+  },
+  {
+    field: "Combination Welder",
+    supply: 80, // 55 (current) + 25 (prospective)
+    demand: 150,
+    gap: 70, // 150 (demand) - 80 (supply)
+  },
+  {
+    field: "Maritime Welder",
+    supply: 50, // 30 (current) + 20 (prospective)
+    demand: 90,
+    gap: 40, // 90 (demand) - 50 (supply)
+  },
+  {
+    field: "Construction Trades",
+    supply: 100, // 60 (current) + 40 (prospective)
+    demand: 180,
+    gap: 80, // 180 (demand) - 100 (supply)
+  },
+  {
+    field: "HVAC Technician",
+    supply: 68, // 40 (current) + 28 (prospective)
+    demand: 110,
+    gap: 42, // 110 (demand) - 68 (supply)
+  },
+];
+
+// Hiring timeline data (Remains the same - general comparison)
+const hiringTimelineData = [
+  { month: "Jan", traditional: 62, sponsored: 30 },
+  { month: "Feb", traditional: 58, sponsored: 32 },
+  { month: "Mar", traditional: 65, sponsored: 34 },
+  { month: "Apr", traditional: 70, sponsored: 35 },
+  { month: "May", traditional: 68, sponsored: 36 },
+  { month: "Jun", traditional: 72, sponsored: 38 },
+];
+
+// Updated Case Studies for Skilled Trades using provided company names
+const caseStudies = [
+  {
+    company: "First Team Auto Superstore",
+    industry: "Automotive Sales & Service",
+    role: "Auto Technician",
+    sponsored: 12, // Example number
+    timeline: "4 months",
+    success: "95%",
+    description:
+      "First Team faced challenges finding qualified Auto Technicians to meet service demand. Through sponsorship, they trained 12 technicians aligned with their standards, reducing wait times and increasing service revenue by 25%.",
+  },
+  {
+    company: "Colonna’s Shipyard, Inc.",
+    industry: "Maritime Repair & Construction",
+    role: "Combination Welder",
+    sponsored: 20, // Example number
+    timeline: "5 months",
+    success: "98%",
+    description:
+      "Colonna's Shipyard needed certified welders for critical projects. By sponsoring 20 trainees, they secured a pipeline of skilled AWS-certified welders, ensuring project deadlines were met and expanding their contract capacity.",
+  },
+  {
+    company: "Virginia Dept. of Transportation", // VDOT
+    industry: "Government / Infrastructure",
+    role: "Heavy Equipment Mechanic", // Related trade
+    sponsored: 15, // Example number
+    timeline: "6 months",
+    success: "93%",
+    description:
+      "VDOT required specialized mechanics for maintaining their diverse fleet. Sponsorship provided 15 trained mechanics, improving equipment uptime and reducing reliance on external repair services, saving taxpayer money.",
+  },
+];
+
+// ROI comparison data (Remains the same - general comparison)
+const roiData = [
+  {
+    metric: "Average Time-to-Hire",
+    traditional: "90+ days",
+    sponsored: "30-45 days",
+  },
+  {
+    metric: "Hiring Cost",
+    traditional: "$18,000-$25,000",
+    sponsored: "$15,000 fixed", // Example fixed cost
+  },
+  { metric: "First Year Retention", traditional: "65%", sponsored: "92%" },
+  {
+    metric: "Skill Match to Needs",
+    traditional: "70-80%",
+    sponsored: "95-100%",
+  },
+  { metric: "Ramp-Up Time", traditional: "2-3 months", sponsored: "2 weeks" },
+];
+
 const MarketAnalysis = () => {
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
-
-  // Supply/demand data by tech field
-  const supplyDemandData = [
-    { field: "Cybersecurity", supply: 35, demand: 100, gap: 65 },
-    { field: "Cloud Computing", supply: 42, demand: 85, gap: 43 },
-    { field: "Data Analytics", supply: 50, demand: 80, gap: 30 },
-    { field: "Software Dev", supply: 60, demand: 95, gap: 35 },
-    { field: "UX/UI Design", supply: 45, demand: 70, gap: 25 },
-    { field: "Project Mgmt", supply: 55, demand: 75, gap: 20 },
-  ];
-
-  // Hiring timeline data
-  const hiringTimelineData = [
-    { month: "Jan", traditional: 62, sponsored: 30 },
-    { month: "Feb", traditional: 58, sponsored: 32 },
-    { month: "Mar", traditional: 65, sponsored: 34 },
-    { month: "Apr", traditional: 70, sponsored: 35 },
-    { month: "May", traditional: 68, sponsored: 36 },
-    { month: "Jun", traditional: 72, sponsored: 38 },
-  ];
-
-  // Case studies data
-  const caseStudies = [
-    {
-      company: "HealthFirst",
-      industry: "Healthcare",
-      role: "Medical Assistant",
-      sponsored: 24,
-      timeline: "4 months",
-      success: "96%",
-      description:
-        "HealthFirst faced critical shortages in staffing their expanding clinics. Through sponsorship, they successfully trained and hired 24 Certified Medical Assistants within 4 months, reducing their vacancy rate by 85%.",
-    },
-    {
-      company: "Helios HVAC",
-      industry: "Facilities Management",
-      role: "HVAC Technician",
-      sponsored: 18,
-      timeline: "5 months",
-      success: "94%",
-      description:
-        "Helios HVAC struggled to find qualified technicians for their commercial contracts. By sponsoring 18 trainees, they were able to fully staff their projects and increase their service capacity by 40%.",
-    },
-    {
-      company: "SecureNet",
-      industry: "Cybersecurity",
-      role: "Security Analyst",
-      sponsored: 15,
-      timeline: "4 months",
-      success: "100%",
-      description:
-        "SecureNet needed to quickly scale their security operations center. Through sponsorship, they developed 15 analysts trained specifically on their security stack, enabling them to take on larger enterprise contracts.",
-    },
-  ];
-
-  // ROI comparison data
-  const roiData = [
-    {
-      metric: "Average Time-to-Hire",
-      traditional: "90+ days",
-      sponsored: "30-45 days",
-    },
-    {
-      metric: "Hiring Cost",
-      traditional: "$18,000-$25,000",
-      sponsored: "$15,000 fixed",
-    },
-    { metric: "First Year Retention", traditional: "65%", sponsored: "92%" },
-    {
-      metric: "Skill Match to Needs",
-      traditional: "70-80%",
-      sponsored: "95-100%",
-    },
-    { metric: "Ramp-Up Time", traditional: "2-3 months", sponsored: "2 weeks" },
-  ];
 
   const handleScheduleConsultation = () => {
     setShowSponsorshipModal(false);
@@ -206,8 +229,8 @@ const MarketAnalysis = () => {
                         the limited active talent market.
                       </p>
                     </div>
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       className="whitespace-nowrap"
                       onClick={() => setShowSponsorshipModal(true)}
                     >
@@ -342,8 +365,8 @@ const MarketAnalysis = () => {
                         hire over a three-year period.
                       </p>
                     </div>
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       className="whitespace-nowrap"
                       onClick={() => setShowSponsorshipModal(true)}
                     >

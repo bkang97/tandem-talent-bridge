@@ -43,19 +43,19 @@ interface TalentCardProps {
 }
 
 const obfuscateLastName = (name: string): string => {
-  const parts = name.split(' ');
+  const parts = name.split(" ");
   if (parts.length === 1) return name; // Single name, return as is
-  
+
   // Keep first name and first initial of last name + dot
   const firstName = parts[0];
-  const lastInitial = parts[1].charAt(0) + '.';
-  
+  const lastInitial = parts[1].charAt(0) + ".";
+
   return `${firstName} ${lastInitial}`;
 };
 
 const TalentCard = ({ student, onReserve }: TalentCardProps) => {
   const { toast } = useToast();
-  
+
   // Create obfuscated name version for display
   const displayName = obfuscateLastName(student.name);
 
@@ -382,7 +382,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                       <div className="text-sm text-gray-500">
                         Training Duration
                       </div>
-                      <div className="font-semibold">16 weeks</div>
+                      <div className="font-semibold">33 weeks</div>
                     </div>
                     <div>
                       <div className="text-sm text-gray-500">
@@ -395,7 +395,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                     <div>
                       <div className="text-sm text-gray-500">Program Cost</div>
                       <div className="font-semibold">
-                        $15,000 (includes tuition and living stipend)
+                        $20,000 (includes tuition and living stipend)
                       </div>
                     </div>
                     <div>

@@ -36,114 +36,75 @@ import { Input } from "@/components/ui/input";
 
 const generateMockStudents = () => {
   const locations = [
-    "San Francisco, CA",
-    "New York, NY",
-    "Austin, TX",
-    "Chicago, IL",
-    "Seattle, WA",
-    "Remote",
+    "Norfolk, VA",
+    "Virginia Beach, VA",
+    "Chesapeake, VA",
+    "Hampton, VA",
+    "Newport News, VA",
+    "Portsmouth, VA",
   ];
   const schools = [
-    "ForgeNow",
-    "AIM",
-    "CodeCampus",
-    "TechAcademy",
-    "Tidewater Tech",
+    "Tidewater Tech", // Focus on Tidewater Tech
+    "Local Community College",
+    "Other VA Trade School",
   ];
-  const programs = [
-    "Cybersecurity Analyst",
-    "Cloud Solutions Architect",
-    "Data Analytics",
-    "Full Stack Developer",
-    "UX/UI Designer",
-    "IT Project Management",
-  ];
+  // Only include Auto Tech and Welder programs
+  const programs = ["Auto Technician", "Combination Welder"];
   const availabilityOptions = [
     "Immediately",
     "In 2 weeks",
     "In 30 days",
     "In 60 days",
-    "In 90 days",
   ];
 
+  // Only include skill sets for the two programs
   const skillSets = {
-    "Cybersecurity Analyst": [
-      "Cybersecurity",
-      "Network Security",
-      "Penetration Testing",
-      "SIEM",
-      "Risk Assessment",
+    "Auto Technician": [
+      "Engine Repair",
+      "Brakes & ABS",
+      "Steering & Suspension",
+      "Electrical Systems",
+      "HVAC Systems",
+      "Diagnostics",
+      "ASE Certified",
     ],
-    "Cloud Solutions Architect": [
-      "Cloud Computing",
-      "AWS",
-      "Azure",
-      "DevOps",
-      "Infrastructure as Code",
-    ],
-    "Data Analytics": [
-      "Data Analysis",
-      "SQL",
-      "Python",
-      "Tableau",
-      "Power BI",
-      "R",
-    ],
-    "Full Stack Developer": [
-      "JavaScript",
-      "React",
-      "Node.js",
-      "REST APIs",
-      "SQL",
-      "Git",
-    ],
-    "UX/UI Designer": [
-      "UI/UX Design",
-      "Figma",
-      "User Research",
-      "Wireframing",
-      "Prototyping",
-    ],
-    "IT Project Management": [
-      "Project Management",
-      "Agile",
-      "Scrum",
-      "JIRA",
-      "Risk Management",
+    "Combination Welder": [
+      "SMAW",
+      "GMAW (MIG)",
+      "FCAW",
+      "GTAW (TIG)",
+      "Blueprint Reading",
+      "Metal Fabrication",
+      "Pipe Welding",
+      "AWS Certified",
     ],
   };
 
+  // Only include about texts for the two programs
   const aboutTexts = {
-    "Cybersecurity Analyst":
-      "Cybersecurity professional with experience in network security, vulnerability assessment, and security monitoring. Skilled in security tools and SIEM systems.",
-    "Cloud Solutions Architect":
-      "Cloud solutions professional with expertise in cloud services, migration, and implementing infrastructure as code. Strong problem-solving abilities and certification in cloud platforms.",
-    "Data Analytics":
-      "Data analytics professional skilled in transforming complex data into actionable insights. Strong background in business intelligence and creating interactive dashboards.",
-    "Full Stack Developer":
-      "Full stack developer with expertise in JavaScript frameworks. Passionate about creating efficient, scalable web applications with intuitive user interfaces.",
-    "UX/UI Designer":
-      "UX/UI designer with a focus on creating user-centered digital experiences. Strong portfolio of web and mobile application designs with a keen eye for detail.",
-    "IT Project Management":
-      "IT project manager with experience in software development projects. Expertise in Agile methodologies and strong communication skills.",
+    "Auto Technician":
+      "Skilled Auto Technician with hands-on experience in diagnostics, repair, and maintenance of various vehicle systems. Detail-oriented and committed to quality workmanship.",
+    "Combination Welder":
+      "Certified Combination Welder proficient in SMAW, GMAW, FCAW, and GTAW processes. Experienced in fabrication, structural welding, and adhering to safety standards.",
   };
 
   const students = [];
+  // Generate 20 students total (10 per program on average)
   for (let i = 1; i <= 40; i++) {
     const program = programs[Math.floor(Math.random() * programs.length)];
-    const yearsExp = Math.floor(Math.random() * 5) + 1;
+    const yearsExp = Math.floor(Math.random() * 4) + 1; // 1-4 years experience
 
-    // Make all but 3 off-market
-    const isOffMarket = i > 3;
+    // Make most off-market/reserved for realism
+    const isOffMarket = i > 27; // Example: First 5 are available/not reserved
 
     students.push({
-      id: i.toString(),
-      name: `Student ${i}`,
+      id: `grad-${i}`, // Prefix ID
+      name: `${program.split(" ")[0]} Grad ${i}`, // e.g., Auto Grad 1
       avatar: "/placeholder.svg",
       location: locations[Math.floor(Math.random() * locations.length)],
       skills: [...skillSets[program]]
         .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 2),
+        .slice(0, Math.floor(Math.random() * 3) + 3), // Show 3-5 skills
       school: schools[Math.floor(Math.random() * schools.length)],
       program,
       availableDate:
@@ -151,39 +112,42 @@ const generateMockStudents = () => {
           Math.floor(Math.random() * availabilityOptions.length)
         ],
       yearsExperience: yearsExp,
-      isReserved: isOffMarket,
+      isReserved: isOffMarket, // Link reservation status to market status
       isOffMarket: isOffMarket,
       isProspective: false,
-      about: `${aboutTexts[program]} ${yearsExp} years of relevant experience in the field.`,
+      about: `${aboutTexts[program]} ${yearsExp} years of relevant experience.`,
     });
   }
+
+  // Ensure Tidewater Tech is represented
+  students.forEach((student, index) => {
+    if (index % 3 === 0) {
+      // Assign Tidewater Tech to roughly 1/3rd
+      student.school = "Tidewater Tech";
+    }
+  });
 
   return students;
 };
 
 const generateProspectiveStudents = () => {
   const locations = [
-    "San Francisco, CA",
-    "New York, NY",
-    "Austin, TX",
-    "Chicago, IL",
-    "Seattle, WA",
-    "Remote",
+    "Norfolk, VA",
+    "Virginia Beach, VA",
+    "Chesapeake, VA",
+    "Hampton, VA",
+    "Newport News, VA",
+    "Portsmouth, VA",
   ];
   const backgroundTypes = [
     "Career Changer",
-    "Recent Graduate",
+    "Recent High School Grad",
     "Former Military",
-    "Self-Taught",
-    "Bootcamp Graduate",
+    "Hobbyist",
+    "Seeking Trade",
   ];
-  const programs = [
-    "Certified Medical Assistant",
-    "Surgical Technologist",
-    "Sterile Processing Technician",
-    "Patient Care Technician",
-    "Medical Administrative Assistant",
-  ];
+  // Only include Auto Tech and Welder programs
+  const programs = ["Auto Technician", "Combination Welder"];
 
   const availabilityOptions = [
     "Available upon sponsorship",
@@ -191,81 +155,59 @@ const generateProspectiveStudents = () => {
     "Ready in 6 months",
   ];
 
+  // Only include skill sets for the two programs (more foundational)
   const skillSets = {
-    "Certified Medical Assistant": [
-      "Patient Care",
-      "Vital Signs",
-      "Medical Terminology",
-      "EHR Systems",
-      "Clinical Procedures",
+    "Auto Technician": [
+      "Basic Mechanics",
+      "Tool Familiarity",
+      "Problem Solving",
+      "Eager to Learn",
+      "Safety Conscious",
     ],
-    "Surgical Technologist": [
-      "Surgical Procedures",
-      "Sterilization",
-      "Medical Instruments",
-      "Perioperative Care",
-      "Aseptic Technique",
-    ],
-    "Sterile Processing Technician": [
-      "Sterilization Techniques",
-      "Decontamination",
-      "Inventory Management",
-      "Medical Instruments",
-      "Quality Control",
-    ],
-    "Patient Care Technician": [
-      "Basic Care",
-      "Vital Monitoring",
-      "Patient Mobility",
-      "Medical Terminology",
-      "Phlebotomy",
-    ],
-    "Medical Administrative Assistant": [
-      "Medical Office",
-      "Medical Billing",
-      "Medical Coding",
-      "Patient Scheduling",
-      "Medical Transcription",
+    "Combination Welder": [
+      "Basic Welding Concepts",
+      "Hand-Eye Coordination",
+      "Attention to Detail",
+      "Safety Conscious",
+      "Willing to Train",
     ],
   };
 
+  // Only include about texts for the two programs
   const aboutTexts = {
-    "Certified Medical Assistant":
-      "Prospective medical assistant with strong foundations in patient care and clinical procedures. Ready to provide both administrative and clinical support in healthcare settings.",
-    "Surgical Technologist":
-      "Future surgical technologist with interest in operating room procedures and sterile techniques. Eager to assist surgeons and prepare for surgical procedures.",
-    "Sterile Processing Technician":
-      "Prospective sterile processing technician with attention to detail and knowledge of basic sterilization concepts. Ready to ensure medical instruments are properly prepared.",
-    "Patient Care Technician":
-      "Aspiring patient care technician with compassion for patients and fundamental care skills. Ready to provide basic care under nursing supervision.",
-    "Medical Administrative Assistant":
-      "Future medical administrative assistant with organizational skills and customer service experience. Ready to manage front office operations in healthcare settings.",
+    "Auto Technician":
+      "Prospective Auto Technician eager to develop hands-on skills in vehicle maintenance and repair. Motivated to learn diagnostic techniques and industry best practices.",
+    "Combination Welder":
+      "Future Combination Welder interested in mastering various welding techniques. Keen to learn fabrication, blueprint reading, and safety protocols.",
   };
 
   const students = [];
-  for (let i = 1; i <= 20; i++) {
+  // Generate 10 prospective students total (5 per program on average)
+  for (let i = 1; i <= 10; i++) {
     const program = programs[Math.floor(Math.random() * programs.length)];
     const backgroundType =
       backgroundTypes[Math.floor(Math.random() * backgroundTypes.length)];
 
     students.push({
-      id: `p-${i}`,
-      name: `Prospective ${i}`,
+      id: `prospect-${i}`, // Prefix ID
+      name: `Prospective ${program.split(" ")[0]} ${i}`, // e.g., Prospective Auto 1
       avatar: "/placeholder.svg",
       location: locations[Math.floor(Math.random() * locations.length)],
       skills: [...skillSets[program]]
         .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 2),
+        .slice(0, Math.floor(Math.random() * 2) + 2), // Show 2-3 skills/traits
       backgroundType,
       program,
+      school: "Tidewater Tech", // Assume all prospective are for Tidewater Tech
       availableDate:
         availabilityOptions[
           Math.floor(Math.random() * availabilityOptions.length)
         ],
       yearsExperience: 0,
-      isReserved: i <= 6,
+      isReserved: i <= 3, // Example: First 3 are reserved/sponsored
       isProspective: true,
-      about: `${aboutTexts[program]} Background: ${backgroundType}.`,
+      isOffMarket: false, // Prospective are generally "on market" until sponsored/reserved
+      about: `${aboutTexts[program]} Background: ${backgroundType}. Seeking sponsorship.`,
     });
   }
 
@@ -273,80 +215,63 @@ const generateProspectiveStudents = () => {
 };
 
 const programInfo = {
-  "certified-medical-assistant": {
-    title: "Certified Medical Assistant",
+  "combination-welding": {
+    title: "Combination Welding",
     description:
-      "Learn essential clinical and administrative skills to assist physicians in healthcare settings.",
-    duration: "20 Weeks",
-    certification: "CCMA",
-    format: "Hybrid & Online",
+      "Learn the fundamentals of welding, including metal fabrication and repair. Master various welding and metal cutting techniques, tools, machines, blueprint reading, measurements, and hazard assessment.",
+    duration: "33 Weeks",
+    certification: "FCAW, GTAW, SMAW, OSHA, AWS",
+    format: "In-Person",
     classes: [
-      "Foundations of Medical Assisting",
-      "Clinical Procedures",
-      "Pharmacology",
-      "Medical Terminology",
-      "Healthcare Law and Ethics",
+      "Fundamentals of Modern Welding",
+      "Tungsten Arc Welding",
+      "Gas Metal Arc Welding",
+      "Flux Core Arc Welding",
+      "Special Cutting",
+      "Shielded Metal Arc Welding",
     ],
     companies: [
-      "Mayo Clinic",
-      "Cleveland Clinic",
-      "Kaiser Permanente",
-      "Johns Hopkins Medicine",
-      "Ascension",
+      "Alco Welding & Machine",
+      "American Steel",
+      "Chesapeake Bay Steel",
+      "Colonna’s Shipyard",
+      "Dynamic Manufacturing",
+      "Globe Iron Construction Company",
+      "Lyon Shipyard",
+      "Ingalls Shipbuilding Company",
+      "Va Carolina Steel",
     ],
   },
-  "surgical-technologist": {
-    title: "Surgical Technologist",
+  "auto-technician": {
+    title: "Auto Technician",
     description:
-      "Prepare for a career assisting surgeons in the operating room with proper techniques and protocols.",
-    duration: "24 Weeks",
-    certification: "CST",
-    format: "Hybrid",
+      "Gain hands-on experience in automotive technology, learning essential skills for vehicle maintenance, inspection, diagnosis, and repair. Develop expertise in key areas like steering, suspension, brakes, engine repair, electrical systems, engine performance, and HVAC.",
+    duration: "48 Weeks",
+    certification: "ASE, OSHA, EPA",
+    format: "In-Person",
     classes: [
-      "Surgical Procedures",
-      "Sterilization Techniques",
-      "Anatomy & Physiology",
-      "Surgical Pharmacology",
-      "Operating Room Protocols",
+      "Steering & Suspension Systems",
+      "Brakes & Anti-Lock Brakes",
+      "Engine Repair",
+      "Electrical & Electronics Systems",
+      "Engine Performance",
+      "HVAC Systems",
     ],
     companies: [
-      "HCA Healthcare",
-      "Tenet Healthcare",
-      "Intermountain Healthcare",
-      "NYU Langone",
-      "UPMC",
-    ],
-  },
-  "sterile-processing": {
-    title: "Sterile Processing Technician",
-    description:
-      "Learn to clean, sterilize, and prepare medical instruments and equipment for surgeries and procedures.",
-    duration: "16 Weeks",
-    certification: "CRCST",
-    format: "Online with Labs",
-    classes: [
-      "Decontamination Procedures",
-      "Sterilization Processes",
-      "Inventory Management",
-      "Medical Terminology",
-      "Infection Control",
-    ],
-    companies: [
-      "Steris",
-      "Hospital Corporation of America",
-      "Banner Health",
-      "AdventHealth",
-      "Providence Health",
+      "Ford",
+      "Pep Boys",
+      "CarMax",
+      "Chevrolet",
+      "Avis",
+      "Mavis",
+      "FedEx",
     ],
   },
 };
 
 const jobRoleMap = {
-  "medical-assistant": "certified-medical-assistant",
-  "surgical-tech": "surgical-technologist",
-  "sterile-processing-tech": "sterile-processing",
-  "patient-care-tech": "certified-medical-assistant",
-  "medical-administrative-assistant": "certified-medical-assistant",
+  "combination-welding": "combination-welding",
+  "auto-technician": "auto-technician",
 };
 
 const TalentRequestPage = () => {
@@ -365,9 +290,9 @@ const TalentRequestPage = () => {
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [bulkReservation, setBulkReservation] = useState(false);
   const [hiringNeeds, setHiringNeeds] = useState({
-    neededCandidates: 10,
-    location: "Dallas, TX",
-    skillSet: "medical-assistant",
+    neededCandidates: 100,
+    location: "Norfolk, VA",
+    skillSet: "combination-welding",
   });
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
@@ -469,29 +394,39 @@ const TalentRequestPage = () => {
 
   const recentActivity = [
     {
-      company: "TechCorp",
+      company: "Colonna's Shipyard, Inc.",
+      action: "sponsored 4 candidates",
+      time: "6 min ago",
+    },
+    {
+      company: "First Team Auto Superstore",
       action: "reserved 2 candidates",
-      time: "5 min ago",
+      time: "14 min ago",
     },
     {
-      company: "MedLabs",
-      action: "sponsored 5 candidates",
-      time: "12 min ago",
-    },
-    {
-      company: "FinanceHub",
+      company: "Globe Iron Construction Company, Inc.",
       action: "viewed this pool",
       time: "just now",
     },
     {
-      company: "Healthcare Partners",
+      company: "RK Chevrolet",
       action: "scheduled a consultation",
-      time: "23 min ago",
+      time: "25 min ago",
     },
     {
-      company: "City Medical",
-      action: "reserved 8 candidates",
+      company: "Marine Hydraulics International, Inc.",
+      action: "reserved 5 candidates",
+      time: "50 min ago",
+    },
+    {
+      company: "Blanchard's Tire & Auto Center",
+      action: "sponsored 1 candidate",
       time: "1 hour ago",
+    },
+    {
+      company: "Chesapeake Bay Steel, Inc.",
+      action: "viewed this pool",
+      time: "2 hours ago",
     },
   ];
 
@@ -569,7 +504,7 @@ const TalentRequestPage = () => {
                           location: e.target.value,
                         })
                       }
-                      placeholder="e.g., Dallas, TX"
+                      placeholder="e.g., Norfolk, VA"
                     />
                   </div>
 
@@ -588,21 +523,10 @@ const TalentRequestPage = () => {
                           })
                         }
                       >
-                        <option value="medical-assistant">
-                          Medical Assistant
+                        <option value="combination-welding">
+                          Combination Welding
                         </option>
-                        <option value="surgical-tech">
-                          Surgical Technologist
-                        </option>
-                        <option value="sterile-processing-tech">
-                          Sterile Processing Technician
-                        </option>
-                        <option value="patient-care-tech">
-                          Patient Care Technician
-                        </option>
-                        <option value="medical-administrative-assistant">
-                          Medical Administrative Assistant
-                        </option>
+                        <option value="auto-technician">Auto Technician</option>
                       </select>
                       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                         <svg
@@ -820,105 +744,133 @@ const TalentRequestPage = () => {
           </div>
 
           <div className="lg:col-span-1 bg-white">
-            {hiringNeeds.skillSet === "medical-assistant" && (
-              <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 flex flex-col gap-6 min-h-full">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="md:col-span-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src="/images/tidewater-tech-logo.png"
-                        alt="Tidewater Tech"
-                        className="h-5"
-                      />
-                    </div>
-
-                    <div className="flex flex-row gap-2">
-                      <Badge
-                        variant="outline"
-                        className="bg-primary/10 text-primary border-primary/20 text-xs"
-                      >
-                        <Users size={12} className="mr-1" />
-                        {currentAvailableCount} Current
-                      </Badge>
-                      <Badge
-                        variant="outline"
-                        className="bg-amber-50 text-amber-700 border-amber-200 text-xs"
-                      >
-                        {prospectiveAvailableCount} Prospective
-                      </Badge>
-                    </div>
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 flex flex-col gap-6 min-h-full">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src="/images/tidewater-tech-logo.png"
+                      alt="Tidewater Tech"
+                      className="h-5"
+                    />
                   </div>
 
-                  <div className="md:col-span-4 mb-2">
-                    <h3 className="text-lg font-medium text-primary">
-                      Certified Medical Assistant Program
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Learn essential clinical and administrative skills to
-                      assist physicians in healthcare settings.
-                    </p>
-                  </div>
-
-                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">Duration</div>
-                    <div className="font-medium text-primary">20 Weeks</div>
-                  </div>
-
-                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">
-                      Certification
-                    </div>
-                    <div className="font-medium text-primary">CCMA</div>
-                  </div>
-
-                  <div className="text-center p-2 bg-white rounded-md border border-primary/10">
-                    <div className="text-xs text-gray-500 mb-1">Format</div>
-                    <div className="font-medium text-primary">
-                      Hybrid & Online
-                    </div>
+                  <div className="flex flex-row gap-2">
+                    <Badge
+                      variant="outline"
+                      className="bg-primary/10 text-primary border-primary/20 text-xs"
+                    >
+                      <Users size={12} className="mr-1" />
+                      {currentAvailableCount} Current{" "}
+                      {/* Assuming this count is relevant */}
+                    </Badge>
+                    <Badge
+                      variant="outline"
+                      className="bg-amber-50 text-amber-700 border-amber-200 text-xs"
+                    >
+                      {prospectiveAvailableCount} Prospective{" "}
+                      {/* Assuming this count is relevant */}
+                    </Badge>
                   </div>
                 </div>
-                <div className="">
-                  <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                    <Award size={16} className="text-primary" />
-                    Key Classes
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {programInfo[jobRoleMap[hiringNeeds.skillSet]].classes.map(
-                      (className, index) => (
-                        <Badge
-                          key={index}
-                          variant="outline"
-                          className="bg-white border-primary/20 text-primary"
-                        >
-                          {className}
-                        </Badge>
+
+                <div className="md:col-span-4 mb-2">
+                  <h3 className="text-lg font-medium text-primary">
+                    {/* Dynamic Title */}
+                    {programInfo[jobRoleMap[hiringNeeds.skillSet]].title}{" "}
+                    Program
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {/* Dynamic Description */}
+                    {programInfo[jobRoleMap[hiringNeeds.skillSet]].description}
+                  </p>
+                </div>
+
+                <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                  <div className="text-xs text-gray-500 mb-1">Duration</div>
+                  {/* Dynamic Duration */}
+                  <div className="font-medium text-primary">
+                    {programInfo[jobRoleMap[hiringNeeds.skillSet]].duration}
+                  </div>
+                </div>
+
+                <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                  <div className="text-xs text-gray-500 mb-1">
+                    Certifications
+                  </div>
+                  {/* Dynamic Certification - Displaying first one if array */}
+                  <div className="font-medium text-primary">
+                    {
+                      Array.isArray(
+                        programInfo[jobRoleMap[hiringNeeds.skillSet]]
+                          .certification
                       )
-                    )}
+                        ? programInfo[jobRoleMap[hiringNeeds.skillSet]]
+                            .certification[0] // Show first cert if it's an array
+                        : programInfo[jobRoleMap[hiringNeeds.skillSet]]
+                            .certification // Show the string directly
+                    }
+                    {/* Optional: Indicate if there are more certs */}
+                    {Array.isArray(
+                      programInfo[jobRoleMap[hiringNeeds.skillSet]]
+                        .certification
+                    ) &&
+                      programInfo[jobRoleMap[hiringNeeds.skillSet]]
+                        .certification.length > 1 &&
+                      " (+ more)"}
                   </div>
                 </div>
 
-                <div>
-                  <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                    <Building size={16} className="text-primary" />
-                    Graduates Working At
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {programInfo[
-                      jobRoleMap[hiringNeeds.skillSet]
-                    ].companies.map((company, index) => (
+                <div className="text-center p-2 bg-white rounded-md border border-primary/10">
+                  <div className="text-xs text-gray-500 mb-1">Format</div>
+                  {/* Dynamic Format */}
+                  <div className="font-medium text-primary">
+                    {programInfo[jobRoleMap[hiringNeeds.skillSet]].format}
+                  </div>
+                </div>
+              </div>
+              <div className="">
+                <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                  <Award size={16} className="text-primary" />
+                  Key Classes
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {/* Dynamic Classes - Already using programInfo */}
+                  {programInfo[jobRoleMap[hiringNeeds.skillSet]].classes.map(
+                    (className, index) => (
+                      <Badge
+                        key={index}
+                        variant="outline"
+                        className="bg-white border-primary/20 text-primary"
+                      >
+                        {className}
+                      </Badge>
+                    )
+                  )}
+                </div>
+              </div>
+
+              <div>
+                {/* Heading might need adjustment depending on data (Companies vs Job Roles) */}
+                <h4 className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                  <Building size={16} className="text-primary" />
+                  Graduates Working At
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {/* Dynamic Companies/Roles - Already using programInfo */}
+                  {programInfo[jobRoleMap[hiringNeeds.skillSet]].companies.map(
+                    (item, index) => (
                       <span
                         key={index}
                         className="px-2 py-1 bg-white text-xs rounded-md border border-primary/10"
                       >
-                        {company}
+                        {item}
                       </span>
-                    ))}
-                  </div>
+                    )
+                  )}
                 </div>
               </div>
-            )}
-            {/* <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden h-full"></div> */}
+            </div>
           </div>
         </div>
 
@@ -1279,7 +1231,7 @@ const TalentRequestPage = () => {
                   </p>
                   <Button
                     className="w-full"
-                    variant="outline"
+                    variant="default"
                     onClick={handleOpenSponsorshipModal}
                   >
                     Learn About Sponsorship
