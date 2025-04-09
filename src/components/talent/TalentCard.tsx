@@ -295,7 +295,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                   >
                     {student.isProspective
                       ? "Sponsor This Candidate"
-                      : "Reserve This Candidate"}
+                      : "Interview This Candidate"}
                   </Button>
                   {!student.isProspective && (
                     <Button
