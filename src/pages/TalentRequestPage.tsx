@@ -400,7 +400,7 @@ const TalentRequestPage = () => {
     },
     {
       company: "First Team Auto Superstore",
-      action: "reserved 2 candidates",
+      action: "hired 2 candidates",
       time: "14 min ago",
     },
     {
@@ -415,7 +415,7 @@ const TalentRequestPage = () => {
     },
     {
       company: "Marine Hydraulics International, Inc.",
-      action: "reserved 5 candidates",
+      action: "hired 5 candidates",
       time: "50 min ago",
     },
     {
@@ -736,7 +736,7 @@ const TalentRequestPage = () => {
                       }, 100);
                     }}
                   >
-                    Start Reserving Talent
+                    Start Exploring Talent
                   </Button>
                 </div>
               </div>
@@ -880,7 +880,7 @@ const TalentRequestPage = () => {
               <div className="lg:w-3/4">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold text-black">
-                    Reserve Your Talent
+                    Explore Talent
                   </h2>
                 </div>
 
@@ -933,9 +933,7 @@ const TalentRequestPage = () => {
                                 ? prospectiveReservedCount
                                 : totalReservedCount}
                             </div>
-                            <div className="text-sm text-gray-500">
-                              Reserved
-                            </div>
+                            <div className="text-sm text-gray-500">Hired</div>
                           </div>
 
                           <div className="h-10 w-px bg-gray-200"></div>
@@ -1166,7 +1164,7 @@ const TalentRequestPage = () => {
                 <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 mb-5">
                   <h3 className="font-medium mb-4 text-black flex items-center gap-2">
                     <Users size={16} className="text-gray-700" />
-                    Recently Reserved
+                    Recently Hired
                   </h3>
 
                   <ScrollArea className="h-[300px]">
@@ -1206,7 +1204,7 @@ const TalentRequestPage = () => {
                                   </Badge>
                                 )}
                                 <div className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
-                                  Off-market
+                                  Hired
                                 </div>
                               </div>
                             </div>

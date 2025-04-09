@@ -83,7 +83,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
     } else if (student.isReserved || student.isOffMarket) {
       return (
         <Badge variant="outline" className="off-market-badge">
-          Off-market
+          Hired
         </Badge>
       );
     } else {
@@ -210,7 +210,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
                   className="flex-grow bg-black/80"
                   onClick={handleReserve}
                 >
-                  Reserve
+                  Request to Interview
                 </Button>
               ) : (
                 <div className="flex-grow"></div>
@@ -233,7 +233,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
         {student?.isOffMarket ? (
           <div className="absolute top-0 left-0 w-full h-full bg-gray-200/90 flex items-center justify-center">
             <div className="text-lg font-semibold text-gray-700">
-              This candidate is currently off-market.
+              This candidate is currently hired.
             </div>
           </div>
         ) : null}
@@ -270,7 +270,7 @@ const TalentCard = ({ student, onReserve }: TalentCardProps) => {
               {student.isReserved && !student.isProspective ? (
                 <div className="w-full">
                   <div className="mb-4 py-2 px-4 bg-gray-100 text-gray-700 rounded-md text-center font-medium">
-                    Off-market Candidate
+                    Hired Candidate
                   </div>
                   <Button
                     variant="secondary"
