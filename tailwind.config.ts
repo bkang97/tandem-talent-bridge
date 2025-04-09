@@ -62,8 +62,7 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				skilltrade: 'hsl(224, 88.7%, 54.7%)'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

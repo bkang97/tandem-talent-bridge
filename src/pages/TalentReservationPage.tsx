@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -61,8 +60,8 @@ const TalentReservationPage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
-                src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
-                alt="Skilltrade"
+                src="/images/tidewater-tech-logo.png"
+                alt="Tidewater Tech"
                 className="h-8"
               />
               <div className="hidden sm:block h-6 w-px bg-gray-300"></div>
@@ -70,7 +69,10 @@ const TalentReservationPage = () => {
                 Employer Talent Portal
               </h2>
             </div>
-            <Badge variant="outline" className="border-black/20 text-black text-mobile-base">
+            <Badge
+              variant="outline"
+              className="border-black/20 text-black text-mobile-base"
+            >
               Spring 2025 Cohort
             </Badge>
           </div>
@@ -83,8 +85,8 @@ const TalentReservationPage = () => {
             Reservation Confirmation
           </h1>
           <p className="text-gray-600 text-sm sm:text-base">
-            You've successfully reserved candidates from the SkillTrade talent
-            pool.
+            You've successfully reserved candidates from the Tidewater Tech
+            talent pool.
           </p>
         </div>
 
@@ -124,20 +126,36 @@ const TalentReservationPage = () => {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 bg-gray-50 p-3 sm:p-5 rounded-lg">
                       <div>
-                        <p className="text-xs sm:text-sm text-gray-500">Company Name</p>
-                        <p className="font-medium text-sm sm:text-base">{callDetails.companyName}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          Company Name
+                        </p>
+                        <p className="font-medium text-sm sm:text-base">
+                          {callDetails.companyName}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-xs sm:text-sm text-gray-500">Contact Person</p>
-                        <p className="font-medium text-sm sm:text-base">{callDetails.contactName}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          Contact Person
+                        </p>
+                        <p className="font-medium text-sm sm:text-base">
+                          {callDetails.contactName}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-xs sm:text-sm text-gray-500">Email</p>
-                        <p className="font-medium text-sm sm:text-base">{callDetails.email}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          Email
+                        </p>
+                        <p className="font-medium text-sm sm:text-base">
+                          {callDetails.email}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-xs sm:text-sm text-gray-500">Phone</p>
-                        <p className="font-medium text-sm sm:text-base">{callDetails.phone}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          Phone
+                        </p>
+                        <p className="font-medium text-sm sm:text-base">
+                          {callDetails.phone}
+                        </p>
                       </div>
                       <div className="md:col-span-2">
                         <p className="text-xs sm:text-sm text-gray-500">
@@ -297,7 +315,10 @@ const TalentReservationPage = () => {
                 >
                   Browse More Talent
                 </Button>
-                <Button onClick={() => window.print()} className="gap-1.5 w-full sm:w-auto">
+                <Button
+                  onClick={() => window.print()}
+                  className="gap-1.5 w-full sm:w-auto"
+                >
                   <Download size={16} />
                   Save Confirmation
                 </Button>
@@ -325,7 +346,7 @@ const TalentReservationPage = () => {
                       can't find enough qualified talent
                     </h3>
                     <p className="text-gray-500 text-xs sm:text-sm">
-                      Source: SkillTrade Employer Survey 2024
+                      Source: Tidewater Tech Employer Survey 2024
                     </p>
                   </div>
 
@@ -336,9 +357,9 @@ const TalentReservationPage = () => {
                       Secure Your Talent Pipeline
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-4">
-                      With SkillTrade Sponsored Talent, you can build a custom
-                      talent pipeline tailored to your specific needs, ensuring
-                      you always have access to qualified candidates.
+                      With Tidewater Tech Sponsored Talent, you can build a
+                      custom talent pipeline tailored to your specific needs,
+                      ensuring you always have access to qualified candidates.
                     </p>
                   </div>
                 </div>
@@ -358,7 +379,7 @@ const TalentReservationPage = () => {
               </CardFooter>
             </Card>
           </div>
-          
+
           {/* Mobile bottom card - only shown on small screens */}
           <div className="lg:hidden mt-2">
             <Card className="overflow-hidden">
@@ -370,21 +391,19 @@ const TalentReservationPage = () => {
               </CardHeader>
               <CardContent className="p-4">
                 <p className="text-sm">
-                  With SkillTrade Sponsored Talent, you can build a custom
+                  With Tidewater Tech Sponsored Talent, you can build a custom
                   talent pipeline tailored to your specific needs.
                 </p>
               </CardContent>
               <CardFooter className="flex gap-3 p-4">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full"
                   onClick={() => navigate("/talent-request")}
                 >
                   Browse More
                 </Button>
-                <Button className="w-full">
-                  Why Sponsor?
-                </Button>
+                <Button className="w-full">Why Sponsor?</Button>
               </CardFooter>
             </Card>
           </div>

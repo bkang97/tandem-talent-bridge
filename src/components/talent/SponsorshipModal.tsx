@@ -51,8 +51,8 @@ const SponsorshipModal = ({
           {/* Left Column - Visual Explanation */}
           <div className="bg-primary/5 p-8 flex flex-col justify-center">
             <img
-              src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
-              alt="Skilltrade"
+              src="/images/tidewater-tech-logo.png"
+              alt="Tidewater Tech"
               className="h-8 mb-6"
             />
             <h3 className="text-xl font-bold text-primary mb-4 text-center">
@@ -128,7 +128,7 @@ const SponsorshipModal = ({
           <div className="p-8">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold">
-                SkillTrade Sponsorship Program
+                Tidewater Tech Sponsorship Program
               </DialogTitle>
               <DialogDescription className="text-base">
                 Build your custom talent pipeline through our employer-sponsored
@@ -138,7 +138,7 @@ const SponsorshipModal = ({
 
             <div className="mt-6 space-y-4">
               <p className="text-sm text-gray-700">
-                The SkillTrade Sponsorship program connects employers with
+                The Tidewater Tech Sponsorship program connects employers with
                 qualified candidates and top-tier training providers to build a
                 sustainable talent pipeline tailored to your specific needs.
               </p>

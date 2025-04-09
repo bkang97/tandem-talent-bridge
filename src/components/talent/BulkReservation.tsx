@@ -267,7 +267,7 @@ const BulkReservation = () => {
               <AlertDescription className="flex justify-between items-center">
                 <div className="space-y-1">
                   <div className="text-sm font-medium text-primary">
-                    Close your talent gap with SkillTrade Sponsorship
+                    Close your talent gap with Tidewater Tech Sponsorship
                   </div>
                   <div className="flex items-start gap-2">
                     <Check

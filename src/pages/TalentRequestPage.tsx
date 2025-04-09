@@ -48,7 +48,7 @@ const generateMockStudents = () => {
     "AIM",
     "CodeCampus",
     "TechAcademy",
-    "SkillTrade",
+    "Tidewater Tech",
   ];
   const programs = [
     "Cybersecurity Analyst",
@@ -518,8 +518,8 @@ const TalentRequestPage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
-                src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
-                alt="Skilltrade"
+                src="/images/tidewater-tech-logo.png"
+                alt="Tidewater Tech"
                 className="h-8"
               />
               <div className="h-6 w-px bg-gray-300"></div>
@@ -537,7 +537,7 @@ const TalentRequestPage = () => {
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-black">
-            SkillTrade Talent Placement
+            Tidewater Tech Talent Placement
           </h1>
           <p className="text-gray-600 mt-1">
             Connect with qualified candidates who are ready to be hired
@@ -770,8 +770,8 @@ const TalentRequestPage = () => {
                         className="text-primary mt-0.5 flex-shrink-0"
                       />
                       <span className="text-xs">
-                        Skilltrade graduates deliver immediately with real-world
-                        skills
+                        Tidewater Tech graduates deliver immediately with
+                        real-world skills
                       </span>
                     </div>
                     <div className="flex items-start gap-2">
@@ -789,7 +789,8 @@ const TalentRequestPage = () => {
                         className="text-primary mt-0.5 flex-shrink-0"
                       />
                       <span className="text-xs">
-                        94% employer satisfaction rate with Skilltrade graduates
+                        94% employer satisfaction rate with Tidewater Tech
+                        graduates
                       </span>
                     </div>
                   </div>
@@ -825,8 +826,8 @@ const TalentRequestPage = () => {
                   <div className="md:col-span-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <img
-                        src="https://assets.skilltrade.com/production/permanent/skillttrade_logo.svg?dm=1724440579"
-                        alt="Skilltrade"
+                        src="/images/tidewater-tech-logo.png"
+                        alt="Tidewater Tech"
                         className="h-5"
                       />
                     </div>
@@ -1272,8 +1273,9 @@ const TalentRequestPage = () => {
                     Need more talent?
                   </h3>
                   <p className="text-sm text-gray-600 mb-4">
-                    Through our SkillTrade Sponsorship program, you can create a
-                    pipeline of candidates tailored to your specific needs.
+                    Through our Tidewater Tech Sponsorship program, you can
+                    create a pipeline of candidates tailored to your specific
+                    needs.
                   </p>
                   <Button
                     className="w-full"
@@ -1286,7 +1288,7 @@ const TalentRequestPage = () => {
 
                 <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
                   <h3 className="font-medium mb-4 text-primary flex items-center gap-2">
-                    SkillTrade Talent Success
+                    Tidewater Tech Talent Success
                   </h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -1312,8 +1314,8 @@ const TalentRequestPage = () => {
 
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-500">
-            © 2025 SkillTrade. This talent portal is provided exclusively for
-            SkillTrade employer partners. Powered by Tandem.
+            © 2025 Tidewater Tech. This talent portal is provided exclusively
+            for Tidewater Tech employer partners. Powered by Tandem.
           </p>
         </div>
       </main>
